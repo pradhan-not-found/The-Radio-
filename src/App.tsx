@@ -254,9 +254,9 @@ export function App() {
       {activePopup === 'calendar' && (
         <>
           <div className="modal-backdrop" onClick={() => setActivePopup(null)} />
-          <div className="creators-modal-large" style={{ backgroundColor: '#ffffff', color: '#1a1a1a', padding: '40px 32px' }}>
-            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-tr" style={{ opacity: 0.15 }} />
-            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-bl" style={{ opacity: 0.15 }} />
+          <div className="creators-modal-large calendar-modal" style={{ backgroundColor: '#fffdf7', color: '#1a1a1a', padding: '48px 32px' }}>
+            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-tr" style={{ opacity: 0.1, width: '200px' }} />
+            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-bl" style={{ opacity: 0.1, width: '200px' }} />
             
             <button className="close-btn abs-close" onClick={() => setActivePopup(null)} title="Close" style={{ color: '#1a1a1a', background: '#f4ede4' }}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -265,17 +265,27 @@ export function App() {
               </svg>
             </button>
 
-            <h3 className="modal-subtitle" style={{ color: '#8a2b2b', fontFamily: "'SeasonMix', serif", fontSize: '38px', border: 'none', letterSpacing: '2px', marginBottom: '24px', textTransform: 'none' }}>Puja Calendar 2026</h3>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
+              <h3 className="modal-subtitle" style={{ color: '#8a2b2b', fontFamily: "'SeasonMix', serif", fontSize: 'clamp(28px, 8vw, 42px)', border: 'none', letterSpacing: '1px', marginBottom: '8px', textTransform: 'none', textAlign: 'center' }}>Puja Calendar</h3>
+              <svg width="120" height="20" viewBox="0 0 120 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10 10C30 10 30 0 50 0C70 0 70 10 90 10C110 10 110 20 130 20C150 20 150 10 170 10" stroke="#8a2b2b" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 4" opacity="0.4" transform="scale(0.6) translate(10, 5)"/>
+                <circle cx="60" cy="10" r="4" fill="#8a2b2b" opacity="0.6" />
+                <path d="M50 10 L45 5 L55 5 Z" fill="#d4af37" transform="rotate(45 50 10)" opacity="0.8"/>
+                <path d="M70 10 L65 5 L75 5 Z" fill="#d4af37" transform="rotate(-45 70 10)" opacity="0.8"/>
+                <line x1="10" y1="10" x2="40" y2="10" stroke="#d4af37" strokeWidth="1" opacity="0.5"/>
+                <line x1="80" y1="10" x2="110" y2="10" stroke="#d4af37" strokeWidth="1" opacity="0.5"/>
+              </svg>
+            </div>
 
-            <div className="calendar-dates-container" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div className="calendar-dates-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               {Object.entries(PUJA_DATES).map(([date, event]) => {
                 const parts = date.split('-');
                 const formatted = `Oct ${parts[1]}`;
                 const eventName = event.replace('Subho ', '').replace('Maha ', '');
                 return (
-                  <div key={date} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px 16px', borderBottom: '1px solid rgba(0,0,0,0.06)', borderRadius: '8px', background: 'rgba(244, 237, 228, 0.3)' }}>
-                    <span style={{ fontFamily: "'Switzer', sans-serif", fontWeight: 600, fontSize: '15px', color: '#666', letterSpacing: '0.5px' }}>{formatted.toUpperCase()}</span>
-                    <span style={{ fontFamily: "'SeasonMix', serif", fontSize: '26px', color: '#1a1a1a' }}>{eventName}</span>
+                  <div key={date} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderBottom: '1px dashed rgba(138, 43, 43, 0.15)', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.4)', transition: 'all 0.3s ease' }}>
+                    <span style={{ fontFamily: "'Switzer', sans-serif", fontWeight: 600, fontSize: 'clamp(14px, 4vw, 16px)', color: '#8a2b2b', letterSpacing: '0.5px' }}>{formatted.toUpperCase()}</span>
+                    <span style={{ fontFamily: "'SeasonMix', serif", fontSize: 'clamp(20px, 6vw, 26px)', color: '#1a1a1a', textAlign: 'right', lineHeight: 1.2 }}>{eventName}</span>
                   </div>
                 );
               })}
