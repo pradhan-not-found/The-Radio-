@@ -1159,16 +1159,28 @@ body {
 /* ═══════════════════════════════════════════
    RESPONSIVE SCALING
    ═══════════════════════════════════════════ */
-@media (max-width: 1200px) {
-  .stage {
-    zoom: calc(100vw / 1300);
-  }
+@media (max-width: 992px) {
+  .stage { zoom: 0.75; }
 }
 
-@media (max-width: 760px) {
-  .stage {
-    zoom: calc(100vw / 950);
-  }
+@media (max-width: 768px) {
+  .stage { zoom: 0.65; }
+}
+
+@media (max-width: 576px) {
+  .stage { zoom: 0.52; }
+}
+
+@media (max-width: 480px) {
+  .stage { zoom: 0.46; }
+}
+
+@media (max-width: 400px) {
+  .stage { zoom: 0.4; }
+}
+
+@media (max-width: 350px) {
+  .stage { zoom: 0.35; }
 }
 
 @media (max-width: 900px) {

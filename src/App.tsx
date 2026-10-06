@@ -50,23 +50,25 @@ export function App() {
   const handleDownload = async () => {
     if (!calendarRef.current) return;
     
-    const watermark = document.getElementById('calendar-watermark');
-    if (watermark) watermark.style.display = 'flex';
-    // Temporarily expand containers to capture full calendar
-    const originalMaxHeight = calendarRef.current.style.maxHeight;
-    const originalOverflow = calendarRef.current.style.overflow;
-    const originalTransform = calendarRef.current.style.transform;
+    // Create a clone to prevent visual jumping during download
+    const clone = calendarRef.current.cloneNode(true) as HTMLElement;
     
-    calendarRef.current.style.maxHeight = 'none';
-    calendarRef.current.style.overflow = 'visible';
-    calendarRef.current.style.transform = 'none'; // Fix for html2canvas blank rendering with translate(-50%, -50%)
+    // Append to same parent to preserve inherited styles, but hide it offscreen
+    clone.style.position = 'absolute';
+    clone.style.top = '-9999px';
+    clone.style.left = '-9999px';
+    clone.style.transform = 'none';
+    clone.style.maxHeight = 'none';
+    clone.style.overflow = 'visible';
+    clone.style.zIndex = '-1';
+    
+    calendarRef.current.parentElement?.appendChild(clone);
 
-    const innerContainer = calendarRef.current.querySelector('.calendar-dates-container') as HTMLElement;
-    let innerOriginalOverflow = '';
-    let innerOriginalMaxHeight = '';
+    const watermark = clone.querySelector('#calendar-watermark') as HTMLElement;
+    if (watermark) watermark.style.display = 'flex';
+
+    const innerContainer = clone.querySelector('.calendar-dates-container') as HTMLElement;
     if (innerContainer) {
-      innerOriginalOverflow = innerContainer.style.overflowY;
-      innerOriginalMaxHeight = innerContainer.style.maxHeight;
       innerContainer.style.overflowY = 'visible';
       innerContainer.style.maxHeight = 'none';
     }
@@ -74,7 +76,7 @@ export function App() {
     try {
       // Small delay to ensure DOM updates applied
       await new Promise(resolve => setTimeout(resolve, 100));
-      const canvas = await html2canvas(calendarRef.current, { 
+      const canvas = await html2canvas(clone, { 
         backgroundColor: '#fffdf7', 
         scale: 2,
         useCORS: true,
@@ -85,15 +87,7 @@ export function App() {
       link.href = canvas.toDataURL('image/png');
       link.click();
     } finally {
-      if (watermark) watermark.style.display = 'none';
-      calendarRef.current.style.maxHeight = originalMaxHeight;
-      calendarRef.current.style.overflow = originalOverflow;
-      calendarRef.current.style.transform = originalTransform;
-      
-      if (innerContainer) {
-        innerContainer.style.overflowY = innerOriginalOverflow;
-        innerContainer.style.maxHeight = innerOriginalMaxHeight;
-      }
+      clone.remove();
     }
   };
 
@@ -366,9 +360,9 @@ export function App() {
               })}
             </div>
             
-            <div id="calendar-watermark" style={{ display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '32px', gap: '8px', opacity: 0.8 }}>
-              <img src="/favicon.ico" alt="The Radio" style={{ width: '32px', height: '32px' }} />
-              <span style={{ fontFamily: "'SeasonMix', serif", fontSize: '18px', color: '#8a2b2b' }}>by The Radio</span>
+            <div id="calendar-watermark" style={{ display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '48px', paddingTop: '24px', borderTop: '1px solid rgba(138,43,43,0.15)', gap: '12px', width: '100%' }}>
+              <img src="/favicon.ico" alt="The Radio" style={{ width: '48px', height: '48px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }} />
+              <span style={{ fontFamily: "'SeasonMix', serif", fontSize: '20px', color: '#8a2b2b', fontWeight: 'bold', letterSpacing: '1px' }}>Curated by The Radio</span>
             </div>
           </div>
         </>
