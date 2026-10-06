@@ -522,7 +522,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                     >
                       <div style={{ width: `${progress}%`, height: '100%', background: '#fff', borderRadius: '2px' }} />
                     </div>
-                    <span>{durationStr}</span>
+                    <span>{durationStr !== '0:00' ? durationStr : (PLAYLIST_DATA[activeCat]?.[activeSong]?.duration || '0:00')}</span>
                   </div>
                 )}
                 
@@ -690,7 +690,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
               <button 
                 key={cat} 
                 className={`playlist-tab ${activeCat === cat ? 'active' : ''}`}
-                onClick={() => { userInteractedRef.current = true; setActiveCat(cat); setActiveSong(0); }}
+                onClick={() => { userInteractedRef.current = false; setActiveCat(cat); setActiveSong(0); }}
               >
                 {cat}
               </button>
@@ -707,8 +707,14 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                 key={idx} 
                 className={`playlist-track-row ${activeSong === idx ? 'playing' : ''}`}
                 onClick={() => { 
-                  userInteractedRef.current = true;
-                  setActiveSong(idx); 
+                  if (activeSong === idx) {
+                    if (isPlaying) { ytPlayer?.pauseVideo(); }
+                    else { ytPlayer?.playVideo(); }
+                  } else {
+                    userInteractedRef.current = true;
+                    setActiveSong(idx); 
+                    if (ytPlayer) ytPlayer.loadVideoById(PLAYLIST_DATA[activeCat][idx].videoId);
+                  }
                   setShowPlaylist(false); 
                 }}
               >
