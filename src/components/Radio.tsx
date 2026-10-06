@@ -385,7 +385,8 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
   // Sync mode knob with band
   useEffect(() => {
-    if (modeIdx === 0 || modeIdx === 1) { setBand("FM"); } 
+    if (modeIdx === 0) { setBand("AM"); }
+    else if (modeIdx === 1) { setBand("FM"); } 
     else if (modeIdx === 2) { setBand("FM"); /* Digital mode */ }
   }, [modeIdx]);
 
@@ -554,7 +555,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         <div className="ctrl-col">
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '4px'}}>
             <div style={{display: 'flex', flexDirection: 'column', height: '64px', justifyContent: 'space-between', fontSize: '15px', color: '#8C8478', fontWeight: 600, letterSpacing: '0.5px'}}>
-              <span style={{color: modeIdx===0 ? '#E8E5DD' : '#8C8478', textShadow: modeIdx===0 ? '0 1px 2px #000' : 'none', transition: 'color 0.3s'}}>AFC</span>
+              <span style={{color: modeIdx===0 ? '#E8E5DD' : '#8C8478', textShadow: modeIdx===0 ? '0 1px 2px #000' : 'none', transition: 'color 0.3s'}}>AM</span>
               <span style={{color: modeIdx===1 ? '#E8E5DD' : '#8C8478', textShadow: modeIdx===1 ? '0 1px 2px #000' : 'none', transition: 'color 0.3s'}}>FM</span>
               <span style={{color: modeIdx===2 ? '#E8E5DD' : '#8C8478', textShadow: modeIdx===2 ? '0 1px 2px #000' : 'none', transition: 'color 0.3s'}}>Digital</span>
             </div>
