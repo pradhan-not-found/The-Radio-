@@ -475,36 +475,57 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                 )}
               </div>
               
-              {/* Right side: Dropdowns & Controls */}
-              <div className="digital-info" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
+              {/* Right side: Information & Controls */}
+              <div className="digital-info" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
                 
-                <div className="digital-top-bar" style={{ display: 'flex', gap: '8px' }}>
+                {/* Title & Artist */}
+                <div className="digital-text-container" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <div className="digital-title" title={PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'No signal'}>
+                    {power ? (PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'Tuning...') : 'POWER OFF'}
+                  </div>
+                  <div className="digital-artist" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
+                    {power ? (PLAYLIST_DATA[activeCat]?.[activeSong]?.artist || 'Unknown Artist') : ''}
+                  </div>
+                </div>
+                
+                {/* Controls Row */}
+                <div className="digital-controls" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
+                  
+                  {/* Play/Pause Toggle */}
                   <button 
-                    className="browse-playlist-btn" 
-                    onClick={() => setShowPlaylist(true)}
-                    disabled={!power}
+                    className={`digital-ctrl-btn toggle-btn ${!muted && power ? 'playing' : ''}`} 
+                    disabled={!power} 
+                    onClick={() => { 
+                      if (muted) { ytPlayer?.playVideo(); setMuted(false); } 
+                      else { ytPlayer?.pauseVideo(); setMuted(true); }
+                    }}
                   >
-                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M3 15h18v-2H3v2zm0 4h18v-2H3v2zm0-8h18V9H3v2zm0-6v2h18V5H3z"/></svg>
-                    Browse Playlists
+                    {muted ? (
+                      <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg> // Play
+                    ) : (
+                      <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> // Pause
+                    )}
                   </button>
-                </div>
 
-                <div className="digital-title" title={PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'No signal'}>
-                  {power ? (PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'Tuning...') : 'POWER OFF'}
-                </div>
-                
-                <div className="digital-controls">
-                  <button className="digital-ctrl-btn" disabled={!power} onClick={() => { ytPlayer?.pauseVideo(); setMuted(true); }}>
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-                  </button>
-                  <button className="digital-ctrl-btn" disabled={!power} onClick={() => { ytPlayer?.playVideo(); setMuted(false); }}>
-                    <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
-                  </button>
+                  {/* Next Song */}
                   <button className="digital-ctrl-btn" disabled={!power} onClick={() => { 
                     const nextSong = (activeSong + 1) % (PLAYLIST_DATA[activeCat]?.length || 1);
                     setActiveSong(nextSong);
                   }}>
                     <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                  </button>
+                  
+                  {/* Browse Playlists */}
+                  <button 
+                    className="browse-playlist-btn" 
+                    onClick={() => setShowPlaylist(true)}
+                    disabled={!power}
+                    style={{ marginLeft: 'auto', padding: '6px 12px', background: 'rgba(255,255,255,0.08)', color: '#E8E5DD', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s' }}
+                    onMouseOver={(e) => { if (power) e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
+                    onMouseOut={(e) => { if (power) e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                  >
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M3 15h18v-2H3v2zm0 4h18v-2H3v2zm0-8h18V9H3v2zm0-6v2h18V5H3z"/></svg>
+                    Browse
                   </button>
                 </div>
               </div>

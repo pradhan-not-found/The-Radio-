@@ -1455,8 +1455,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.2s, transform 0.1s;
+  transition: color 0.2s, transform 0.1s, background-color 0.2s;
   padding: 4px;
+  border-radius: 50%;
 }
 
 .digital-ctrl-btn:hover:not(:disabled) {
@@ -1470,6 +1471,24 @@ body {
 .digital-ctrl-btn:disabled {
   opacity: 0.3;
   cursor: not-allowed;
+}
+
+.digital-ctrl-btn.toggle-btn {
+  background: #E8E5DD;
+  color: #111;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+}
+
+.digital-ctrl-btn.toggle-btn:hover:not(:disabled) {
+  background: #FFF;
+  transform: scale(1.05);
+}
+
+.digital-ctrl-btn.toggle-btn:active:not(:disabled) {
+  transform: scale(0.95);
 }
 
 /* ═══════════════════════════════════════════
