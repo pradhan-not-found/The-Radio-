@@ -371,17 +371,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     return () => clearInterval(interval);
   }, [ytPlayer, activeCat]);
 
-  // Handle category/song changes
-  useEffect(() => {
-    if (ytPlayer && ytPlayer.playVideoAt) {
-      if (power && modeIdx === 2) {
-        const catConfig = MUSIC_LIBRARY[activeCat];
-        if (catConfig) {
-          ytPlayer.playVideoAt(catConfig.offset + activeSong);
-        }
-      }
-    }
-  }, [activeCat, activeSong, ytPlayer, power, modeIdx]);
+
 
   const togglePower = async (next = !power) => {
     if (next) playPowerOn();
