@@ -876,7 +876,7 @@ body {
   box-shadow: 0 32px 64px rgba(0,0,0,0.8);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   width: 90%;
   max-width: 640px;
   animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
@@ -1617,6 +1617,7 @@ body {
   .creator-cards-container {
     flex-direction: column;
     gap: 16px;
+    align-items: center;
   }
 
   .creator-card-lg {
