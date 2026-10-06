@@ -190,70 +190,83 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [presets,  setPresets]  = useState<PresetSlot[]>(loadPresets);
 
 
-  const MUSIC_LIBRARY: Record<string, { offset: number, count: number }> = {
-    'PRADHAN DA MIX': { offset: 0, count: 58 },
-  };
-
-  const PLAYLIST_DATA: Record<string, { title: string, artist: string, duration: string, img: string }[]> = {
+  const PLAYLIST_DATA: Record<string, { videoId: string, title: string, artist: string, duration: string, img: string }[]> = {
+    'DURGA PUJA': [
+      { videoId: 'SFJeglBF5cg', title: 'Dugga Elo', artist: 'Monali Thakur', duration: '2:27', img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&q=80' },
+      { videoId: 'FBOt8rMUcio', title: 'Dugga Ma (Original Motion Picture Soundtrack)', artist: 'Arijit Singh', duration: '4:31', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
+      { videoId: 'ZFBq075jwiE', title: 'Ebar Jeno Onno Rokom Pujo', artist: 'Nakash Aziz Official', duration: '3:33', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&q=80' },
+      { videoId: '7uzjfZ423Kc', title: 'Dhak Baja Kashor Baja', artist: 'Shreya Ghoshal Official', duration: '4:26', img: 'https://images.unsplash.com/photo-1493225457124-a1a2a5f56468?w=100&q=80' },
+      { videoId: 'OHznU-L0JqI', title: 'Bolo Dugga Elo', artist: 'Kaushik-Guddu', duration: '3:20', img: 'https://images.unsplash.com/photo-1516280440502-a2fc99496c53?w=100&q=80' },
+      { videoId: 'w6SQsKD2U-Y', title: 'Aamaar Dugga', artist: 'Monali Thakur', duration: '3:20', img: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=100&q=80' },
+      { videoId: 'aL1POTi_EhE', title: 'Dhaker Taley', artist: 'Abhijeet', duration: '4:43', img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&q=80' }
+    ],
+    'MAHALAYA': [
+      { videoId: '6Z0UaR-i7H8', title: 'Mahisasuramardini - Full', artist: 'Birendra Krishna Bhadra', duration: '1:28:00', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
+      { videoId: '1Yycc3tejNw', title: 'Ya Chandi', artist: 'Chorus', duration: '4:15', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&q=80' }
+    ],
+    'MAHALAYA SONGS': [
+      { videoId: 'j7nWykTLEMs', title: 'Jago Tumi Jago', artist: 'Sujata Sarkar', duration: '3:45', img: 'https://images.unsplash.com/photo-1493225457124-a1a2a5f56468?w=100&q=80' },
+      { videoId: 'cFsCf0MGuuA', title: 'Bajlo Tomar Alor Benu', artist: 'Supriti Ghosh', duration: '4:10', img: 'https://images.unsplash.com/photo-1516280440502-a2fc99496c53?w=100&q=80' }
+    ],
     'PRADHAN DA MIX': [
-      { title: 'Dugga Elo', artist: 'Monali Thakur', duration: '2:27', img: 'https://i.ytimg.com/vi/SFJeglBF5cg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAb5Sk7tUpdGaM9DFnM5n0IcSTHTQ' },
-      { title: 'Dugga Ma', artist: 'Release - Topic', duration: '4:31', img: 'https://i.ytimg.com/vi/FBOt8rMUcio/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1Yr9z6xt40020vS0oyO8-5xHYUw' },
-      { title: 'Ebar Jeno Onno Rokom Pujo', artist: 'Release - Topic', duration: '3:35', img: 'https://i.ytimg.com/vi/ZFBq075jwiE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCSbZKWEBkwamzVL_2f0GMjRzMHYQ' },
-      { title: 'Dhak Baja Kashor Baja', artist: 'Shreya Ghoshal Official', duration: '4:26', img: 'https://i.ytimg.com/vi/7uzjfZ423Kc/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLp26rgJYoJ2_BOAKk-P-9nCXt-A' },
-      { title: 'Bolo Dugga Elo (ORIGINAL)', artist: 'Sunidhi Chauhan Official', duration: '3:20', img: 'https://i.ytimg.com/vi/OHznU-L0JqI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAsMpDpShaTwR3vQ1HEvmj9bv0yYA' },
-      { title: 'Aamaar Dugga', artist: 'Monali Thakur', duration: '3:20', img: 'https://i.ytimg.com/vi/w6SQsKD2U-Y/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDpJGB1oZYduP9FKspMLThrTgqhGg' },
-      { title: 'Dhaker Taley (ORIGINAL)', artist: 'Release - Topic', duration: '4:43', img: 'https://i.ytimg.com/vi/aL1POTi_EhE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCbco3C-adVsV2A37DqyZtoeVuLog' },
-      { title: 'Dugga Elo (ORIGINAL)', artist: 'Akriti Kakar, Debanjali B Joshi - Topic', duration: '3:58', img: 'https://i.ytimg.com/vi/MgOAjrDnY7A/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAcAE8VzswFs53htzeMr6OI-kpTtw' },
-      { title: 'Shundori Komola', artist: 'Release - Topic', duration: '3:14', img: 'https://i.ytimg.com/vi/blqKo-7S-rA/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDggfsCat0uj5QQNDpFGKFXHi9NxQ' },
-      { title: 'O Menoka O Menoka', artist: 'ANTARA NANDY', duration: '3:16', img: 'https://i.ytimg.com/vi/upYGF3YAHeo/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGYuq7DraGG3QH_foXzw87QZJZxg' },
-      { title: 'Ailo Uma Barite', artist: 'ANTARA NANDY', duration: '3:53', img: 'https://i.ytimg.com/vi/p_hqO0sJh-I/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDMBeOg39LMxcwHYas11RUwi7rIzg' },
-      { title: 'Uma Ashe Notun Saje', artist: 'Ankita Bhattacharyya', duration: '3:06', img: 'https://i.ytimg.com/vi/x_Nar1eYzBM/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCH-vqOiXftXQO20TNAUI5WyyI8JA' },
-      { title: 'Abar Elo Maa', artist: 'Rahul Dutta', duration: '3:07', img: 'https://i.ytimg.com/vi/I5uMBp5wDhI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC_xi5T4Bb6hZT_H3VbaNX33Wvpxg' },
-      { title: 'Joy Joy Durga Ma', artist: 'Agnibha Bandyopadhyay - Topic', duration: '5:51', img: 'https://i.ytimg.com/vi/CWtqPoZrUoA/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDQviqOTRDE1jLO4Q_-w8-H6ylkpA' },
-      { title: 'Durga Maa', artist: 'Akassh', duration: '3:41', img: 'https://i.ytimg.com/vi/uLSEEBGr4Ag/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBRiE0MXIKOhtTfuMB2Cc-vW5_Fnw' },
-      { title: 'Gouri Elo Dekhe Jalo', artist: 'DOHAR FOLK', duration: '5:40', img: 'https://i.ytimg.com/vi/W-YAf-bHkCw/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAsm9YUrMXRtxbm5fyIOu-Uai3Hxw' },
-      { title: 'Dhak Baaja Komor Nacha', artist: 'Release - Topic', duration: '3:33', img: 'https://i.ytimg.com/vi/JOQdF0wRjYY/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDb5UbyN-UvNJ5OhKtSHi9DZY8Naw' },
-      { title: 'Durge Durge Durgatinashini', artist: 'Asha Bhosle - Topic', duration: '5:10', img: 'https://i.ytimg.com/vi/Ku7mJminJxI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAWPm6hmQcTij3GJadTQk52yAxkfQ' },
-      { title: 'Rupang Dehi', artist: 'Snita Pramanik Ghosh - Topic', duration: '4:18', img: 'https://i.ytimg.com/vi/z-T4qiQMXaw/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCFo0sZF6p3xWk2xu21ljbZtYJdBg' },
-      { title: 'Aigiri Nandini', artist: 'Rajalakshmee Sanjay Official', duration: '15:02', img: 'https://i.ytimg.com/vi/1Yycc3tejNw/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLArqKPZbn-1kNXTiYOrdJs12TtXeQ' },
-      { title: 'Baja Sanai Aar Baja Re Dhol', artist: 'Abhijeet Unplugged', duration: '4:44', img: 'https://i.ytimg.com/vi/nLrpLXaWbxk/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBXlVICSA8J7ehPqPdfzCdLjPkMJQ' },
-      { title: 'Maa Ashchhe (From "Maa Ashchhe")', artist: 'Sanjeev Tiwari - Topic', duration: '3:27', img: 'https://i.ytimg.com/vi/ZusnukjtotQ/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-R8iV88TjXQpxi3xfKLXo_InAMQ' },
-      { title: 'Esho Maa Durga', artist: 'Shamik Guha Roy', duration: '3:57', img: 'https://i.ytimg.com/vi/hDve9YmTZq4/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCm3mh-nnfUQiKcEwwhoysJGGe_OA' },
-      { title: 'Maa Go Tui', artist: 'Release - Topic', duration: '2:00', img: 'https://i.ytimg.com/vi/P-aQkwwCMbY/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBFn71nOQDGzSlPTMg0sJcPRSRXXA' },
-      { title: 'Jago Uma (ORIGINAL)', artist: 'Rupankar', duration: '5:18', img: 'https://i.ytimg.com/vi/sto9TBxGibE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAV9H6i3ncE9d85LdKFUZ7JzLJpUg' },
-      { title: 'Aigiri Nandini (feat. Samarthan, Ramprakash) (Rock Version)', artist: 'Sowrabha - Topic', duration: '4:57', img: 'https://i.ytimg.com/vi/mXqUIFUYqpM/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCBjGuAoVvXY6qY-y21tmi6LKQiHg' },
-      { title: 'Aaj Baaje', artist: 'Somchanda Bhattacharya - Topic', duration: '3:34', img: 'https://i.ytimg.com/vi/UpeueoYgHnE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCy_IYlMbAPJKEKn_-h93VpMHE0pw' },
-      { title: 'Pujo Pujo Gondho', artist: 'Anupam Roy', duration: '2:47', img: 'https://i.ytimg.com/vi/haJg9VgzMM0/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA9vN4tDE6VrL9qbRnhY47G-spP2A' },
-      { title: 'Pujor Dhaak Theme', artist: 'SUROBAIBHAB ( Bibhabendu Bhattacharya Official)', duration: '1:31', img: 'https://i.ytimg.com/vi/E40N8rKKTCc/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDmEUaGsjpHGZLu-LbkBuAy4x5r7w' },
-      { title: 'Pujor Gaan', artist: 'Poushali Bhattacharya - Topic', duration: '4:45', img: 'https://i.ytimg.com/vi/srJlx60zfBQ/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAyoTHOpwNcQbs-3tMFafpwrSq_WQ' },
-      { title: 'Gouri Elo (From "Raktabeej")', artist: 'DOHAR FOLK', duration: '3:57', img: 'https://i.ytimg.com/vi/jwMo3vrsL7s/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA7Afs_T85dvFxFR1emnpxSuB0saw' },
-      { title: 'Aham Rudre', artist: 'Release - Topic', duration: '2:39', img: 'https://i.ytimg.com/vi/nH65Xk8kPjQ/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCOqHKrGHHpNg5HAq7fRy0bBONLMw' },
-      { title: 'Elo Re Pujo Elo', artist: 'Nakash Aziz Official', duration: '3:13', img: 'https://i.ytimg.com/vi/2TmguxqQG54/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCtxlZfY7C6P_priyznEYkMYCK--g' },
-      { title: 'Chaarpashe Aalo Hok', artist: 'Release - Topic', duration: '11:34', img: 'https://i.ytimg.com/vi/Rx7l8bjzjg4/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCC6G8ltNk87kwCJpg30Fpy6tJ3qA' },
-      { title: 'O Thakur', artist: 'Upal Sengupta - Topic', duration: '2:54', img: 'https://i.ytimg.com/vi/CYcqPK0Dl60/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA9HGShjz-d6XhfzGqyzu24bX9WAQ' },
-      { title: 'Shubho Shubho', artist: 'Altamash Faridi', duration: '3:14', img: 'https://i.ytimg.com/vi/PEiFJAy_zsM/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCy3akaOTOPY_sMVGkyIF8kLlOcjg' },
-      { title: 'He Maa Durga Maa', artist: 'Aseema Panda', duration: '5:12', img: 'https://i.ytimg.com/vi/YnU9c1aj5hY/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAJeaJ8PamS4_RgdZJTIAadTIKlsw' },
-      { title: 'Durga Maa Eseche', artist: 'Akassh', duration: '3:07', img: 'https://i.ytimg.com/vi/VNI_XEx7z-g/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCBR5mwzwyeXpKQPIQZe2dYQvp2sg' },
-      { title: 'Eseche Maa Durga Maa - (DJ Remix)', artist: 'Keshab Dey', duration: '3:03', img: 'https://i.ytimg.com/vi/avySoa5OW1w/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDd4EPkoiI8wM5MG5ngkxVWI8_dmA' },
-      { title: 'Kolki', artist: 'Monami Ghosh - Topic', duration: '4:05', img: 'https://i.ytimg.com/vi/hDukD5TJmV4/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBzx3N1YlW7h035JK5gifsgnM7DUA' },
-      { title: 'Dugga Ma Asche', artist: 'Infra', duration: '3:34', img: 'https://i.ytimg.com/vi/LLer3VPOcxg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDz4gieZWUnYP5uT3rZyIugFs7JGw' },
-      { title: 'Debi Sajer Gaan', artist: 'Rupak Tiary', duration: '3:01', img: 'https://i.ytimg.com/vi/BvIcx9ev8X0/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAISKXTHTKAazeN3TVuxJy6CMVXyg' },
-      { title: 'Meri Maa Ke Barabar Koi Nahi', artist: 'Jubin Nautiyal', duration: '4:59', img: 'https://i.ytimg.com/vi/j9_MLElmS9g/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAxEzcu-UxHmdmBkK03pR9zu64W-w' },
-      { title: 'Bajlo Tomar Aalor Benu', artist: 'Release - Topic', duration: '5:16', img: 'https://i.ytimg.com/vi/cFsCf0MGuuA/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBoqvJb6R6uvpVVpdmu_vkM4JMd5g' },
-      { title: 'Durge Durge Durgatinashini', artist: 'Release - Topic', duration: '3:43', img: 'https://i.ytimg.com/vi/63X0l49OyjI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDB4HtWBk4bwFukVMqh5wUqkfnOzQ' },
-      { title: 'Madhukaitava Vidhwangsi', artist: 'Tushar Dutta - Topic', duration: '9:49', img: 'https://i.ytimg.com/vi/_GUdZJQun2I/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCdqc8LgbDAd-F2-h2-ayRRshuoiQ' },
-      { title: 'Bajlo Tomar Alor Benu', artist: 'Sriparna Das - Topic', duration: '4:44', img: 'https://i.ytimg.com/vi/j7nWykTLEMs/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBDGiu__c-mK6es1jhnRCxF9WccSQ' },
-      { title: 'Bajlo Tomar Aalor Benu With Narration', artist: 'Supriti Ghosh - Topic', duration: '4:24', img: 'https://i.ytimg.com/vi/DxaNt-pmObM/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDimSFm0giV5vCFFbcdLLCln0HMDw' },
-      { title: 'Phagun Haoyay Haoyay (From "Bhalobashar Bari")', artist: 'Jayati Chakraborty', duration: '2:35', img: 'https://i.ytimg.com/vi/43_oBh4YsQs/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLXci2LeDL7HkpDO0bfe0ycZuRzA' },
-      { title: 'Ogo Amar Agamani-alo', artist: 'Sipra Basu - Topic', duration: '3:20', img: 'https://i.ytimg.com/vi/_RmN29SHVS8/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAQ5FqE5tB3y77V1nqGZbSVvVQzXA' },
-      { title: 'ওগো আমার আগমনী আলো', artist: 'Samadrita Ghosh', duration: '4:51', img: 'https://i.ytimg.com/vi/PRTXLKCV6Nk/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAtOOJgjACZDvvGKiAGW3iTjTtRpA' },
-      { title: 'Durge Durge Durgatinashini', artist: 'Asha Bhosle - Topic', duration: '5:10', img: 'https://i.ytimg.com/vi/gbGVjyHq8iA/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATmeIGl9WS1iZsPZda-7kPAq7BPw' },
-      { title: 'Agomonir Gaan', artist: 'Anupam Roy', duration: '5:47', img: 'https://i.ytimg.com/vi/ocCQ1UVsel8/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB3eyMkKRowYqub8yI38UJJ8lGv6g' },
-      { title: 'Saajan Rock the Dotara (Folk - Bandish Mix)', artist: 'Timir Biswas Studio', duration: '4:28', img: 'https://i.ytimg.com/vi/707QgEnx8Hs/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD73IZTltxvnPJr5gSayMIgz-wx9A' },
-      { title: 'Pujar Gaan (From "Hooligaanism")', artist: 'Hooligaanism - Topic', duration: '6:33', img: 'https://i.ytimg.com/vi/d-NMikRHMQQ/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD4LMtceHmal66wNXsUZSUqOhgqug' },
-      { title: 'Gouri Elo', artist: 'Aritra Dasgupta - Topic', duration: '5:35', img: 'https://i.ytimg.com/vi/ADpMft-PUb8/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB9jVHIHqOR3b-mPcPYFDYa5IqZBQ' },
-      { title: 'Doob De Re Mon', artist: 'Nirmalya Roy', duration: '2:16', img: 'https://i.ytimg.com/vi/S-XOArX0faE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBu5RYu-uhxw5H2a7OaLEgIyTMd5g' },
-      { title: 'Apur Paayer Chhaap', artist: 'Arijit Singh', duration: '4:07', img: 'https://i.ytimg.com/vi/-umiui0IOLc/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDgls5gFBG2vryZeJv-QoKBTEvQtQ' }
+      { videoId: 'SFJeglBF5cg', title: 'Dugga Elo', artist: 'Monali Thakur', duration: '2:27', img: 'https://i.ytimg.com/vi/SFJeglBF5cg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAb5Sk7tUpdGaM9DFnM5n0IcSTHTQ' },
+      { videoId: 'FBOt8rMUcio', title: 'Dugga Ma', artist: 'Release - Topic', duration: '4:31', img: 'https://i.ytimg.com/vi/FBOt8rMUcio/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1Yr9z6xt40020vS0oyO8-5xHYUw' },
+      { videoId: 'ZFBq075jwiE', title: 'Ebar Jeno Onno Rokom Pujo', artist: 'Release - Topic', duration: '3:35', img: 'https://i.ytimg.com/vi/ZFBq075jwiE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCSbZKWEBkwamzVL_2f0GMjRzMHYQ' },
+      { videoId: '7uzjfZ423Kc', title: 'Dhak Baja Kashor Baja', artist: 'Shreya Ghoshal Official', duration: '4:26', img: 'https://i.ytimg.com/vi/7uzjfZ423Kc/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLp26rgJYoJ2_BOAKk-P-9nCXt-A' },
+      { videoId: 'OHznU-L0JqI', title: 'Bolo Dugga Elo (ORIGINAL)', artist: 'Sunidhi Chauhan Official', duration: '3:20', img: 'https://i.ytimg.com/vi/OHznU-L0JqI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAsMpDpShaTwR3vQ1HEvmj9bv0yYA' },
+      { videoId: 'w6SQsKD2U-Y', title: 'Aamaar Dugga', artist: 'Monali Thakur', duration: '3:20', img: 'https://i.ytimg.com/vi/w6SQsKD2U-Y/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDpJGB1oZYduP9FKspMLThrTgqhGg' },
+      { videoId: 'aL1POTi_EhE', title: 'Dhaker Taley (ORIGINAL)', artist: 'Release - Topic', duration: '4:43', img: 'https://i.ytimg.com/vi/aL1POTi_EhE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCbco3C-adVsV2A37DqyZtoeVuLog' },
+      { videoId: 'MgOAjrDnY7A', title: 'Dugga Elo (ORIGINAL)', artist: 'Akriti Kakar, Debanjali B Joshi - Topic', duration: '3:58', img: 'https://i.ytimg.com/vi/MgOAjrDnY7A/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAcAE8VzswFs53htzeMr6OI-kpTtw' },
+      { videoId: 'blqKo-7S-rA', title: 'Shundori Komola', artist: 'Release - Topic', duration: '3:14', img: 'https://i.ytimg.com/vi/blqKo-7S-rA/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDggfsCat0uj5QQNDpFGKFXHi9NxQ' },
+      { videoId: 'upYGF3YAHeo', title: 'O Menoka O Menoka', artist: 'ANTARA NANDY', duration: '3:16', img: 'https://i.ytimg.com/vi/upYGF3YAHeo/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCGYuq7DraGG3QH_foXzw87QZJZxg' },
+      { videoId: 'p_hqO0sJh-I', title: 'Ailo Uma Barite', artist: 'ANTARA NANDY', duration: '3:53', img: 'https://i.ytimg.com/vi/p_hqO0sJh-I/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDMBeOg39LMxcwHYas11RUwi7rIzg' },
+      { videoId: 'x_Nar1eYzBM', title: 'Uma Ashe Notun Saje', artist: 'Ankita Bhattacharyya', duration: '3:06', img: 'https://i.ytimg.com/vi/x_Nar1eYzBM/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCH-vqOiXftXQO20TNAUI5WyyI8JA' },
+      { videoId: 'I5uMBp5wDhI', title: 'Abar Elo Maa', artist: 'Rahul Dutta', duration: '3:07', img: 'https://i.ytimg.com/vi/I5uMBp5wDhI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLC_xi5T4Bb6hZT_H3VbaNX33Wvpxg' },
+      { videoId: 'CWtqPoZrUoA', title: 'Joy Joy Durga Ma', artist: 'Agnibha Bandyopadhyay - Topic', duration: '5:51', img: 'https://i.ytimg.com/vi/CWtqPoZrUoA/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDQviqOTRDE1jLO4Q_-w8-H6ylkpA' },
+      { videoId: 'uLSEEBGr4Ag', title: 'Durga Maa', artist: 'Akassh', duration: '3:41', img: 'https://i.ytimg.com/vi/uLSEEBGr4Ag/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBRiE0MXIKOhtTfuMB2Cc-vW5_Fnw' },
+      { videoId: 'W-YAf-bHkCw', title: 'Gouri Elo Dekhe Jalo', artist: 'DOHAR FOLK', duration: '5:40', img: 'https://i.ytimg.com/vi/W-YAf-bHkCw/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAsm9YUrMXRtxbm5fyIOu-Uai3Hxw' },
+      { videoId: 'JOQdF0wRjYY', title: 'Dhak Baaja Komor Nacha', artist: 'Release - Topic', duration: '3:33', img: 'https://i.ytimg.com/vi/JOQdF0wRjYY/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDb5UbyN-UvNJ5OhKtSHi9DZY8Naw' },
+      { videoId: 'Ku7mJminJxI', title: 'Durge Durge Durgatinashini', artist: 'Asha Bhosle - Topic', duration: '5:10', img: 'https://i.ytimg.com/vi/Ku7mJminJxI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAWPm6hmQcTij3GJadTQk52yAxkfQ' },
+      { videoId: 'z-T4qiQMXaw', title: 'Rupang Dehi', artist: 'Snita Pramanik Ghosh - Topic', duration: '4:18', img: 'https://i.ytimg.com/vi/z-T4qiQMXaw/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCFo0sZF6p3xWk2xu21ljbZtYJdBg' },
+      { videoId: '1Yycc3tejNw', title: 'Aigiri Nandini', artist: 'Rajalakshmee Sanjay Official', duration: '15:02', img: 'https://i.ytimg.com/vi/1Yycc3tejNw/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLArqKPZbn-1kNXTiYOrdJs12TtXeQ' },
+      { videoId: 'nLrpLXaWbxk', title: 'Baja Sanai Aar Baja Re Dhol', artist: 'Abhijeet Unplugged', duration: '4:44', img: 'https://i.ytimg.com/vi/nLrpLXaWbxk/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBXlVICSA8J7ehPqPdfzCdLjPkMJQ' },
+      { videoId: 'ZusnukjtotQ', title: 'Maa Ashchhe (From "Maa Ashchhe")', artist: 'Sanjeev Tiwari - Topic', duration: '3:27', img: 'https://i.ytimg.com/vi/ZusnukjtotQ/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA-R8iV88TjXQpxi3xfKLXo_InAMQ' },
+      { videoId: 'hDve9YmTZq4', title: 'Esho Maa Durga', artist: 'Shamik Guha Roy', duration: '3:57', img: 'https://i.ytimg.com/vi/hDve9YmTZq4/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCm3mh-nnfUQiKcEwwhoysJGGe_OA' },
+      { videoId: 'P-aQkwwCMbY', title: 'Maa Go Tui', artist: 'Release - Topic', duration: '2:00', img: 'https://i.ytimg.com/vi/P-aQkwwCMbY/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBFn71nOQDGzSlPTMg0sJcPRSRXXA' },
+      { videoId: 'sto9TBxGibE', title: 'Jago Uma (ORIGINAL)', artist: 'Rupankar', duration: '5:18', img: 'https://i.ytimg.com/vi/sto9TBxGibE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAV9H6i3ncE9d85LdKFUZ7JzLJpUg' },
+      { videoId: 'mXqUIFUYqpM', title: 'Aigiri Nandini (feat. Samarthan, Ramprakash) (Rock Version)', artist: 'Sowrabha - Topic', duration: '4:57', img: 'https://i.ytimg.com/vi/mXqUIFUYqpM/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCBjGuAoVvXY6qY-y21tmi6LKQiHg' },
+      { videoId: 'UpeueoYgHnE', title: 'Aaj Baaje', artist: 'Somchanda Bhattacharya - Topic', duration: '3:34', img: 'https://i.ytimg.com/vi/UpeueoYgHnE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCy_IYlMbAPJKEKn_-h93VpMHE0pw' },
+      { videoId: 'haJg9VgzMM0', title: 'Pujo Pujo Gondho', artist: 'Anupam Roy', duration: '2:47', img: 'https://i.ytimg.com/vi/haJg9VgzMM0/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA9vN4tDE6VrL9qbRnhY47G-spP2A' },
+      { videoId: 'E40N8rKKTCc', title: 'Pujor Dhaak Theme', artist: 'SUROBAIBHAB ( Bibhabendu Bhattacharya Official)', duration: '1:31', img: 'https://i.ytimg.com/vi/E40N8rKKTCc/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDmEUaGsjpHGZLu-LbkBuAy4x5r7w' },
+      { videoId: 'srJlx60zfBQ', title: 'Pujor Gaan', artist: 'Poushali Bhattacharya - Topic', duration: '4:45', img: 'https://i.ytimg.com/vi/srJlx60zfBQ/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAyoTHOpwNcQbs-3tMFafpwrSq_WQ' },
+      { videoId: 'jwMo3vrsL7s', title: 'Gouri Elo (From "Raktabeej")', artist: 'DOHAR FOLK', duration: '3:57', img: 'https://i.ytimg.com/vi/jwMo3vrsL7s/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA7Afs_T85dvFxFR1emnpxSuB0saw' },
+      { videoId: 'nH65Xk8kPjQ', title: 'Aham Rudre', artist: 'Release - Topic', duration: '2:39', img: 'https://i.ytimg.com/vi/nH65Xk8kPjQ/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCOqHKrGHHpNg5HAq7fRy0bBONLMw' },
+      { videoId: '2TmguxqQG54', title: 'Elo Re Pujo Elo', artist: 'Nakash Aziz Official', duration: '3:13', img: 'https://i.ytimg.com/vi/2TmguxqQG54/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCtxlZfY7C6P_priyznEYkMYCK--g' },
+      { videoId: 'Rx7l8bjzjg4', title: 'Chaarpashe Aalo Hok', artist: 'Release - Topic', duration: '11:34', img: 'https://i.ytimg.com/vi/Rx7l8bjzjg4/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCC6G8ltNk87kwCJpg30Fpy6tJ3qA' },
+      { videoId: 'CYcqPK0Dl60', title: 'O Thakur', artist: 'Upal Sengupta - Topic', duration: '2:54', img: 'https://i.ytimg.com/vi/CYcqPK0Dl60/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA9HGShjz-d6XhfzGqyzu24bX9WAQ' },
+      { videoId: 'PEiFJAy_zsM', title: 'Shubho Shubho', artist: 'Altamash Faridi', duration: '3:14', img: 'https://i.ytimg.com/vi/PEiFJAy_zsM/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCy3akaOTOPY_sMVGkyIF8kLlOcjg' },
+      { videoId: 'YnU9c1aj5hY', title: 'He Maa Durga Maa', artist: 'Aseema Panda', duration: '5:12', img: 'https://i.ytimg.com/vi/YnU9c1aj5hY/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAJeaJ8PamS4_RgdZJTIAadTIKlsw' },
+      { videoId: 'VNI_XEx7z-g', title: 'Durga Maa Eseche', artist: 'Akassh', duration: '3:07', img: 'https://i.ytimg.com/vi/VNI_XEx7z-g/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCBR5mwzwyeXpKQPIQZe2dYQvp2sg' },
+      { videoId: 'avySoa5OW1w', title: 'Eseche Maa Durga Maa - (DJ Remix)', artist: 'Keshab Dey', duration: '3:03', img: 'https://i.ytimg.com/vi/avySoa5OW1w/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDd4EPkoiI8wM5MG5ngkxVWI8_dmA' },
+      { videoId: 'hDukD5TJmV4', title: 'Kolki', artist: 'Monami Ghosh - Topic', duration: '4:05', img: 'https://i.ytimg.com/vi/hDukD5TJmV4/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBzx3N1YlW7h035JK5gifsgnM7DUA' },
+      { videoId: 'LLer3VPOcxg', title: 'Dugga Ma Asche', artist: 'Infra', duration: '3:34', img: 'https://i.ytimg.com/vi/LLer3VPOcxg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDz4gieZWUnYP5uT3rZyIugFs7JGw' },
+      { videoId: 'BvIcx9ev8X0', title: 'Debi Sajer Gaan', artist: 'Rupak Tiary', duration: '3:01', img: 'https://i.ytimg.com/vi/BvIcx9ev8X0/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAISKXTHTKAazeN3TVuxJy6CMVXyg' },
+      { videoId: 'j9_MLElmS9g', title: 'Meri Maa Ke Barabar Koi Nahi', artist: 'Jubin Nautiyal', duration: '4:59', img: 'https://i.ytimg.com/vi/j9_MLElmS9g/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAxEzcu-UxHmdmBkK03pR9zu64W-w' },
+      { videoId: 'cFsCf0MGuuA', title: 'Bajlo Tomar Aalor Benu', artist: 'Release - Topic', duration: '5:16', img: 'https://i.ytimg.com/vi/cFsCf0MGuuA/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBoqvJb6R6uvpVVpdmu_vkM4JMd5g' },
+      { videoId: '63X0l49OyjI', title: 'Durge Durge Durgatinashini', artist: 'Release - Topic', duration: '3:43', img: 'https://i.ytimg.com/vi/63X0l49OyjI/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDB4HtWBk4bwFukVMqh5wUqkfnOzQ' },
+      { videoId: '_GUdZJQun2I', title: 'Madhukaitava Vidhwangsi', artist: 'Tushar Dutta - Topic', duration: '9:49', img: 'https://i.ytimg.com/vi/_GUdZJQun2I/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCdqc8LgbDAd-F2-h2-ayRRshuoiQ' },
+      { videoId: 'j7nWykTLEMs', title: 'Bajlo Tomar Alor Benu', artist: 'Sriparna Das - Topic', duration: '4:44', img: 'https://i.ytimg.com/vi/j7nWykTLEMs/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBDGiu__c-mK6es1jhnRCxF9WccSQ' },
+      { videoId: 'DxaNt-pmObM', title: 'Bajlo Tomar Aalor Benu With Narration', artist: 'Supriti Ghosh - Topic', duration: '4:24', img: 'https://i.ytimg.com/vi/DxaNt-pmObM/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDimSFm0giV5vCFFbcdLLCln0HMDw' },
+      { videoId: '43_oBh4YsQs', title: 'Phagun Haoyay Haoyay (From "Bhalobashar Bari")', artist: 'Jayati Chakraborty', duration: '2:35', img: 'https://i.ytimg.com/vi/43_oBh4YsQs/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDLXci2LeDL7HkpDO0bfe0ycZuRzA' },
+      { videoId: '_RmN29SHVS8', title: 'Ogo Amar Agamani-alo', artist: 'Sipra Basu - Topic', duration: '3:20', img: 'https://i.ytimg.com/vi/_RmN29SHVS8/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAQ5FqE5tB3y77V1nqGZbSVvVQzXA' },
+      { videoId: 'PRTXLKCV6Nk', title: 'ওগো আমার আগমনী আলো', artist: 'Samadrita Ghosh', duration: '4:51', img: 'https://i.ytimg.com/vi/PRTXLKCV6Nk/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAtOOJgjACZDvvGKiAGW3iTjTtRpA' },
+      { videoId: 'gbGVjyHq8iA', title: 'Durge Durge Durgatinashini', artist: 'Asha Bhosle - Topic', duration: '5:10', img: 'https://i.ytimg.com/vi/gbGVjyHq8iA/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLATmeIGl9WS1iZsPZda-7kPAq7BPw' },
+      { videoId: 'ocCQ1UVsel8', title: 'Agomonir Gaan', artist: 'Anupam Roy', duration: '5:47', img: 'https://i.ytimg.com/vi/ocCQ1UVsel8/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB3eyMkKRowYqub8yI38UJJ8lGv6g' },
+      { videoId: '707QgEnx8Hs', title: 'Saajan Rock the Dotara (Folk - Bandish Mix)', artist: 'Timir Biswas Studio', duration: '4:28', img: 'https://i.ytimg.com/vi/707QgEnx8Hs/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD73IZTltxvnPJr5gSayMIgz-wx9A' },
+      { videoId: 'd-NMikRHMQQ', title: 'Pujar Gaan (From "Hooligaanism")', artist: 'Hooligaanism - Topic', duration: '6:33', img: 'https://i.ytimg.com/vi/d-NMikRHMQQ/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLD4LMtceHmal66wNXsUZSUqOhgqug' },
+      { videoId: 'ADpMft-PUb8', title: 'Gouri Elo', artist: 'Aritra Dasgupta - Topic', duration: '5:35', img: 'https://i.ytimg.com/vi/ADpMft-PUb8/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLB9jVHIHqOR3b-mPcPYFDYa5IqZBQ' },
+      { videoId: 'S-XOArX0faE', title: 'Doob De Re Mon', artist: 'Nirmalya Roy', duration: '2:16', img: 'https://i.ytimg.com/vi/S-XOArX0faE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLBu5RYu-uhxw5H2a7OaLEgIyTMd5g' },
+      { videoId: '-umiui0IOLc', title: 'Apur Paayer Chhaap', artist: 'Arijit Singh', duration: '4:07', img: 'https://i.ytimg.com/vi/-umiui0IOLc/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLDgls5gFBG2vryZeJv-QoKBTEvQtQ' }
     ],
   };
 
@@ -266,7 +279,17 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [ytData,   setYtData]   = useState<{title: string, videoId: string, category: string} | null>(null);
   
   const holdRef = useRef(false);
+  const stateRef = useRef({ activeCat, activeSong });
 
+  useEffect(() => {
+    stateRef.current = { activeCat, activeSong };
+    if (power && ytPlayer) {
+      const currentList = PLAYLIST_DATA[activeCat];
+      if (currentList && currentList[activeSong]) {
+        ytPlayer.loadVideoById(currentList[activeSong].videoId);
+      }
+    }
+  }, [activeCat, activeSong, power, ytPlayer]);
   const { signal, station, lock } = useMemo(() => signalStrength(freq, stations, band), [freq, stations, band]);
 
   useEffect(() => { localStorage.setItem(PRESET_KEY, JSON.stringify(presets)); }, [presets]);
@@ -459,7 +482,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                     <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg>
                   </button>
                   <button className="digital-ctrl-btn" disabled={!power} onClick={() => { 
-                    const nextSong = (activeSong + 1) % MUSIC_LIBRARY[activeCat].count;
+                    const nextSong = (activeSong + 1) % (PLAYLIST_DATA[activeCat]?.length || 1);
                     setActiveSong(nextSong);
                   }}>
                     <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
@@ -603,8 +626,6 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                 className={`playlist-track-row ${activeSong === idx ? 'playing' : ''}`}
                 onClick={() => { 
                   setActiveSong(idx); 
-                  const offset = MUSIC_LIBRARY[activeCat]?.offset || 0;
-                  ytPlayer?.playVideoAt(offset + idx); 
                   setShowPlaylist(false); 
                 }}
               >
@@ -626,8 +647,15 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     {/* ── YouTube Player (Hidden visually but needs to be rendered for API to work) ── */}
     <div style={{ position: 'absolute', opacity: 0.01, pointerEvents: 'none', width: '200px', height: '200px', top: '-9999px', left: '-9999px', zIndex: -1 }}>
       <YouTube 
-        opts={{ playerVars: { autoplay: 0, controls: 0, loop: 1, listType: 'playlist', list: 'PLe4fZ-180Mkk' } }} 
+        opts={{ playerVars: { autoplay: 1, controls: 0 } }} 
         onReady={(e) => setYtPlayer(e.target)} 
+        onStateChange={(e) => {
+          if (e.data === 0) { // ENDED
+             const current = stateRef.current;
+             const nextSong = (current.activeSong + 1) % (PLAYLIST_DATA[current.activeCat]?.length || 1);
+             setActiveSong(nextSong);
+          }
+        }}
       />
     </div>
     </>
