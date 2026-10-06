@@ -200,7 +200,6 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [level,    setLevel]    = useState(0);
   const [ytPlayer, setYtPlayer] = useState<any>(null);
   const [ytData,   setYtData]   = useState<{title: string, videoId: string, category: string} | null>(null);
-  const [activeCat, setActiveCat] = useState('Mahalaya');
   
   const holdRef = useRef(false);
 
