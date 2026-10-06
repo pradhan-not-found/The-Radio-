@@ -290,6 +290,10 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [ytPlayer, setYtPlayer] = useState<any>(null);
   const [ytData,   setYtData]   = useState<{title: string, videoId: string, category: string} | null>(null);
   
+  const [progress, setProgress] = useState(0);
+  const [durationStr, setDurationStr] = useState("0:00");
+  const [currentStr, setCurrentStr] = useState("0:00");
+  const [isPlaying, setIsPlaying] = useState(false);
   const holdRef = useRef(false);
   const stateRef = useRef({ activeCat, activeSong });
   const userInteractedRef = useRef(false);
@@ -320,8 +324,30 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     let raf = 0;
     const loop = () => {
       // If we are locked and playing youtube, simulate VU meter. Otherwise use static level.
-      if (power && lock && ytPlayer && ytPlayer.getPlayerState() === 1) {
-        setLevel(0.3 + Math.random() * 0.4); // Simulated VU for YouTube
+      if (power && lock && ytPlayer && ytPlayer.getPlayerState) {
+        const state = ytPlayer.getPlayerState();
+        setIsPlaying(state === 1);
+        if (state === 1) {
+          setLevel(0.3 + Math.random() * 0.4); // Simulated VU for YouTube
+          
+          if (ytPlayer.getCurrentTime && ytPlayer.getDuration) {
+            const current = ytPlayer.getCurrentTime() || 0;
+            const dur = ytPlayer.getDuration() || 0;
+            if (dur > 0) {
+              setProgress((current / dur) * 100);
+              const formatTime = (secs: number) => {
+                const m = Math.floor(secs / 60);
+                const s = Math.floor(secs % 60).toString().padStart(2, '0');
+                return `${m}:${s}`;
+              };
+              setCurrentStr(formatTime(current));
+              setDurationStr(formatTime(dur));
+            }
+          }
+        } else {
+          const a = radioAudio.getAnalyser();
+          if (a) { const b = new Uint8Array(a.frequencyBinCount); a.getByteFrequencyData(b); setLevel(b.reduce((s,v)=>s+v,0)/b.length/255); }
+        }
       } else {
         const a = radioAudio.getAnalyser();
         if (a) { const b = new Uint8Array(a.frequencyBinCount); a.getByteFrequencyData(b); setLevel(b.reduce((s,v)=>s+v,0)/b.length/255); }
@@ -346,11 +372,11 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   useEffect(() => {
     if (ytPlayer && ytPlayer.pauseVideo) {
       ytPlayer.setVolume(volume);
-      if (!power || modeIdx !== 2 || muted) {
+      if (!power || modeIdx !== 2) {
         ytPlayer.pauseVideo();
       }
     }
-  }, [power, lock, muted, modeIdx, ytPlayer, volume]);
+  }, [power, lock, modeIdx, ytPlayer, volume]);
 
   // Extract YouTube Data for Digital Display
   useEffect(() => {
@@ -469,28 +495,51 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
               <div className="digital-info" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
                 
                 {/* Title & Artist */}
-                <div className="digital-text-container" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                  <div className="digital-title" title={PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'No signal'}>
+                <div className="digital-text-container" style={{ display: 'flex', flexDirection: 'column', gap: '2px', width: '100%' }}>
+                  <div className="digital-title" title={PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'No signal'} style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                     {power ? (PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'Tuning...') : 'POWER OFF'}
                   </div>
                   <div className="digital-artist" style={{ fontSize: '13px', color: 'rgba(255,255,255,0.5)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', fontWeight: 500 }}>
                     {power ? (PLAYLIST_DATA[activeCat]?.[activeSong]?.artist || 'Unknown Artist') : ''}
                   </div>
                 </div>
+
+                {/* Progress Bar */}
+                {power && modeIdx === 2 && (
+                  <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#888' }}>
+                    <span>{currentStr}</span>
+                    <div 
+                      style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px', cursor: 'pointer', position: 'relative' }}
+                      onClick={(e) => {
+                        if (!ytPlayer || !ytPlayer.getDuration) return;
+                        const rect = e.currentTarget.getBoundingClientRect();
+                        const clickX = e.clientX - rect.left;
+                        const percent = clickX / rect.width;
+                        const dur = ytPlayer.getDuration() || 0;
+                        ytPlayer.seekTo(dur * percent, true);
+                        userInteractedRef.current = true;
+                      }}
+                    >
+                      <div style={{ width: `${progress}%`, height: '100%', background: '#fff', borderRadius: '2px' }} />
+                    </div>
+                    <span>{durationStr}</span>
+                  </div>
+                )}
                 
                 {/* Controls Row */}
                 <div className="digital-controls" style={{ display: 'flex', gap: '16px', alignItems: 'center' }}>
                   
                   {/* Play/Pause Toggle */}
                   <button 
-                    className={`digital-ctrl-btn toggle-btn ${!muted && power ? 'playing' : ''}`} 
+                    className={`digital-ctrl-btn toggle-btn ${isPlaying ? 'playing' : ''}`} 
                     disabled={!power} 
                     onClick={() => { 
-                      if (muted) { ytPlayer?.playVideo(); setMuted(false); } 
-                      else { ytPlayer?.pauseVideo(); setMuted(true); }
+                      userInteractedRef.current = true;
+                      if (isPlaying) { ytPlayer?.pauseVideo(); } 
+                      else { ytPlayer?.playVideo(); }
                     }}
                   >
-                    {muted ? (
+                    {!isPlaying ? (
                       <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M8 5v14l11-7z"/></svg> // Play
                     ) : (
                       <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg> // Pause
