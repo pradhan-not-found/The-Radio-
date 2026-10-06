@@ -466,9 +466,9 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
               <div className="digital-thumbnail">
                 {ytData ? (
                   <img 
-                    src={`https://img.youtube.com/vi/${ytData.videoId}/hqdefault.jpg`} 
+                    src={PLAYLIST_DATA[activeCat]?.[activeSong]?.img || `https://img.youtube.com/vi/${ytData.videoId}/mqdefault.jpg`} 
                     alt="Thumbnail" 
-                    onError={(e) => { e.currentTarget.src = 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=400&q=80'; }}
+                    onError={(e) => { e.currentTarget.src = `https://img.youtube.com/vi/${ytData.videoId}/mqdefault.jpg`; }}
                   />
                 ) : (
                   <div className="digital-placeholder" />
