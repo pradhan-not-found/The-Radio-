@@ -292,6 +292,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [showPlaylist, setShowPlaylist] = useState(false);
 
   const [level,    setLevel]    = useState(0);
+  const [volume,   setVolume]   = useState(100);
   const [ytPlayer, setYtPlayer] = useState<any>(null);
   const [ytData,   setYtData]   = useState<{title: string, videoId: string, category: string} | null>(null);
   
@@ -331,9 +332,9 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   }, [power, lock, ytPlayer]);
 
   const applyAudio = useCallback(async () => {
-    radioAudio.setMix(power ? signal : 0, 1.0, muted || !power);
+    radioAudio.setMix(power ? signal : 0, volume / 100, muted || !power);
     // Removed radioAudio.tuneTo() so WebAudio doesn't play the MP3s
-  }, [muted, power, signal]);
+  }, [muted, power, signal, volume]);
 
   useEffect(() => { 
     void applyAudio(); 
@@ -343,13 +344,14 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   // Sync YouTube Player
   useEffect(() => {
     if (ytPlayer && ytPlayer.playVideo) {
+      ytPlayer.setVolume(volume);
       if (power && (modeIdx === 2 || lock) && !muted) {
         ytPlayer.playVideo();
       } else {
         ytPlayer.pauseVideo();
       }
     }
-  }, [power, lock, muted, modeIdx, ytPlayer]);
+  }, [power, lock, muted, modeIdx, ytPlayer, volume]);
 
   // Extract YouTube Data for Digital Display
   useEffect(() => {
@@ -517,12 +519,15 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         <div className="dial-knob-col">
           <Knob
             className="knob-large"
-            value={modeIdx !== 2 ? freq : level * 100}
-            min={band==="FM"?FM_MIN:AM_MIN}
-            max={band==="FM"?FM_MAX:AM_MAX}
+            value={modeIdx !== 2 ? freq : volume}
+            min={modeIdx !== 2 ? (band==="FM"?FM_MIN:AM_MIN) : 0}
+            max={modeIdx !== 2 ? (band==="FM"?FM_MAX:AM_MAX) : 100}
             size={76}
             soundType="tune"
-            onChange={v => modeIdx !== 2 && setFreq(clampFrequency(band,v))}
+            onChange={v => {
+              if (modeIdx !== 2) setFreq(clampFrequency(band,v));
+              else setVolume(v);
+            }}
           />
         </div>
       </div>
