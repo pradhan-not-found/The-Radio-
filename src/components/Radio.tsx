@@ -284,6 +284,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [activeCat, setActiveCat] = useState('DURGA PUJO');
   const [activeSong, setActiveSong] = useState(0);
   const [showPlaylist, setShowPlaylist] = useState(false);
+  const [browseCat, setBrowseCat] = useState(activeCat);
 
   const [level,    setLevel]    = useState(0);
   const [volume,   setVolume]   = useState(100);
@@ -558,7 +559,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                   {/* Browse Playlists */}
                   <button 
                     className="browse-playlist-btn" 
-                    onClick={() => setShowPlaylist(true)}
+                    onClick={() => { setBrowseCat(activeCat); setShowPlaylist(true); }}
                     disabled={!power}
                     style={{ marginLeft: 'auto', padding: '6px 12px', background: 'rgba(255,255,255,0.08)', color: '#E8E5DD', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s' }}
                     onMouseOver={(e) => { if (power) e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
@@ -689,8 +690,8 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
             {Object.keys(PLAYLIST_DATA).map(cat => (
               <button 
                 key={cat} 
-                className={`playlist-tab ${activeCat === cat ? 'active' : ''}`}
-                onClick={() => { userInteractedRef.current = false; setActiveCat(cat); setActiveSong(0); }}
+                className={`playlist-tab ${browseCat === cat ? 'active' : ''}`}
+                onClick={() => setBrowseCat(cat)}
               >
                 {cat}
               </button>
@@ -698,28 +699,29 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
           </div>
           
           <div className="playlist-desc">
-            The main curated {activeCat.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())} playlist.
+            The main curated {browseCat.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())} playlist.
           </div>
           
           <div className="playlist-tracks">
-            {PLAYLIST_DATA[activeCat]?.map((song, idx) => (
+            {PLAYLIST_DATA[browseCat]?.map((song, idx) => (
               <div 
                 key={idx} 
-                className={`playlist-track-row ${activeSong === idx ? 'playing' : ''}`}
+                className={`playlist-track-row ${activeCat === browseCat && activeSong === idx ? 'playing' : ''}`}
                 onClick={() => { 
-                  if (activeSong === idx) {
+                  if (activeCat === browseCat && activeSong === idx) {
                     if (isPlaying) { ytPlayer?.pauseVideo(); }
                     else { ytPlayer?.playVideo(); }
                   } else {
                     userInteractedRef.current = true;
+                    setActiveCat(browseCat);
                     setActiveSong(idx); 
-                    if (ytPlayer) ytPlayer.loadVideoById(PLAYLIST_DATA[activeCat][idx].videoId);
+                    if (ytPlayer) ytPlayer.loadVideoById(PLAYLIST_DATA[browseCat][idx].videoId);
                   }
                   setShowPlaylist(false); 
                 }}
               >
                 <div className="track-number">{(idx + 1).toString().padStart(2, '0')}</div>
-                <img className="track-thumb" src={activeCat.includes('MAHALAYA') ? bannerImg : song.img} alt={song.title} />
+                <img className="track-thumb" src={browseCat.includes('MAHALAYA') ? bannerImg : song.img} alt={song.title} />
                 <div className="track-info">
                   <div className="track-name">{song.title}</div>
                   <div className="track-artist">{song.artist}</div>
