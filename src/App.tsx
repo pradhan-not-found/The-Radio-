@@ -254,7 +254,7 @@ export function App() {
 
             <div className="creator-cards-container">
               <div className="creator-card-lg">
-                <img src={souradeep} alt="Souradeep Pradhan" className="creator-avatar-lg" />
+                <img src={souradeep} alt="Souradeep Pradhan" className="creator-avatar-lg" loading="eager" fetchPriority="high" />
                 <h4 className="creator-name-lg">Souradeep Pradhan <VerifiedTick /></h4>
                 <div className="creator-socials">
                   <a href="#" className="social-icon" title="LinkedIn">
@@ -275,7 +275,7 @@ export function App() {
               </div>
 
               <div className="creator-card-lg">
-                <img src={sampurna} alt="Sampurna Chandra" className="creator-avatar-lg" />
+                <img src={sampurna} alt="Sampurna Chandra" className="creator-avatar-lg" loading="eager" fetchPriority="high" />
                 <h4 className="creator-name-lg">Sampurna Chandra <VerifiedTick /></h4>
                 <div className="creator-socials">
                   <a href="#" className="social-icon" title="LinkedIn">
