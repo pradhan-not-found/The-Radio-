@@ -940,6 +940,7 @@ body {
   margin-bottom: 40px;
   margin-top: 8px;
   text-align: center;
+  padding: 0 32px;
 }
 
 .creator-cards-container {
@@ -1045,6 +1046,7 @@ body {
   align-items: center;
   gap: 12px;
   margin-top: 32px;
+  width: 100%;
 }
 
 .contact-prompt {
