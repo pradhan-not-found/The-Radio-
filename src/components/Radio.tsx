@@ -189,13 +189,34 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [presets,  setPresets]  = useState<PresetSlot[]>(loadPresets);
 
   const MUSIC_LIBRARY: Record<string, { offset: number, count: number }> = {
-    'Durga Pujo':     { offset: 0, count: 5 },
-    'Mahalaya':       { offset: 5, count: 5 },
-    'Mahalaya Songs': { offset: 10, count: 5 },
-    'Dhak':           { offset: 15, count: 5 }
+    'DURGA PUJA':     { offset: 0, count: 7 },
+    'MAHALAYA':       { offset: 5, count: 2 },
+    'MAHALAYA SONGS': { offset: 10, count: 2 },
   };
-  const [activeCat, setActiveCat] = useState('Durga Pujo');
+
+  const PLAYLIST_DATA: Record<string, { title: string, artist: string, duration: string, img: string }[]> = {
+    'DURGA PUJA': [
+      { title: 'Dugga Elo', artist: 'Monali Thakur', duration: '2:27', img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&q=80' },
+      { title: 'Dugga Ma (Original Motion Picture Soundtrack)', artist: 'Arijit Singh', duration: '4:31', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
+      { title: 'Ebar Jeno Onno Rokom Pujo', artist: 'Nakash Aziz Official', duration: '3:33', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&q=80' },
+      { title: 'Dhak Baja Kashor Baja', artist: 'Shreya Ghoshal Official', duration: '4:26', img: 'https://images.unsplash.com/photo-1493225457124-a1a2a5f56468?w=100&q=80' },
+      { title: 'Bolo Dugga Elo', artist: 'Kaushik-Guddu', duration: '3:20', img: 'https://images.unsplash.com/photo-1516280440502-a2fc99496c53?w=100&q=80' },
+      { title: 'Aamaar Dugga', artist: 'Monali Thakur', duration: '3:20', img: 'https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=100&q=80' },
+      { title: 'Dhaker Taley', artist: 'Abhijeet', duration: '4:43', img: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=100&q=80' }
+    ],
+    'MAHALAYA': [
+      { title: 'Mahisasuramardini - Full', artist: 'Birendra Krishna Bhadra', duration: '1:28:00', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
+      { title: 'Ya Chandi', artist: 'Chorus', duration: '4:15', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&q=80' }
+    ],
+    'MAHALAYA SONGS': [
+      { title: 'Jago Tumi Jago', artist: 'Sujata Sarkar', duration: '3:45', img: 'https://images.unsplash.com/photo-1493225457124-a1a2a5f56468?w=100&q=80' },
+      { title: 'Bajlo Tomar Alor Benu', artist: 'Supriti Ghosh', duration: '4:10', img: 'https://images.unsplash.com/photo-1516280440502-a2fc99496c53?w=100&q=80' }
+    ]
+  };
+
+  const [activeCat, setActiveCat] = useState('DURGA PUJA');
   const [activeSong, setActiveSong] = useState(0);
+  const [showPlaylist, setShowPlaylist] = useState(false);
 
   const [level,    setLevel]    = useState(0);
   const [ytPlayer, setYtPlayer] = useState<any>(null);
@@ -370,34 +391,21 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
               </div>
               
               {/* Right side: Dropdowns & Controls */}
-              <div className="digital-info" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', flex: 1, minWidth: 0 }}>
+              <div className="digital-info" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
                 
-                <div className="digital-top-bar" style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-                  <select 
-                    className="digital-select" 
-                    value={activeCat} 
-                    onChange={e => { setActiveCat(e.target.value); setActiveSong(0); }}
+                <div className="digital-top-bar" style={{ display: 'flex', gap: '8px' }}>
+                  <button 
+                    className="browse-playlist-btn" 
+                    onClick={() => setShowPlaylist(true)}
                     disabled={!power}
                   >
-                    {Object.keys(MUSIC_LIBRARY).map(cat => (
-                      <option key={cat} value={cat}>{cat}</option>
-                    ))}
-                  </select>
-
-                  <select 
-                    className="digital-select" 
-                    value={activeSong} 
-                    onChange={e => setActiveSong(Number(e.target.value))}
-                    disabled={!power}
-                  >
-                    {Array.from({ length: MUSIC_LIBRARY[activeCat]?.count || 1 }).map((_, idx) => (
-                      <option key={idx} value={idx}>Track {idx + 1}</option>
-                    ))}
-                  </select>
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M3 15h18v-2H3v2zm0 4h18v-2H3v2zm0-8h18V9H3v2zm0-6v2h18V5H3z"/></svg>
+                    Browse Playlists
+                  </button>
                 </div>
 
-                <div className="digital-title" title={ytData?.title || 'No signal'}>
-                  {power ? (ytData?.title || 'Tuning...') : 'POWER OFF'}
+                <div className="digital-title" title={PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'No signal'}>
+                  {power ? (PLAYLIST_DATA[activeCat]?.[activeSong]?.title || ytData?.title || 'Tuning...') : 'POWER OFF'}
                 </div>
                 
                 <div className="digital-controls">
@@ -519,6 +527,52 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         </button>
       ))}
     </div>
+
+    {/* Spotify-like Playlist Modal */}
+    {showPlaylist && (
+      <div className="popup-overlay" onClick={() => setShowPlaylist(false)} style={{ zIndex: 9999 }}>
+        <div className="playlist-modal" onClick={e => e.stopPropagation()}>
+          <div className="playlist-header">
+            <h2 className="playlist-title">PLAYLISTS</h2>
+            <button className="playlist-close" onClick={() => setShowPlaylist(false)}>✕</button>
+          </div>
+          
+          <div className="playlist-tabs">
+            {Object.keys(PLAYLIST_DATA).map(cat => (
+              <button 
+                key={cat} 
+                className={`playlist-tab ${activeCat === cat ? 'active' : ''}`}
+                onClick={() => { setActiveCat(cat); setActiveSong(0); }}
+              >
+                {cat}
+              </button>
+            ))}
+          </div>
+          
+          <div className="playlist-desc">
+            The main curated {activeCat.toLowerCase().replace(/\b\w/g, c => c.toUpperCase())} playlist.
+          </div>
+          
+          <div className="playlist-tracks">
+            {PLAYLIST_DATA[activeCat]?.map((song, idx) => (
+              <div 
+                key={idx} 
+                className={`playlist-track-row ${activeSong === idx ? 'playing' : ''}`}
+                onClick={() => { setActiveSong(idx); ytPlayer?.playVideo(); setShowPlaylist(false); }}
+              >
+                <div className="track-number">{(idx + 1).toString().padStart(2, '0')}</div>
+                <img className="track-thumb" src={song.img} alt={song.title} />
+                <div className="track-info">
+                  <div className="track-name">{song.title}</div>
+                  <div className="track-artist">{song.artist}</div>
+                </div>
+                <div className="track-duration">{song.duration}</div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
 
     {/* ── YouTube Player (Hidden visually but needs to be rendered for API to work) ── */}
     <div style={{ position: 'absolute', opacity: 0.01, pointerEvents: 'none', width: '200px', height: '200px', top: '-9999px', left: '-9999px', zIndex: -1 }}>
