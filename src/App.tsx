@@ -52,6 +52,13 @@ export function App() {
   const [onlineCount, setOnlineCount] = useState(127);
   const [activePopup, setActivePopup] = useState<string | null>(null);
   const [radioPower, setRadioPower] = useState(false);
+  const [copiedText, setCopiedText] = useState<string | null>(null);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopiedText(text);
+    setTimeout(() => setCopiedText(null), 2000);
+  };
   const calendarRef = useRef<HTMLDivElement>(null);
 
   const handleDownload = async () => {
@@ -224,12 +231,18 @@ export function App() {
 
             <div className="email-pill mt-2">
               <span className="email-text">souradeeppradhan7@okicici</span>
-              <button className="copy-btn" onClick={() => navigator.clipboard.writeText('souradeeppradhan7@okicici')}>
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                </svg>
-                COPY
+              <button className="copy-btn" onClick={() => handleCopy('souradeeppradhan7@okicici')} style={{ width: '85px' }}>
+                {copiedText === 'souradeeppradhan7@okicici' ? (
+                  <span style={{ color: '#88d49e' }}>COPIED!</span>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                      <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                    </svg>
+                    COPY
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -302,12 +315,18 @@ export function App() {
               <span className="contact-prompt">Want to get in touch?</span>
               <div className="email-pill">
                 <span className="email-text">souradeeppradhan7@gmail.com</span>
-                <button className="copy-btn" onClick={() => navigator.clipboard.writeText('souradeeppradhan7@gmail.com')}>
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
-                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
-                  </svg>
-                  COPY
+                <button className="copy-btn" onClick={() => handleCopy('souradeeppradhan7@gmail.com')} style={{ width: '85px' }}>
+                  {copiedText === 'souradeeppradhan7@gmail.com' ? (
+                    <span style={{ color: '#88d49e' }}>COPIED!</span>
+                  ) : (
+                    <>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                        <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                      </svg>
+                      COPY
+                    </>
+                  )}
                 </button>
               </div>
             </div>
