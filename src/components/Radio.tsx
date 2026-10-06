@@ -19,6 +19,8 @@ import {
 const PRESET_KEY = "the-radio-presets";
 const EMPTY: PresetSlot[] = Array.from({ length: 6 }, () => ({ band: "FM" as Band, frequency: 88.1 }));
 
+import bannerImg from '../assets/banner.png';
+
 function loadPresets(): PresetSlot[] {
   try {
     const raw = localStorage.getItem(PRESET_KEY);
@@ -456,7 +458,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
               <div className="digital-thumbnail">
                 {ytData ? (
                   <img 
-                    src={PLAYLIST_DATA[activeCat]?.[activeSong]?.img || `https://img.youtube.com/vi/${ytData.videoId}/mqdefault.jpg`} 
+                    src={activeCat.includes('MAHALAYA') ? bannerImg : (PLAYLIST_DATA[activeCat]?.[activeSong]?.img || `https://img.youtube.com/vi/${ytData.videoId}/mqdefault.jpg`)} 
                     alt="Thumbnail" 
                     onError={(e) => { e.currentTarget.src = `https://img.youtube.com/vi/${ytData.videoId}/mqdefault.jpg`; }}
                   />
@@ -663,7 +665,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                 }}
               >
                 <div className="track-number">{(idx + 1).toString().padStart(2, '0')}</div>
-                <img className="track-thumb" src={song.img} alt={song.title} />
+                <img className="track-thumb" src={activeCat.includes('MAHALAYA') ? bannerImg : song.img} alt={song.title} />
                 <div className="track-info">
                   <div className="track-name">{song.title}</div>
                   <div className="track-artist">{song.artist}</div>
