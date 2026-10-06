@@ -103,8 +103,7 @@ body {
   flex-direction: column;
   align-items: center;
   padding-top: 160px; /* Shifted up slightly to create more bottom space */
-  transform: scale(0.85); /* Proportionally scale down the entire radio */
-  transform-origin: top center;
+  zoom: 0.85; /* Proportionally scale down the entire stage with layout bounds */
 }
 
 /* ═══════════════════════════════════════════
@@ -1153,10 +1152,15 @@ body {
 /* ═══════════════════════════════════════════
    RESPONSIVE SCALING
    ═══════════════════════════════════════════ */
+@media (max-width: 1200px) {
+  .stage {
+    zoom: calc(100vw / 1300);
+  }
+}
+
 @media (max-width: 760px) {
   .stage {
-    transform: scale(calc(100vw / 760));
-    transform-origin: center;
+    zoom: calc(100vw / 950);
   }
 }
 
@@ -1494,7 +1498,6 @@ body {
   .occasion-text { left: 32px; top: 40px; }
   .center-pill { top: 56px; }
   .top-nav { right: 32px; top: 56px; }
-  .radio-shell { transform: scale(0.9); }
   .stage-hint { right: -110px; bottom: 70px; }
 }
 
@@ -1527,7 +1530,6 @@ body {
   }
 
   .radio-shell {
-    transform: scale(0.75);
     margin-top: 70px; /* Push down to clear center pill */
   }
 
@@ -1603,7 +1605,6 @@ body {
 /* Very Small Mobile */
 @media (max-width: 480px) {
   .radio-shell {
-    transform: scale(0.55);
     margin-top: 90px;
   }
 
