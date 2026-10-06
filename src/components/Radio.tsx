@@ -191,8 +191,8 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
   const MUSIC_LIBRARY: Record<string, { offset: number, count: number }> = {
     'DURGA PUJA':     { offset: 0, count: 7 },
-    'MAHALAYA':       { offset: 5, count: 2 },
-    'MAHALAYA SONGS': { offset: 10, count: 2 },
+    'MAHALAYA':       { offset: 7, count: 2 },
+    'MAHALAYA SONGS': { offset: 9, count: 2 },
   };
 
   const PLAYLIST_DATA: Record<string, { title: string, artist: string, duration: string, img: string }[]> = {
@@ -559,7 +559,12 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
               <div 
                 key={idx} 
                 className={`playlist-track-row ${activeSong === idx ? 'playing' : ''}`}
-                onClick={() => { setActiveSong(idx); ytPlayer?.playVideo(); setShowPlaylist(false); }}
+                onClick={() => { 
+                  setActiveSong(idx); 
+                  const offset = MUSIC_LIBRARY[activeCat]?.offset || 0;
+                  ytPlayer?.playVideoAt(offset + idx); 
+                  setShowPlaylist(false); 
+                }}
               >
                 <div className="track-number">{(idx + 1).toString().padStart(2, '0')}</div>
                 <img className="track-thumb" src={song.img} alt={song.title} />
