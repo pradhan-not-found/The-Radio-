@@ -1935,3 +1935,36 @@ body {
   color: #8C8478;
   margin-left: 16px;
 }
+
+/* ═══════════════════════════════════════════
+   SAFARI ONLY OVERRIDES
+   ═══════════════════════════════════════════ */
+@media not all and (min-resolution:.001dpcm) {
+  @supports (-webkit-appearance:none) {
+    /* 1. Force center pill inline */
+    .center-pill {
+      flex-direction: row !important;
+      flex-wrap: nowrap !important;
+      white-space: nowrap !important;
+    }
+    
+    /* 2. Fix QR SVG anti-aliasing artifacts (unprofessional lines) */
+    .qr-box-large svg {
+      shape-rendering: crispEdges !important;
+      -webkit-transform: translateZ(0);
+    }
+    
+    /* 3. Fix side biased copy section */
+    .copy-btn {
+      justify-content: center !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    
+    /* 4. Scale down top nav (chai, calendar, creators) */
+    .top-nav {
+      transform: scale(0.85) !important;
+      transform-origin: top right !important;
+    }
+  }
+}
