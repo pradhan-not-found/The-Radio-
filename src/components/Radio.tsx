@@ -195,7 +195,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const PLAYLIST_DATA: Record<string, { videoId: string, title: string, artist: string, duration: string, img: string }[]> = {
 
     'MAHALAYA': [
-      { videoId: '8IPKUkGPh4E', title: 'Mahisasuramardini - Full', artist: 'Birendra Krishna Bhadra', duration: '1:28:00', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
+      { videoId: '8IPKUkGPh4E', title: 'Mahisasuramardini', artist: 'Birendra Krishna Bhadra', duration: '1:28:00', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
       { videoId: '1Yycc3tejNw', title: 'Ya Chandi', artist: 'Chorus', duration: '4:15', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&q=80' }
     ],
     'MAHALAYA SONGS': [
