@@ -376,7 +376,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
             </>
           ) : (
             /* Digital Music Player UI (Replaces the tuning dial) */
-            <div className="digital-content" style={{ display: 'flex', width: '100%', padding: '12px', gap: '16px', zIndex: 10 }}>
+            <div className="digital-content" style={{ display: 'flex', alignItems: 'center', width: '100%', padding: '0', gap: '16px', zIndex: 10 }}>
               
               {/* Left side: Thumbnail */}
               <div className="digital-thumbnail">
