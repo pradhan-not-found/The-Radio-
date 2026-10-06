@@ -17,6 +17,7 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { overflow-x: hidden; }
 html, body, #root { min-height: 100%; }
 
 body {
@@ -112,7 +113,6 @@ body {
 .radio-shell {
   position: relative;
   width: 700px; /* Restored larger rectangular width */
-  max-width: 100%;
   /* Main outer body: #242321, Warm tint: #3A3027, Deep shadow: #11110F */
   background: 
     linear-gradient(135deg, #3A3027 0%, #242321 45%, #11110F 100%),
