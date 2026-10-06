@@ -1509,6 +1509,25 @@ body {
   .nav-svg { width: 18px; height: 18px; }
   .spotify-link img { width: 22px; height: 22px; }
 }
+/* Calendar Modal Styles */
+.calendar-modal {
+  background: #fffdf7 !important;
+  color: #1a1a1a !important;
+  padding: 48px 32px;
+  position: relative;
+}
+
+.calendar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  border-bottom: 1px dashed rgba(138, 43, 43, 0.15);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.4);
+  transition: all 0.3s ease;
+}
 
 /* Mobile Devices */
 @media (max-width: 768px) {
@@ -1578,6 +1597,13 @@ body {
     max-height: 85vh;
   }
 
+  .calendar-modal {
+    padding: 32px 16px;
+  }
+  .calendar-row {
+    padding: 12px 12px;
+    gap: 8px;
+  }
   .popup-menu {
     width: 92%;
     min-width: 0;

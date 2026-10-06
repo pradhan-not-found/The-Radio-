@@ -120,8 +120,8 @@ export function App() {
 
         <div className="nav-item-container">
           <button className="nav-icon-btn" onClick={() => setActivePopup(activePopup === 'creators' ? null : 'creators')} title="Creators">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg">
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="nav-svg">
+              <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
             </svg>
           </button>
         </div>
@@ -268,7 +268,7 @@ export function App() {
       {activePopup === 'calendar' && (
         <>
           <div className="modal-backdrop" onClick={() => setActivePopup(null)} />
-          <div className="creators-modal-large calendar-modal" ref={calendarRef} style={{ backgroundColor: '#fffdf7', color: '#1a1a1a', padding: '48px 32px', position: 'relative' }}>
+          <div className="creators-modal-large calendar-modal" ref={calendarRef}>
             <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-tr" style={{ opacity: 0.1, width: '200px' }} />
             <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-bl" style={{ opacity: 0.1, width: '200px' }} />
             
@@ -307,7 +307,7 @@ export function App() {
                 const eventWords = eventName.split(' ');
                 
                 return (
-                  <div key={date} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', padding: '12px 16px', borderBottom: '1px dashed rgba(138, 43, 43, 0.15)', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.4)', transition: 'all 0.3s ease' }}>
+                  <div key={date} className="calendar-row">
                     <span style={{ fontFamily: "'Switzer', sans-serif", fontWeight: 600, fontSize: 'clamp(14px, 4vw, 16px)', color: '#8a2b2b', letterSpacing: '0.5px', flexShrink: 0 }}>{formatted.toUpperCase()}</span>
                     <span style={{ fontFamily: "'SeasonMix', serif", fontSize: 'clamp(18px, 5.5vw, 26px)', color: '#1a1a1a', textAlign: 'right', lineHeight: 1.2 }}>
                       {eventWords.map((word, i) => <span key={i} style={{ display: 'block' }}>{word}</span>)}
