@@ -1515,6 +1515,9 @@ body {
   color: #1a1a1a !important;
   padding: 48px 32px;
   position: relative;
+  overflow: hidden !important;
+  display: flex;
+  flex-direction: column;
 }
 
 .calendar-row {
@@ -1527,6 +1530,13 @@ body {
   border-radius: 6px;
   background: rgba(255, 255, 255, 0.4);
   transition: all 0.3s ease;
+}
+
+.calendar-dates-container::-webkit-scrollbar {
+  display: none;
+}
+.calendar-dates-container {
+  scrollbar-width: none;
 }
 
 /* Mobile Devices */
@@ -1599,6 +1609,7 @@ body {
 
   .calendar-modal {
     padding: 32px 16px;
+    padding-bottom: 24px;
   }
   .calendar-row {
     padding: 12px 12px;

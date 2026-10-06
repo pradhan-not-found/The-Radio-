@@ -300,7 +300,7 @@ export function App() {
               </svg>
             </div>
 
-            <div className="calendar-dates-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
+            <div className="calendar-dates-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', overflowY: 'auto', flex: 1, minHeight: 0, paddingRight: '8px' }}>
               {Object.entries(PUJA_DATES).map(([date, event]) => {
                 const parts = date.split('-');
                 const formatted = `Oct ${parts[1]}`;
