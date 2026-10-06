@@ -102,8 +102,12 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 160px; /* Shifted up slightly to create more bottom space */
-  zoom: 0.85; /* Proportionally scale down the entire stage with layout bounds */
+  padding-top: 160px;
+  width: 100%;
+  --stage-scale: 0.85;
+  transform: scale(var(--stage-scale));
+  transform-origin: top center;
+  margin-bottom: calc(-1 * (1 - var(--stage-scale)) * 600px);
 }
 
 /* ═══════════════════════════════════════════
@@ -1182,27 +1186,27 @@ body {
    RESPONSIVE SCALING
    ═══════════════════════════════════════════ */
 @media (max-width: 992px) {
-  .stage { zoom: 0.75; }
+  .stage { --stage-scale: 0.75; }
 }
 
 @media (max-width: 768px) {
-  .stage { zoom: 0.65; }
+  .stage { --stage-scale: 0.65; }
 }
 
 @media (max-width: 576px) {
-  .stage { zoom: 0.52; }
+  .stage { --stage-scale: 0.52; }
 }
 
 @media (max-width: 480px) {
-  .stage { zoom: 0.46; }
+  .stage { --stage-scale: 0.46; }
 }
 
 @media (max-width: 400px) {
-  .stage { zoom: 0.4; }
+  .stage { --stage-scale: 0.4; }
 }
 
 @media (max-width: 350px) {
-  .stage { zoom: 0.35; }
+  .stage { --stage-scale: 0.35; }
 }
 
 @media (max-width: 900px) {
