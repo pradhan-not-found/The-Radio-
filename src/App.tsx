@@ -5,6 +5,7 @@ import flowerImg from "./assets/flower.png";
 import souradeep from "./assets/souradeep.png";
 import sampurna from "./assets/sampurna.png";
 import spotify from "./assets/spotify.png";
+import { QRCodeSVG } from 'qrcode.react';
 
 const PUJA_DATES: Record<string, string> = {
   "10-10": "Subho Mahalaya",
@@ -203,14 +204,26 @@ export function App() {
             </p>
 
             <div className="qr-box-large">
-              <div className="qr-placeholder-content">QR Code</div>
+              <QRCodeSVG
+                value="upi://pay?pa=souradeeppradhan7@okicici&pn=The%20Radio&cu=INR"
+                size={170}
+                bgColor="#E8E5DD"
+                fgColor="#1a1a1a"
+                level="H"
+                imageSettings={{
+                  src: "/favicon.ico",
+                  height: 40,
+                  width: 40,
+                  excavate: true,
+                }}
+              />
             </div>
 
             <span className="contact-prompt mt-4">Scan with any UPI app</span>
 
             <div className="email-pill mt-2">
-              <span className="email-text">yourname@upi</span>
-              <button className="copy-btn" onClick={() => navigator.clipboard.writeText('yourname@upi')}>
+              <span className="email-text">souradeeppradhan7@okicici</span>
+              <button className="copy-btn" onClick={() => navigator.clipboard.writeText('souradeeppradhan7@okicici')}>
                 <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
                   <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
