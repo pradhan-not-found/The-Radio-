@@ -1536,16 +1536,21 @@ body {
   }
 
   .stage-hint {
-    right: -20px;
-    bottom: -10px;
+    right: 40px;
+    bottom: -90px;
+    flex-direction: column-reverse;
+    align-items: center;
   }
   .stage-hint-text {
     font-size: 24px;
-    margin-left: 20px;
+    margin-left: 0;
+    margin-top: 5px;
+    transform: rotate(5deg);
   }
   .stage-hint-arrow {
-    width: 50px;
+    width: 40px;
     height: 40px;
+    transform: scaleY(-1) rotate(-20deg);
   }
 
   .antenna-wrapper {
