@@ -205,8 +205,25 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       { videoId: '1Yycc3tejNw', title: 'Ya Chandi', artist: 'Chorus', duration: '4:15', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&q=80' }
     ],
     'MAHALAYA SONGS': [
-      { videoId: 'j7nWykTLEMs', title: 'Jago Tumi Jago', artist: 'Sujata Sarkar', duration: '3:45', img: 'https://images.unsplash.com/photo-1493225457124-a1a2a5f56468?w=100&q=80' },
-      { videoId: 'cFsCf0MGuuA', title: 'Bajlo Tomar Alor Benu', artist: 'Supriti Ghosh', duration: '4:10', img: 'https://images.unsplash.com/photo-1516280440502-a2fc99496c53?w=100&q=80' }
+      { videoId: '8FytVk54-dw', title: 'Ya Chandi with lyrics | Chorus | Pankaj Kumar Mullick | Bani Kumar', artist: 'Saregama Bengali', duration: '2:03', img: 'https://i.ytimg.com/vi_webp/8FytVk54-dw/maxresdefault.webp' },
+      { videoId: 'UQHikCYHrx0', title: 'Simhasta Sashishekhara | Mahalaya Song | Mahishasura Mardini | Birendra Krishna Bhadra | Chorus', artist: 'Saregama Bengali', duration: '1:08', img: 'https://i.ytimg.com/vi_webp/UQHikCYHrx0/maxresdefault.webp' },
+      { videoId: '2Zqlb00ttCU', title: 'Bajlo Tomar Aalor Benu With Narration | Audio | Birendra Krishna Bhadra and Supriti Ghosh', artist: 'Saregama Bengali', duration: '4:47', img: 'https://i.ytimg.com/vi_webp/2Zqlb00ttCU/maxresdefault.webp' },
+      { videoId: 'IfSJy3_Lkuo', title: 'Jago Durga Dashapraharanadharinee With Lyrics | Dwijen Mukherjee', artist: 'Saregama Bengali', duration: '2:11', img: 'https://i.ytimg.com/vi_webp/IfSJy3_Lkuo/maxresdefault.webp' },
+      { videoId: '61NfXV1R6cw', title: 'Ogo Amar Agamani Alo with lyrics', artist: 'Bangla Bhakti Geeti', duration: '3:37', img: 'https://i.ytimg.com/vi_webp/61NfXV1R6cw/maxresdefault.webp' },
+      { videoId: '6rwF1iQPVzc', title: 'Tabo Achintya Rupa-Charita-Mahima | Audio | Manabendra Mukherjee | Pankaj Kumar Mullick | Bani Kumar', artist: 'Saregama Bengali', duration: '4:25', img: 'https://i.ytimg.com/vi_webp/6rwF1iQPVzc/maxresdefault.webp' },
+      { videoId: 'GJccKU4_5wg', title: 'Aham Rudrebhirvasubhischara | Mahishasura Mardini | Chorus | Audio', artist: 'Saregama Bengali', duration: '4:06', img: 'https://i.ytimg.com/vi_webp/GJccKU4_5wg/maxresdefault.webp' },
+      { videoId: 'FrHp3pXxeNU', title: 'Akhila-Bimane Taba Jaya-Gane | Mahishasura Mardini | Krishna Dasgupta | Audio', artist: 'Saregama Bengali', duration: '4:08', img: 'https://i.ytimg.com/vi_webp/FrHp3pXxeNU/maxresdefault.webp' },
+      { videoId: 'Uwe7xGARrfA', title: 'Jayanti Mangala Kali | Mahalaya Song | Birendra Krishna Bhadra | Pankaj Kumar Mullick, others', artist: 'Saregama Bengali', duration: '7:10', img: 'https://i.ytimg.com/vi_webp/Uwe7xGARrfA/maxresdefault.webp' },
+      { videoId: 'CWy7if8ilNs', title: 'Subhra Sankha-rabe | Shyamal Mitra', artist: 'Koushik Baidya', duration: '3:06', img: 'https://i.ytimg.com/vi_webp/CWy7if8ilNs/maxresdefault.webp' },
+      { videoId: 'h5O3igngxCU', title: 'Jatajutasamayuktamardhendukrita-Sekharam | Mahishasura Mardini | Chorus | Audio', artist: 'Saregama Bengali', duration: '4:32', img: 'https://i.ytimg.com/vi_webp/h5O3igngxCU/maxresdefault.webp' },
+      { videoId: 'hh6ngvUwzzw', title: 'Namo Chandi Namo Chandi | Mahalaya Song | Birendra Krishna Bhadra | Bimalbhushan', artist: 'Saregama Bengali', duration: '3:14', img: 'https://i.ytimg.com/vi_webp/hh6ngvUwzzw/maxresdefault.webp' },
+      { videoId: 'qdx842oMwnA', title: 'Ma Go Tabu Beene Sangeeta | Mahishasura Mardini | Sumitra Sen | Pankaj Kumar Mullick | Audio', artist: 'Saregama Bengali', duration: '3:45', img: 'https://i.ytimg.com/vi_webp/qdx842oMwnA/maxresdefault.webp' },
+      { videoId: '-ZJtci1_Ih0', title: 'Bimane Bimane | Mahishasura Mardini | Sandhya Mukherjee | Audio', artist: 'Saregama Bengali', duration: '3:06', img: 'https://i.ytimg.com/vi_webp/-ZJtci1_Ih0/maxresdefault.webp' },
+      { videoId: 'AB4IUcvuEXs', title: 'Jaya Jaya Japyajaye | Mahishasura Mardini | Pankaj Kumar Mullick | Audio', artist: 'Saregama Bengali', duration: '2:37', img: 'https://i.ytimg.com/vi_webp/AB4IUcvuEXs/maxresdefault.webp' },
+      { videoId: 'zuVw7KFPQnk', title: 'He Chinmoyi with lyrics | Tarun Banerjee', artist: 'Saregama Bengali', duration: '3:17', img: 'https://i.ytimg.com/vi_webp/zuVw7KFPQnk/maxresdefault.webp' },
+      { videoId: '3E2PduduZSI', title: 'Amala Kirane | Mahalaya Song | Birendra Krishna Bhadra | Pratima Bandyopadhyay', artist: 'Saregama Bengali', duration: '4:14', img: 'https://i.ytimg.com/vi_webp/3E2PduduZSI/maxresdefault.webp' },
+      { videoId: 'Uwe7xGARrfA', title: 'Jayanti Mangala Kali | Mahalaya Song | Birendra Krishna Bhadra | Pankaj Kumar Mullick, others', artist: 'Saregama Bengali', duration: '7:10', img: 'https://i.ytimg.com/vi_webp/Uwe7xGARrfA/maxresdefault.webp' },
+      { videoId: 'VAV6OQMe-to', title: 'Santi Dile Bhari | Mahishasura Mardini | Utpala Sen | Audio', artist: 'Saregama Bengali', duration: '2:18', img: 'https://i.ytimg.com/vi_webp/VAV6OQMe-to/maxresdefault.webp' }
     ],
     'PRADHAN DA MIX': [
       { videoId: 'SFJeglBF5cg', title: 'Dugga Elo', artist: 'Monali Thakur', duration: '2:27', img: 'https://i.ytimg.com/vi/SFJeglBF5cg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAb5Sk7tUpdGaM9DFnM5n0IcSTHTQ' },
