@@ -283,9 +283,9 @@ export function App() {
                 const formatted = `Oct ${parts[1]}`;
                 const eventName = event.replace('Subho ', '').replace('Maha ', '');
                 return (
-                  <div key={date} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '12px 16px', borderBottom: '1px dashed rgba(138, 43, 43, 0.15)', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.4)', transition: 'all 0.3s ease' }}>
-                    <span style={{ fontFamily: "'Switzer', sans-serif", fontWeight: 600, fontSize: 'clamp(14px, 4vw, 16px)', color: '#8a2b2b', letterSpacing: '0.5px' }}>{formatted.toUpperCase()}</span>
-                    <span style={{ fontFamily: "'SeasonMix', serif", fontSize: 'clamp(20px, 6vw, 26px)', color: '#1a1a1a', textAlign: 'right', lineHeight: 1.2 }}>{eventName}</span>
+                  <div key={date} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', padding: '12px 16px', borderBottom: '1px dashed rgba(138, 43, 43, 0.15)', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.4)', transition: 'all 0.3s ease' }}>
+                    <span style={{ fontFamily: "'Switzer', sans-serif", fontWeight: 600, fontSize: 'clamp(14px, 4vw, 16px)', color: '#8a2b2b', letterSpacing: '0.5px', flexShrink: 0 }}>{formatted.toUpperCase()}</span>
+                    <span style={{ fontFamily: "'SeasonMix', serif", fontSize: 'clamp(18px, 5.5vw, 26px)', color: '#1a1a1a', textAlign: 'right', lineHeight: 1.2 }}>{eventName}</span>
                   </div>
                 );
               })}

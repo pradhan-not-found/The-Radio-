@@ -880,7 +880,14 @@ body {
   width: 90%;
   max-width: 640px;
   animation: modal-pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  overflow: hidden; /* Contains the flowers within the rounded corners */
+  max-height: 90vh;
+  overflow-x: hidden; /* Contains the flowers within the rounded corners */
+  overflow-y: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.creators-modal-large::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
 }
 
 /* Modals Flowers */
@@ -1569,11 +1576,6 @@ body {
     width: 92%;
     padding: 32px 24px;
     max-height: 85vh;
-    overflow-y: auto;
-    scrollbar-width: none; /* Hide scrollbar for Firefox */
-  }
-  .creators-modal-large::-webkit-scrollbar {
-    display: none; /* Hide scrollbar for Chrome/Safari */
   }
 
   .popup-menu {
