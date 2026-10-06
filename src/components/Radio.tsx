@@ -347,7 +347,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   useEffect(() => {
     if (ytPlayer && ytPlayer.playVideo) {
       ytPlayer.setVolume(volume);
-      if (power && (modeIdx === 2 || lock) && !muted) {
+      if (power && modeIdx === 2 && !muted) {
         ytPlayer.playVideo();
       } else {
         ytPlayer.pauseVideo();
@@ -554,8 +554,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         
         <div className="ctrl-col">
           <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingLeft: '4px'}}>
-            <div style={{display: 'flex', flexDirection: 'column', height: '64px', justifyContent: 'space-between', fontSize: '15px', color: '#8C8478', fontWeight: 600, letterSpacing: '0.5px'}}>
-              <span style={{color: modeIdx===0 ? '#E8E5DD' : '#8C8478', textShadow: modeIdx===0 ? '0 1px 2px #000' : 'none', transition: 'color 0.3s'}}>AM</span>
+            <div style={{display: 'flex', flexDirection: 'column', height: '64px', justifyContent: 'space-evenly', fontSize: '15px', color: '#8C8478', fontWeight: 600, letterSpacing: '0.5px'}}>
               <span style={{color: modeIdx===1 ? '#E8E5DD' : '#8C8478', textShadow: modeIdx===1 ? '0 1px 2px #000' : 'none', transition: 'color 0.3s'}}>FM</span>
               <span style={{color: modeIdx===2 ? '#E8E5DD' : '#8C8478', textShadow: modeIdx===2 ? '0 1px 2px #000' : 'none', transition: 'color 0.3s'}}>Digital</span>
             </div>
@@ -566,12 +565,12 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
               style={{ width: 64, height: 64, cursor: 'pointer' }}
               onClick={() => {
                 playBandSwitch();
-                setModeIdx((modeIdx + 1) % 3);
+                setModeIdx(modeIdx === 1 ? 2 : 1);
               }}
             >
-              <div className="knob-ring" style={{ transform: `rotate(${-135 + (modeIdx / 2) * 270}deg)`, transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }} />
+              <div className="knob-ring" style={{ transform: `rotate(${modeIdx === 1 ? -45 : -135}deg)`, transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }} />
               <div className="knob-face">
-                <div className="knob-line" style={{ transform: `translateX(-50%) rotate(${-135 + (modeIdx / 2) * 270}deg)`, transformOrigin: "bottom center", transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }} />
+                <div className="knob-line" style={{ transform: `translateX(-50%) rotate(${modeIdx === 1 ? -45 : -135}deg)`, transformOrigin: "bottom center", transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)' }} />
               </div>
             </div>
           </div>
