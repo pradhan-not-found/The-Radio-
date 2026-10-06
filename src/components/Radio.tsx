@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import YouTube, { YouTubePlayer } from 'react-youtube';
 import { radioAudio } from "../radio/engine";
 import {
@@ -529,7 +530,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     </div>
 
     {/* Spotify-like Playlist Modal */}
-    {showPlaylist && (
+    {showPlaylist && createPortal(
       <div className="popup-overlay" onClick={() => setShowPlaylist(false)} style={{ zIndex: 9999 }}>
         <div className="playlist-modal" onClick={e => e.stopPropagation()}>
           <div className="playlist-header">
@@ -571,7 +572,8 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
             ))}
           </div>
         </div>
-      </div>
+      </div>,
+      document.body
     )}
 
     {/* ── YouTube Player (Hidden visually but needs to be rendered for API to work) ── */}
