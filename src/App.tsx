@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
+import html2canvas from 'html2canvas';
 import { Radio } from "./components/Radio";
 import flowerImg from "./assets/flower.png";
 import souradeep from "./assets/souradeep.png";
@@ -43,6 +44,22 @@ export function App() {
   const [onlineCount, setOnlineCount] = useState(127);
   const [activePopup, setActivePopup] = useState<string | null>(null);
   const [radioPower, setRadioPower] = useState(false);
+  const calendarRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = async () => {
+    if (!calendarRef.current) return;
+    const watermark = document.getElementById('calendar-watermark');
+    if (watermark) watermark.style.display = 'flex';
+    try {
+      const canvas = await html2canvas(calendarRef.current, { backgroundColor: '#fffdf7', scale: 2 });
+      const link = document.createElement('a');
+      link.download = 'puja-calendar-2026.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+    } finally {
+      if (watermark) watermark.style.display = 'none';
+    }
+  };
 
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 60000);
@@ -251,14 +268,22 @@ export function App() {
       {activePopup === 'calendar' && (
         <>
           <div className="modal-backdrop" onClick={() => setActivePopup(null)} />
-          <div className="creators-modal-large calendar-modal" style={{ backgroundColor: '#fffdf7', color: '#1a1a1a', padding: '48px 32px' }}>
+          <div className="creators-modal-large calendar-modal" ref={calendarRef} style={{ backgroundColor: '#fffdf7', color: '#1a1a1a', padding: '48px 32px', position: 'relative' }}>
             <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-tr" style={{ opacity: 0.1, width: '200px' }} />
             <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-bl" style={{ opacity: 0.1, width: '200px' }} />
             
-            <button className="close-btn abs-close" onClick={() => setActivePopup(null)} title="Close" style={{ color: '#1a1a1a', background: '#f4ede4' }}>
+            <button className="close-btn abs-close" data-html2canvas-ignore onClick={() => setActivePopup(null)} title="Close" style={{ color: '#1a1a1a', background: '#f4ede4' }}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            </button>
+
+            <button className="download-btn" data-html2canvas-ignore onClick={handleDownload} title="Download Calendar" style={{ position: 'absolute', top: '16px', left: '16px', background: '#f4ede4', color: '#1a1a1a', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
             </button>
 
@@ -274,18 +299,27 @@ export function App() {
               </svg>
             </div>
 
-            <div className="calendar-dates-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div className="calendar-dates-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%' }}>
               {Object.entries(PUJA_DATES).map(([date, event]) => {
                 const parts = date.split('-');
                 const formatted = `Oct ${parts[1]}`;
                 const eventName = event.replace('Subho ', '').replace('Maha ', '');
+                const eventWords = eventName.split(' ');
+                
                 return (
                   <div key={date} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', padding: '12px 16px', borderBottom: '1px dashed rgba(138, 43, 43, 0.15)', borderRadius: '6px', background: 'rgba(255, 255, 255, 0.4)', transition: 'all 0.3s ease' }}>
                     <span style={{ fontFamily: "'Switzer', sans-serif", fontWeight: 600, fontSize: 'clamp(14px, 4vw, 16px)', color: '#8a2b2b', letterSpacing: '0.5px', flexShrink: 0 }}>{formatted.toUpperCase()}</span>
-                    <span style={{ fontFamily: "'SeasonMix', serif", fontSize: 'clamp(18px, 5.5vw, 26px)', color: '#1a1a1a', textAlign: 'right', lineHeight: 1.2 }}>{eventName}</span>
+                    <span style={{ fontFamily: "'SeasonMix', serif", fontSize: 'clamp(18px, 5.5vw, 26px)', color: '#1a1a1a', textAlign: 'right', lineHeight: 1.2 }}>
+                      {eventWords.map((word, i) => <span key={i} style={{ display: 'block' }}>{word}</span>)}
+                    </span>
                   </div>
                 );
               })}
+            </div>
+            
+            <div id="calendar-watermark" style={{ display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '32px', gap: '8px', opacity: 0.8 }}>
+              <img src="/favicon.ico" alt="The Radio" style={{ width: '32px', height: '32px' }} />
+              <span style={{ fontFamily: "'SeasonMix', serif", fontSize: '18px', color: '#8a2b2b' }}>by The Radio</span>
             </div>
           </div>
         </>
