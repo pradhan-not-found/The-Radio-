@@ -5,7 +5,7 @@ import flowerImg from "./assets/flower.png";
 import souradeep from "./assets/souradeep.png";
 import sampurna from "./assets/sampurna.png";
 import spotify from "./assets/spotify.png";
-import { QRCodeSVG } from 'qrcode.react';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const PUJA_DATES: Record<string, string> = {
   "10-10": "Subho Mahalaya",
@@ -205,7 +205,7 @@ export function App() {
             </p>
 
             <div className="qr-box-large">
-              <QRCodeSVG
+              <QRCodeCanvas
                 value="upi://pay?pa=souradeeppradhan7@okicici&pn=The%20Radio&cu=INR"
                 size={170}
                 bgColor="#E8E5DD"
