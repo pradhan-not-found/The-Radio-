@@ -1514,7 +1514,6 @@ body {
   background: #fffdf7 !important;
   color: #1a1a1a !important;
   padding: 48px 32px;
-  position: relative;
   overflow: hidden !important;
   display: flex;
   flex-direction: column;

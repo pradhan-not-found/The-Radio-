@@ -48,16 +48,51 @@ export function App() {
 
   const handleDownload = async () => {
     if (!calendarRef.current) return;
+    
     const watermark = document.getElementById('calendar-watermark');
     if (watermark) watermark.style.display = 'flex';
+    // Temporarily expand containers to capture full calendar
+    const originalMaxHeight = calendarRef.current.style.maxHeight;
+    const originalOverflow = calendarRef.current.style.overflow;
+    const originalTransform = calendarRef.current.style.transform;
+    
+    calendarRef.current.style.maxHeight = 'none';
+    calendarRef.current.style.overflow = 'visible';
+    calendarRef.current.style.transform = 'none'; // Fix for html2canvas blank rendering with translate(-50%, -50%)
+
+    const innerContainer = calendarRef.current.querySelector('.calendar-dates-container') as HTMLElement;
+    let innerOriginalOverflow = '';
+    let innerOriginalMaxHeight = '';
+    if (innerContainer) {
+      innerOriginalOverflow = innerContainer.style.overflowY;
+      innerOriginalMaxHeight = innerContainer.style.maxHeight;
+      innerContainer.style.overflowY = 'visible';
+      innerContainer.style.maxHeight = 'none';
+    }
+
     try {
-      const canvas = await html2canvas(calendarRef.current, { backgroundColor: '#fffdf7', scale: 2 });
+      // Small delay to ensure DOM updates applied
+      await new Promise(resolve => setTimeout(resolve, 100));
+      const canvas = await html2canvas(calendarRef.current, { 
+        backgroundColor: '#fffdf7', 
+        scale: 2,
+        useCORS: true,
+        logging: false
+      });
       const link = document.createElement('a');
       link.download = 'puja-calendar-2026.png';
       link.href = canvas.toDataURL('image/png');
       link.click();
     } finally {
       if (watermark) watermark.style.display = 'none';
+      calendarRef.current.style.maxHeight = originalMaxHeight;
+      calendarRef.current.style.overflow = originalOverflow;
+      calendarRef.current.style.transform = originalTransform;
+      
+      if (innerContainer) {
+        innerContainer.style.overflowY = innerOriginalOverflow;
+        innerContainer.style.maxHeight = innerOriginalMaxHeight;
+      }
     }
   };
 
