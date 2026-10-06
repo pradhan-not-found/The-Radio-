@@ -486,6 +486,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                     src={activeCat.includes('MAHALAYA') ? bannerImg : (PLAYLIST_DATA[activeCat]?.[activeSong]?.img || `https://img.youtube.com/vi/${ytData.videoId}/mqdefault.jpg`)} 
                     alt="Thumbnail" 
                     onError={(e) => { e.currentTarget.src = `https://img.youtube.com/vi/${ytData.videoId}/mqdefault.jpg`; }}
+                    loading="eager" fetchPriority="high"
                   />
                 ) : (
                   <div className="digital-placeholder" />
@@ -721,7 +722,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                 }}
               >
                 <div className="track-number">{(idx + 1).toString().padStart(2, '0')}</div>
-                <img className="track-thumb" src={browseCat.includes('MAHALAYA') ? bannerImg : song.img} alt={song.title} />
+                <img className="track-thumb" src={browseCat.includes('MAHALAYA') ? bannerImg : song.img} alt={song.title} loading="eager" fetchPriority="high" />
                 <div className="track-info">
                   <div className="track-name">{song.title}</div>
                   <div className="track-artist">{song.artist}</div>

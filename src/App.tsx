@@ -121,8 +121,8 @@ export function App() {
 
   return (
     <>
-      <img src={flowerImg} alt="" className="bg-flower flower-tr" />
-      <img src={flowerImg} alt="" className="bg-flower flower-bl" />
+      <img src={flowerImg} alt="" className="bg-flower flower-tr" loading="eager" fetchPriority="high" />
+      <img src={flowerImg} alt="" className="bg-flower flower-bl" loading="eager" fetchPriority="high" />
       
       <div className="occasion-text">
         <div className="date">{formattedDate}</div>
@@ -178,7 +178,7 @@ export function App() {
         <div className="nav-divider" />
 
         <a href="https://spotify.com" target="_blank" rel="noopener noreferrer" className="spotify-link" title="Listen on Spotify">
-          <img src={spotify} alt="Spotify" />
+          <img src={spotify} alt="Spotify" loading="eager" fetchPriority="high" />
           <svg className="redirect-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
             <line x1="7" y1="17" x2="17" y2="7"></line>
             <polyline points="7 7 17 7 17 17"></polyline>
@@ -240,8 +240,8 @@ export function App() {
         <>
           <div className="modal-backdrop" onClick={() => setActivePopup(null)} />
           <div className="creators-modal-large">
-            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-tr" />
-            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-bl" />
+            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-tr" loading="eager" fetchPriority="high" />
+            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-bl" loading="eager" fetchPriority="high" />
             
             <button className="close-btn abs-close" onClick={() => setActivePopup(null)} title="Close">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -319,8 +319,8 @@ export function App() {
         <>
           <div className="modal-backdrop" onClick={() => setActivePopup(null)} />
           <div className="creators-modal-large calendar-modal" ref={calendarRef}>
-            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-tr" style={{ opacity: 0.1, width: '200px' }} />
-            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-bl" style={{ opacity: 0.1, width: '200px' }} />
+            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-tr" style={{ opacity: 0.1, width: '200px' }} loading="eager" fetchPriority="high" />
+            <img src={flowerImg} alt="" className="modal-bg-flower modal-flower-bl" style={{ opacity: 0.1, width: '200px' }} loading="eager" fetchPriority="high" />
             
             <button className="close-btn abs-close" data-html2canvas-ignore onClick={() => setActivePopup(null)} title="Close" style={{ color: '#1a1a1a', background: '#f4ede4' }}>
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -368,7 +368,7 @@ export function App() {
             </div>
             
             <div id="calendar-watermark" style={{ display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '48px', paddingTop: '24px', borderTop: '1px solid rgba(138,43,43,0.15)', gap: '12px', width: '100%' }}>
-              <img src="/favicon.ico" alt="The Radio" style={{ width: '48px', height: '48px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }} />
+              <img src="/favicon.ico" alt="The Radio" style={{ width: '48px', height: '48px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }} loading="eager" fetchPriority="high" />
               <span style={{ fontFamily: "'SeasonMix', serif", fontSize: '20px', color: '#8a2b2b', fontWeight: 'bold', letterSpacing: '1px' }}>Curated by The Radio</span>
             </div>
           </div>
