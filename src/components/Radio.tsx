@@ -195,7 +195,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const PLAYLIST_DATA: Record<string, { videoId: string, title: string, artist: string, duration: string, img: string }[]> = {
 
     'MAHALAYA': [
-      { videoId: '6Z0UaR-i7H8', title: 'Mahisasuramardini - Full', artist: 'Birendra Krishna Bhadra', duration: '1:28:00', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
+      { videoId: '8IPKUkGPh4E', title: 'Mahisasuramardini - Full', artist: 'Birendra Krishna Bhadra', duration: '1:28:00', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
       { videoId: '1Yycc3tejNw', title: 'Ya Chandi', artist: 'Chorus', duration: '4:15', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&q=80' }
     ],
     'MAHALAYA SONGS': [
@@ -219,7 +219,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       { videoId: 'Uwe7xGARrfA', title: 'Jayanti Mangala Kali | Mahalaya Song | Birendra Krishna Bhadra | Pankaj Kumar Mullick, others', artist: 'Saregama Bengali', duration: '7:10', img: 'https://i.ytimg.com/vi_webp/Uwe7xGARrfA/maxresdefault.webp' },
       { videoId: 'VAV6OQMe-to', title: 'Santi Dile Bhari | Mahishasura Mardini | Utpala Sen | Audio', artist: 'Saregama Bengali', duration: '2:18', img: 'https://i.ytimg.com/vi_webp/VAV6OQMe-to/maxresdefault.webp' }
     ],
-    'PRADHAN DA PLAYLIST': [
+    'DURGA PUJO': [
       { videoId: 'SFJeglBF5cg', title: 'Dugga Elo', artist: 'Monali Thakur', duration: '2:27', img: 'https://i.ytimg.com/vi/SFJeglBF5cg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAb5Sk7tUpdGaM9DFnM5n0IcSTHTQ' },
       { videoId: 'FBOt8rMUcio', title: 'Dugga Ma', artist: 'Release - Topic', duration: '4:31', img: 'https://i.ytimg.com/vi/FBOt8rMUcio/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1Yr9z6xt40020vS0oyO8-5xHYUw' },
       { videoId: 'ZFBq075jwiE', title: 'Ebar Jeno Onno Rokom Pujo', artist: 'Release - Topic', duration: '3:35', img: 'https://i.ytimg.com/vi/ZFBq075jwiE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCSbZKWEBkwamzVL_2f0GMjRzMHYQ' },
@@ -281,7 +281,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     ],
   };
 
-  const [activeCat, setActiveCat] = useState('PRADHAN DA PLAYLIST');
+  const [activeCat, setActiveCat] = useState('DURGA PUJO');
   const [activeSong, setActiveSong] = useState(0);
   const [showPlaylist, setShowPlaylist] = useState(false);
 
@@ -292,13 +292,20 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   
   const holdRef = useRef(false);
   const stateRef = useRef({ activeCat, activeSong });
+  const userInteractedRef = useRef(false);
 
   useEffect(() => {
     stateRef.current = { activeCat, activeSong };
     if (power && ytPlayer) {
       const currentList = PLAYLIST_DATA[activeCat];
       if (currentList && currentList[activeSong]) {
-        ytPlayer.loadVideoById(currentList[activeSong].videoId);
+        if (userInteractedRef.current) {
+          ytPlayer.loadVideoById(currentList[activeSong].videoId);
+        } else {
+          ytPlayer.cueVideoById(currentList[activeSong].videoId);
+        }
+        // Reset interaction flag after acting on it
+        userInteractedRef.current = false;
       }
     }
   }, [activeCat, activeSong, power, ytPlayer]);
@@ -337,11 +344,9 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
   // Sync YouTube Player
   useEffect(() => {
-    if (ytPlayer && ytPlayer.playVideo) {
+    if (ytPlayer && ytPlayer.pauseVideo) {
       ytPlayer.setVolume(volume);
-      if (power && modeIdx === 2 && !muted) {
-        ytPlayer.playVideo();
-      } else {
+      if (!power || modeIdx !== 2 || muted) {
         ytPlayer.pauseVideo();
       }
     }
@@ -495,6 +500,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                   {/* Next Song */}
                   <button className="digital-ctrl-btn" disabled={!power} onClick={() => { 
                     const nextSong = (activeSong + 1) % (PLAYLIST_DATA[activeCat]?.length || 1);
+                    userInteractedRef.current = true;
                     setActiveSong(nextSong);
                   }}>
                     <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
@@ -635,7 +641,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
               <button 
                 key={cat} 
                 className={`playlist-tab ${activeCat === cat ? 'active' : ''}`}
-                onClick={() => { setActiveCat(cat); setActiveSong(0); }}
+                onClick={() => { userInteractedRef.current = true; setActiveCat(cat); setActiveSong(0); }}
               >
                 {cat}
               </button>
@@ -652,6 +658,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                 key={idx} 
                 className={`playlist-track-row ${activeSong === idx ? 'playing' : ''}`}
                 onClick={() => { 
+                  userInteractedRef.current = true;
                   setActiveSong(idx); 
                   setShowPlaylist(false); 
                 }}
@@ -680,6 +687,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
           if (e.data === 0) { // ENDED
              const current = stateRef.current;
              const nextSong = (current.activeSong + 1) % (PLAYLIST_DATA[current.activeCat]?.length || 1);
+             userInteractedRef.current = true;
              setActiveSong(nextSong);
           }
         }}

@@ -1499,6 +1499,8 @@ body {
   .center-pill { top: 56px; }
   .top-nav { right: 32px; top: 56px; }
   .stage-hint { right: -110px; bottom: 70px; }
+  .nav-svg { width: 18px; height: 18px; }
+  .spotify-link img { width: 22px; height: 22px; }
 }
 
 /* Mobile Devices */
@@ -1515,7 +1517,7 @@ body {
   .occasion-text .greeting { font-size: 24px; }
 
   .center-pill {
-    top: 115px;
+    top: 130px;
     padding: 6px 16px;
     font-size: 12px;
   }
@@ -1528,6 +1530,8 @@ body {
     padding: 8px 12px;
     gap: 12px;
   }
+  .nav-svg { width: 16px; height: 16px; }
+  .spotify-link img { width: 18px; height: 18px; }
 
   .radio-shell {
     margin-top: 70px; /* Push down to clear center pill */
@@ -1544,11 +1548,15 @@ body {
     margin-left: 0;
     margin-top: 0;
     transform: rotate(-5deg);
+    color: #f4ede4;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
   }
   .stage-hint-arrow {
     width: 40px;
     height: 40px;
     transform: scaleX(-1) rotate(10deg);
+    color: #f4ede4;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
   }
 
   .antenna-wrapper {
