@@ -920,86 +920,108 @@ body {
 }
 
 .modal-subtitle {
-  font-family: 'SeasonMix', sans-serif;
-  font-size: 16px;
-  letter-spacing: 2px;
-  color: #B8B5AD;
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
   font-weight: 600;
-  margin-bottom: 32px;
+  letter-spacing: 4px;
+  color: #a39985;
+  text-transform: uppercase;
+  margin-bottom: 40px;
   margin-top: 8px;
+  text-align: center;
 }
 
 .creator-cards-container {
   display: flex;
-  gap: 24px;
+  gap: 32px;
   width: 100%;
+  justify-content: center;
 }
 
 .creator-card-lg {
   flex: 1;
-  background: rgba(40, 38, 35, 0.4);
+  max-width: 340px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 20px;
-  padding: 32px 24px;
+  border-radius: 24px;
+  padding: 40px 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  transition: transform 0.2s, background 0.2s;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.4s;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 .creator-card-lg:hover {
-  background: rgba(50, 48, 45, 0.6);
-  transform: translateY(-4px);
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
 }
 
 .creator-avatar-lg {
-  width: 100px;
-  height: 100px;
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255,255,255,0.1);
-  margin-bottom: 16px;
-  box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  padding: 4px;
+  background: rgba(0, 0, 0, 0.2);
+  margin-bottom: 24px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s;
+}
+
+.creator-card-lg:hover .creator-avatar-lg {
+  transform: scale(1.05);
+  border-color: rgba(227, 196, 143, 0.5);
 }
 
 .creator-name-lg {
-  font-family: 'SeasonMix', sans-serif;
-  font-size: 22px;
-  color: #E8E5DD;
-  font-weight: 600;
-  margin-bottom: 20px;
+  font-family: 'SeasonMix', serif;
+  font-size: 28px;
+  letter-spacing: 0.5px;
+  color: #fff;
+  font-weight: normal;
+  margin-bottom: 24px;
   display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+  gap: 8px;
   text-align: center;
 }
 
 .creator-socials {
   display: flex;
-  gap: 12px;
+  gap: 16px;
+  margin-top: auto;
 }
 
 .social-icon {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #E8E5DD;
-  transition: all 0.2s;
+  color: rgba(255, 255, 255, 0.7);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .social-icon svg {
-  width: 18px;
-  height: 18px;
+  width: 20px;
+  height: 20px;
 }
 
 .social-icon:hover {
   background: rgba(255, 255, 255, 0.15);
-  transform: scale(1.1);
+  color: #fff;
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
 }
 
 .modal-divider {
@@ -1648,17 +1670,24 @@ body {
 
   .creator-cards-container {
     flex-direction: column;
-    gap: 16px;
+    gap: 24px;
     align-items: center;
   }
 
   .creator-card-lg {
-    padding: 24px 16px;
+    padding: 32px 24px;
+    width: 100%;
+    max-width: 100%;
   }
 
   .creator-avatar-lg {
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+
+  .creator-name-lg {
+    font-size: 24px;
   }
 
   .qr-box-large {
