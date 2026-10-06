@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import YouTube, { YouTubePlayer } from 'react-youtube';
+import YouTube from 'react-youtube';
 import { radioAudio } from "../radio/engine";
 import {
   AM_MAX, AM_MIN, Band, clampFrequency,

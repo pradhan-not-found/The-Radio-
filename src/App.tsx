@@ -374,10 +374,13 @@ export function App() {
         {!radioPower && (
           <div className="stage-hint">
             <div className="stage-hint-text">Click to<br />play!</div>
-            <svg className="stage-hint-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-              {/* Arrow curves from text on beige background, pointing left/down toward the radio's power button */}
+            <svg className="stage-hint-arrow desktop-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 80" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
               <path d="M80,10 Q40,15 10,65" />
               <polyline points="10,40 10,65 35,62" />
+            </svg>
+            <svg className="stage-hint-arrow mobile-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 80" fill="none" stroke="currentColor" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M30,80 Q45,45 30,10" />
+              <polyline points="15,25 30,10 45,25" />
             </svg>
           </div>
         )}

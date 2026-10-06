@@ -1310,11 +1310,16 @@ body {
 }
 
 .stage-hint-arrow {
+  color: #1a1a1a;
+}
+.desktop-arrow {
   width: 70px;
   height: 50px;
-  color: #1a1a1a;
   flex-shrink: 0;
   align-self: flex-start;
+}
+.mobile-arrow {
+  display: none;
 }
 
 /* ═══════════════════════════════════════════
@@ -1585,25 +1590,30 @@ body {
   }
 
   .stage-hint {
-    right: 40px;
-    bottom: 80px;
-    flex-direction: column;
-    align-items: flex-end;
+    right: 20px;
+    bottom: auto;
+    top: calc(100% + 24px); /* Below the radio */
+    flex-direction: column-reverse; /* Put arrow above text */
+    align-items: center;
   }
   .stage-hint-text {
-    font-size: 22px;
+    font-size: 36px;
     margin-left: 0;
     margin-top: 0;
     transform: rotate(-5deg);
-    color: #f4ede4;
-    text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    color: #1a1a1a;
+    text-shadow: none;
   }
-  .stage-hint-arrow {
-    width: 40px;
-    height: 40px;
-    transform: scaleX(-1) rotate(10deg);
-    color: #f4ede4;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+  .desktop-arrow {
+    display: none;
+  }
+  .mobile-arrow {
+    display: block;
+    width: 30px;
+    height: 45px;
+    transform: none;
+    color: #1a1a1a;
+    filter: none;
   }
 
   .antenna-wrapper {
