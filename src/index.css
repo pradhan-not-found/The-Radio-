@@ -1617,9 +1617,14 @@ body {
     text-align: left;
     align-items: flex-start;
     width: auto;
+    max-width: calc(100vw - 180px);
   }
   .occasion-text .date { font-size: 16px; }
-  .occasion-text .greeting { font-size: 24px; }
+  .occasion-text .greeting { 
+    font-size: 24px; 
+    white-space: normal;
+    line-height: 1.15;
+  }
 
   .center-pill {
     top: 130px;
@@ -1628,14 +1633,14 @@ body {
   }
 
   .top-nav {
-    top: auto;
-    bottom: 32px;
-    right: 50%;
-    transform: translateX(50%);
-    padding: 10px 20px;
-    gap: 16px;
-    border-radius: 40px;
-    background: rgba(30, 28, 26, 0.95);
+    top: 24px;
+    right: 24px;
+    bottom: auto;
+    transform: scale(0.85);
+    transform-origin: top right;
+    padding: 8px 12px;
+    gap: 12px;
+    border-radius: 30px;
   }
   .nav-svg { width: 16px; height: 16px; }
   .spotify-link img { width: 18px; height: 18px; }
@@ -1774,7 +1779,7 @@ body {
   }
   
   .occasion-text .greeting {
-    font-size: 28px;
+    font-size: 22px;
   }
   
 }
