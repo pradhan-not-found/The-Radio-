@@ -779,8 +779,8 @@ body {
   align-items: center;
   font-family: 'SeasonMix', serif;
   font-weight: normal;
-  font-size: 18px;
-  letter-spacing: 0.5px;
+  font-size: 14px;
+  letter-spacing: 0;
   transform: translateY(1px); /* Precise font baseline correction */
 }
 
@@ -1299,7 +1299,7 @@ body {
     font-size: 11px;
   }
   .countdown {
-    font-size: 14px;
+    font-size: 12px;
   }
 }
 
@@ -1829,7 +1829,7 @@ body {
   }
 
   .countdown {
-    font-size: 14px;
+    font-size: 12px;
   }
   
   .occasion-text .greeting {
