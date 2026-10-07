@@ -5,7 +5,7 @@ import flowerImg from "./assets/flower.png";
 import souradeep from "./assets/souradeep.png";
 import spotify from "./assets/spotify.png";
 import { QRCodeCanvas } from 'qrcode.react';
-
+import flower1Img from "./assets/flower1.png";
 const PUJA_DATES: Record<string, string> = {
   "10-10": "Subho Mahalaya",
   "10-11": "Subho Prothoma",
@@ -143,8 +143,9 @@ export function App() {
           <span>{onlineCount} Online</span>
         </div>
         <div className="nav-divider" />
-        <div className="countdown">
+        <div className="countdown" style={{ gap: '6px' }}>
           {daysLeft} Days to Pujo
+          <img src={flower1Img} alt="" style={{ height: '16px', width: 'auto', opacity: 0.85 }} />
         </div>
       </div>
 
