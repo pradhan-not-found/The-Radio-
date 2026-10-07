@@ -471,36 +471,15 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     <>
     <div className={`radio-shell ${power?"on":"off"}`}>
       
-      {/* Interactive Antenna Button */}
-      <div 
-        onClick={handleAntennaClick}
-        style={{
-          position: 'absolute',
-          top: bgPlayEnabled ? '-120px' : '-40px',
-          left: '40px',
-          width: '14px',
-          height: '140px',
-          background: 'linear-gradient(to right, #999, #eee, #999)',
-          borderTopLeftRadius: '7px',
-          borderTopRightRadius: '7px',
-          cursor: 'pointer',
-          zIndex: 1, // Behind the body but visible above
-          transition: 'top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
-          boxShadow: 'inset 0 0 6px rgba(0,0,0,0.4), 2px 0 6px rgba(0,0,0,0.3)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-        title="Toggle Background Play"
-      >
-        <div style={{
-          width: '20px',
-          height: '20px',
-          background: 'radial-gradient(circle at 30% 30%, #fff, #888)',
-          borderRadius: '50%',
-          marginTop: '-6px',
-          boxShadow: '0 2px 6px rgba(0,0,0,0.4)'
-        }} />
+      {/* Realistic Telescoping Antenna mounted on the back */}
+      <div className="antenna-wrapper">
+        <div className="antenna-segment seg-4">
+          <div className="antenna-tip" />
+        </div>
+        <div className="antenna-segment seg-3" />
+        <div className="antenna-segment seg-2" />
+        <div className="antenna-segment seg-1" />
+        <div className="antenna-base" />
       </div>
 
       {/* Background Play Modal */}
@@ -568,8 +547,39 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       )}
 
       {/* ── DIAL PANEL (Top half) ── */}
-      <div className="top-panel">
-        <div className="scale-display" style={{ display: 'flex', alignItems: 'stretch' }}>
+      <div className="top-panel" style={{ position: 'relative' }}>
+        
+        <div className="scale-display" style={{ display: 'flex', alignItems: 'stretch', position: 'relative' }}>
+          
+          {/* Small Button for Background Play (styled like screenshot) */}
+          <button 
+            onClick={handleAntennaClick}
+            style={{
+              position: 'absolute',
+              top: '-12px',
+              left: '-12px',
+              width: '24px',
+              height: '24px',
+              borderRadius: '50%',
+              background: bgPlayEnabled ? 'linear-gradient(to bottom, #8a2b2b, #591b1b)' : 'linear-gradient(to bottom, #444, #222)',
+              border: '1.5px solid #E8E5DD',
+              color: bgPlayEnabled ? '#fff' : '#ccc',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              cursor: 'pointer',
+              boxShadow: bgPlayEnabled ? '0 0 10px rgba(138,43,43,0.8), 0 2px 4px rgba(0,0,0,0.5)' : '0 2px 4px rgba(0,0,0,0.5)',
+              zIndex: 10,
+              padding: 0,
+              transition: 'all 0.2s ease'
+            }}
+            title="Background Play"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '12px', height: '12px', opacity: 0.9 }}>
+              <path d="M12 19V5M5 12l7-7 7 7" />
+            </svg>
+          </button>
+
           {modeIdx !== 2 ? (
             <>
               <div className="scale-labels">

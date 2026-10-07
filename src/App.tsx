@@ -7,6 +7,7 @@ import spotify from "./assets/spotify.png";
 import { QRCodeCanvas } from 'qrcode.react';
 import flower1Img from "./assets/flower1.png";
 import alponaImg from "./assets/alpona.png";
+import logo1Img from "./assets/logo1.png";
 const PUJA_DATES: Record<string, string> = {
   "10-10": "Subho Mahalaya",
   "10-11": "Subho Prothoma",
@@ -246,6 +247,12 @@ export function App() {
                 bgColor="#E8E5DD"
                 fgColor="#1a1a1a"
                 level="H"
+                imageSettings={{
+                  src: logo1Img,
+                  height: 36, // Slightly smaller to ensure absolute scanning reliability
+                  width: 36,
+                  excavate: false, // CRITICAL: false means structural integrity is maintained for strict scanners!
+                }}
               />
             </div>
 
