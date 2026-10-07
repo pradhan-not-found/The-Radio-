@@ -253,6 +253,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     ],
     'DURGA PUJO': [
       { videoId: 'GSJDim_JP4M', title: 'Elo Je Maa', artist: 'Abhijeet & Shreya Ghoshal', duration: '3:45', img: 'https://i.ytimg.com/vi/GSJDim_JP4M/hqdefault.jpg' },
+      { videoId: 'Blh3d0RBV1M', title: 'Asadoma Sadgamayo', artist: 'Arijit Singh', duration: '4:15', img: 'https://i.ytimg.com/vi/Blh3d0RBV1M/hqdefault.jpg' },
       { videoId: 'XiAO-XjeHdI', title: 'Ashtami Te Tomar Paray', artist: 'Chirkut', duration: '4:24', img: 'https://i.ytimg.com/vi/XiAO-XjeHdI/hqdefault.jpg' },
       { videoId: 'SFJeglBF5cg', title: 'Dugga Elo', artist: 'Monali Thakur', duration: '2:27', img: 'https://i.ytimg.com/vi/SFJeglBF5cg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAb5Sk7tUpdGaM9DFnM5n0IcSTHTQ' },
       { videoId: 'FBOt8rMUcio', title: 'Dugga Ma', artist: 'Release - Topic', duration: '4:31', img: 'https://i.ytimg.com/vi/FBOt8rMUcio/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1Yr9z6xt40020vS0oyO8-5xHYUw' },
