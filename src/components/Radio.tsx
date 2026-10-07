@@ -304,10 +304,11 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     if (power && ytPlayer) {
       const currentList = PLAYLIST_DATA[activeCat];
       if (currentList && currentList[activeSong]) {
+        const startSec = activeCat === 'MAHALAYA SONGS' ? 3 : 0;
         if (userInteractedRef.current) {
-          ytPlayer.loadVideoById(currentList[activeSong].videoId);
+          ytPlayer.loadVideoById(currentList[activeSong].videoId, startSec);
         } else {
-          ytPlayer.cueVideoById(currentList[activeSong].videoId);
+          ytPlayer.cueVideoById(currentList[activeSong].videoId, startSec);
         }
         // Reset interaction flag after acting on it
         userInteractedRef.current = false;
@@ -716,7 +717,10 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                     userInteractedRef.current = true;
                     setActiveCat(browseCat);
                     setActiveSong(idx); 
-                    if (ytPlayer) ytPlayer.loadVideoById(PLAYLIST_DATA[browseCat][idx].videoId);
+                    if (ytPlayer) {
+                      const startSec = browseCat === 'MAHALAYA SONGS' ? 3 : 0;
+                      ytPlayer.loadVideoById(PLAYLIST_DATA[browseCat][idx].videoId, startSec);
+                    }
                   }
                   setShowPlaylist(false); 
                 }}
