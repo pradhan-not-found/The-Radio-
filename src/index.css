@@ -1069,7 +1069,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 30px;
   padding: 6px 6px 6px 20px;
-  width: 100%;
   max-width: 100%;
   box-sizing: border-box;
 }
@@ -1084,7 +1083,7 @@ body {
   overflow: hidden;
   text-overflow: ellipsis;
   min-width: 0;
-  flex: 1;
+  flex: 0 1 auto;
 }
 
 .copy-btn {
