@@ -1559,6 +1559,7 @@ body {
 
 .digital-ctrl-btn.toggle-btn:hover:not(:disabled) {
   background: #FFF;
+  color: #111;
   transform: scale(1.05);
 }
 

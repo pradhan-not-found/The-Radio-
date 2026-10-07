@@ -522,7 +522,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                         userInteractedRef.current = true;
                       }}
                     >
-                      <div style={{ width: `${progress}%`, height: '100%', background: '#fff', borderRadius: '2px' }} />
+                      <div style={{ width: `${progress}%`, height: '100%', background: '#fff', borderRadius: '2px', transition: 'width 0.3s linear' }} />
                     </div>
                     <span>{durationStr !== '0:00' ? durationStr : (PLAYLIST_DATA[activeCat]?.[activeSong]?.duration || '0:00')}</span>
                   </div>
