@@ -350,19 +350,11 @@ export function App() {
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
               <h3 className="modal-subtitle" style={{ color: '#8a2b2b', fontFamily: "'SeasonMix', serif", fontSize: 'clamp(28px, 8vw, 42px)', border: 'none', letterSpacing: '1px', marginBottom: '8px', textTransform: 'none', textAlign: 'center' }}>Puja Calendar</h3>
-              <div style={{ 
-                width: '180px', 
+              <img src={alponaImg} alt="" style={{ 
                 height: '24px', 
-                backgroundColor: '#8a2b2b', 
-                maskImage: `url(${alponaImg})`, 
-                WebkitMaskImage: `url(${alponaImg})`, 
-                maskSize: 'contain', 
-                WebkitMaskSize: 'contain', 
-                maskRepeat: 'no-repeat', 
-                WebkitMaskRepeat: 'no-repeat', 
-                maskPosition: 'center', 
-                WebkitMaskPosition: 'center',
-                opacity: 0.9
+                width: 'auto', 
+                opacity: 0.85, 
+                filter: 'invert(19%) sepia(35%) saturate(3015%) hue-rotate(336deg) brightness(85%) contrast(85%)' 
               }} />
             </div>
 
