@@ -246,12 +246,6 @@ export function App() {
                 bgColor="#E8E5DD"
                 fgColor="#1a1a1a"
                 level="H"
-                imageSettings={{
-                  src: "/favicon.ico",
-                  height: 40,
-                  width: 40,
-                  excavate: true,
-                }}
               />
             </div>
 

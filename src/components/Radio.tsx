@@ -191,6 +191,44 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [modeIdx,  setModeIdx]  = useState(1); // 0: AFC, 1: FM, 2: Digital
   const [presets,  setPresets]  = useState<PresetSlot[]>(loadPresets);
 
+  const [bgPlayEnabled, setBgPlayEnabled] = useState(false);
+  const [showBgModal, setShowBgModal] = useState(false);
+  const silentAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    // 1-sample silent WAV to force iOS/Android to keep AudioContext and background threads alive
+    const audio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+    audio.loop = true;
+    silentAudioRef.current = audio;
+    return () => { audio.pause(); };
+  }, []);
+
+  const handleAntennaClick = () => {
+    playKnobTick();
+    if (!bgPlayEnabled) {
+      setShowBgModal(true);
+    } else {
+      setBgPlayEnabled(false);
+      if (silentAudioRef.current) silentAudioRef.current.pause();
+      if ('mediaSession' in navigator) navigator.mediaSession.metadata = null;
+    }
+  };
+
+  const enableBackgroundPlay = () => {
+    playKnobThud();
+    setBgPlayEnabled(true);
+    setShowBgModal(false);
+    if (silentAudioRef.current) silentAudioRef.current.play().catch(() => {});
+    
+    if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'The Radio',
+        artist: 'Devi Paksha Edition',
+        album: 'Background Play Active'
+      });
+    }
+  };
+
 
   const PLAYLIST_DATA: Record<string, { videoId: string, title: string, artist: string, duration: string, img: string }[]> = {
 
@@ -433,16 +471,101 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     <>
     <div className={`radio-shell ${power?"on":"off"}`}>
       
-      {/* Realistic Telescoping Antenna mounted on the back */}
-      <div className="antenna-wrapper">
-        <div className="antenna-segment seg-4">
-          <div className="antenna-tip" />
-        </div>
-        <div className="antenna-segment seg-3" />
-        <div className="antenna-segment seg-2" />
-        <div className="antenna-segment seg-1" />
-        <div className="antenna-base" />
+      {/* Interactive Antenna Button */}
+      <div 
+        onClick={handleAntennaClick}
+        style={{
+          position: 'absolute',
+          top: bgPlayEnabled ? '-120px' : '-40px',
+          left: '40px',
+          width: '14px',
+          height: '140px',
+          background: 'linear-gradient(to right, #999, #eee, #999)',
+          borderTopLeftRadius: '7px',
+          borderTopRightRadius: '7px',
+          cursor: 'pointer',
+          zIndex: 1, // Behind the body but visible above
+          transition: 'top 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)',
+          boxShadow: 'inset 0 0 6px rgba(0,0,0,0.4), 2px 0 6px rgba(0,0,0,0.3)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+        title="Toggle Background Play"
+      >
+        <div style={{
+          width: '20px',
+          height: '20px',
+          background: 'radial-gradient(circle at 30% 30%, #fff, #888)',
+          borderRadius: '50%',
+          marginTop: '-6px',
+          boxShadow: '0 2px 6px rgba(0,0,0,0.4)'
+        }} />
       </div>
+
+      {/* Background Play Modal */}
+      {showBgModal && (
+        <div style={{
+          position: 'absolute',
+          top: 0, left: 0, width: '100%', height: '100%',
+          backgroundColor: 'rgba(0,0,0,0.6)',
+          backdropFilter: 'blur(4px)',
+          zIndex: 1000,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderRadius: '24px'
+        }}>
+          <div style={{
+            background: 'linear-gradient(to bottom, #eae8e1, #d4d0c8)',
+            padding: '24px',
+            borderRadius: '12px',
+            width: '320px',
+            boxShadow: '0 20px 40px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.8)',
+            border: '1px solid #b8b3a7',
+            textAlign: 'center'
+          }}>
+            <h3 style={{ margin: '0 0 16px 0', color: '#4a3b34', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>BACKGROUND PLAY</h3>
+            <p style={{ color: '#7a6358', fontSize: '15px', marginBottom: '24px', lineHeight: 1.5, fontFamily: 'sans-serif' }}>
+              Extend the antenna to enable Background Playback? This will keep the radio playing even when you lock your screen or switch apps.
+            </p>
+            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+              <button 
+                onClick={enableBackgroundPlay}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: 'linear-gradient(to bottom, #8a2b2b, #6b2121)',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                }}
+              >
+                ENABLE
+              </button>
+              <button 
+                onClick={() => { playKnobTick(); setShowBgModal(false); }}
+                style={{
+                  flex: 1,
+                  padding: '12px',
+                  background: 'linear-gradient(to bottom, #d4d0c8, #b8b3a7)',
+                  color: '#4a3b34',
+                  border: '1px solid #a8a397',
+                  borderRadius: '6px',
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                }}
+              >
+                CANCEL
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* ── DIAL PANEL (Top half) ── */}
       <div className="top-panel">
