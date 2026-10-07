@@ -144,9 +144,9 @@ export function App() {
           <span>{onlineCount} Online</span>
         </div>
         <div className="nav-divider" />
-        <div className="countdown" style={{ gap: '8px' }}>
+        <div className="countdown" style={{ gap: '6px' }}>
           {daysLeft} Days to Pujo
-          <img src={flower1Img} alt="" style={{ height: '22px', width: 'auto', opacity: 0.9, transform: 'translateY(-1px)' }} />
+          <img src={flower1Img} alt="" style={{ height: '1.6em', width: 'auto', opacity: 0.9, transform: 'translateY(2px)' }} />
         </div>
       </div>
 

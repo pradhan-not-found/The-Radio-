@@ -17,8 +17,15 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { overflow-x: hidden; }
-html, body, #root { min-height: 100%; }
+html, body { 
+  overflow: hidden; 
+  height: 100%;
+  overscroll-behavior: none;
+}
+html, body, #root { 
+  height: 100%; 
+  overflow: hidden; 
+}
 
 img {
   pointer-events: none;
@@ -1951,18 +1958,10 @@ body {
 }
 
 .playlist-tracks::-webkit-scrollbar {
-  width: 6px;
+  display: none;
 }
-.playlist-tracks::-webkit-scrollbar-track {
-  background: rgba(0,0,0,0.1);
-  border-radius: 10px;
-}
-.playlist-tracks::-webkit-scrollbar-thumb {
-  background: rgba(255,255,255,0.1);
-  border-radius: 10px;
-}
-.playlist-tracks::-webkit-scrollbar-thumb:hover {
-  background: rgba(255,255,255,0.2);
+.playlist-tracks {
+  scrollbar-width: none;
 }
 
 .playlist-track-row {
