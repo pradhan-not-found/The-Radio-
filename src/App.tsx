@@ -140,6 +140,11 @@ export function App() {
     day: "numeric",
     year: "numeric"
   });
+  const formattedTime = now.toLocaleTimeString("en-US", {
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true
+  });
 
   const pujoDate = new Date("2026-10-16T00:00:00");
   const daysLeft = Math.max(0, Math.ceil((pujoDate.getTime() - now.getTime()) / (1000 * 3600 * 24)));
@@ -151,6 +156,7 @@ export function App() {
       
       <div className="occasion-text">
         <div className="date">{formattedDate}</div>
+        <div className="time">{formattedTime}</div>
         <div className="greeting">
           {greetingInfo.text} {greetingInfo.isFestive && <span className="lotus">🪷</span>}
         </div>

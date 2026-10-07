@@ -67,6 +67,14 @@ body {
   letter-spacing: 0.5px;
 }
 
+.occasion-text .time {
+  color: #7a6358;
+  font-size: 22px;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+  margin-top: -2px;
+}
+
 .occasion-text .greeting {
   color: #9c3c31; /* Deep rich terracotta/burgundy */
   font-size: 46px;
@@ -1678,6 +1686,7 @@ body {
     max-width: calc(100vw - 180px);
   }
   .occasion-text .date { font-size: 16px; }
+  .occasion-text .time { font-size: 14px; margin-top: -2px; }
   .occasion-text .greeting { 
     font-size: 24px; 
     white-space: normal;
