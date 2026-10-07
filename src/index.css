@@ -20,6 +20,12 @@
 html, body { overflow-x: hidden; }
 html, body, #root { min-height: 100%; }
 
+img {
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
 body {
   font-family: 'Switzer', sans-serif;
   background: #f4ede4; /* Professional whitish skinnish color */
