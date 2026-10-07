@@ -17,8 +17,20 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { overflow-x: hidden; }
-html, body, #root { min-height: 100%; }
+html, body { 
+  overflow: hidden; 
+  height: 100%;
+  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  touch-action: none; /* Disable native browser gestures like swipe-to-refresh on the root */
+}
+#root { 
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
 
 img {
   pointer-events: none;
@@ -948,6 +960,7 @@ body {
   overflow-x: hidden; /* Contains the flowers within the rounded corners */
   overflow-y: auto;
   scrollbar-width: none; /* Hide scrollbar for Firefox */
+  touch-action: pan-y;
 }
 
 .creators-modal-large::-webkit-scrollbar {
@@ -1641,6 +1654,7 @@ body {
   overflow: hidden !important;
   display: flex;
   flex-direction: column;
+  touch-action: none;
 }
 
 .calendar-row {
