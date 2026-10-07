@@ -1031,8 +1031,7 @@ body {
   height: 120px;
   border-radius: 50%;
   object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.15);
-  padding: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   background: #e4dbcd;
   background-image: linear-gradient(to right, #e4dbcd 0%, #f2ebd9 20%, #e4dbcd 40%, #e4dbcd 100%);
   background-repeat: no-repeat;
