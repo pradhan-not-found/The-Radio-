@@ -17,20 +17,8 @@
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html, body { 
-  overflow: hidden; 
-  height: 100%;
-  width: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  touch-action: none; /* Disable native browser gestures like swipe-to-refresh on the root */
-}
-#root { 
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
-}
+html, body { overflow-x: hidden; }
+html, body, #root { min-height: 100%; }
 
 img {
   pointer-events: none;
@@ -45,6 +33,8 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: hidden;
+  touch-action: none;
   padding: 40px;
   position: relative;
   overflow: hidden; /* Prevent scrollbars from decorative flowers */
