@@ -6,6 +6,7 @@ import souradeep from "./assets/souradeep.png";
 import spotify from "./assets/spotify.png";
 import { QRCodeCanvas } from 'qrcode.react';
 import flower1Img from "./assets/flower1.png";
+import alponaImg from "./assets/alpona.png";
 const PUJA_DATES: Record<string, string> = {
   "10-10": "Subho Mahalaya",
   "10-11": "Subho Prothoma",
@@ -334,24 +335,24 @@ export function App() {
               </svg>
             </button>
 
-            <button className="download-btn" data-html2canvas-ignore onClick={handleDownload} title="Download Calendar" style={{ position: 'absolute', top: '16px', left: '16px', background: '#f4ede4', color: '#1a1a1a', border: 'none', borderRadius: '50%', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', boxShadow: '0 4px 12px rgba(0,0,0,0.1)' }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
-                <polyline points="7 10 12 15 17 10"></polyline>
-                <line x1="12" y1="15" x2="12" y2="3"></line>
-              </svg>
-            </button>
+
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
               <h3 className="modal-subtitle" style={{ color: '#8a2b2b', fontFamily: "'SeasonMix', serif", fontSize: 'clamp(28px, 8vw, 42px)', border: 'none', letterSpacing: '1px', marginBottom: '8px', textTransform: 'none', textAlign: 'center' }}>Puja Calendar</h3>
-              <svg width="120" height="20" viewBox="0 0 120 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10 10C30 10 30 0 50 0C70 0 70 10 90 10C110 10 110 20 130 20C150 20 150 10 170 10" stroke="#8a2b2b" strokeWidth="1.5" strokeLinecap="round" strokeDasharray="4 4" opacity="0.4" transform="scale(0.6) translate(10, 5)"/>
-                <circle cx="60" cy="10" r="4" fill="#8a2b2b" opacity="0.6" />
-                <path d="M50 10 L45 5 L55 5 Z" fill="#d4af37" transform="rotate(45 50 10)" opacity="0.8"/>
-                <path d="M70 10 L65 5 L75 5 Z" fill="#d4af37" transform="rotate(-45 70 10)" opacity="0.8"/>
-                <line x1="10" y1="10" x2="40" y2="10" stroke="#d4af37" strokeWidth="1" opacity="0.5"/>
-                <line x1="80" y1="10" x2="110" y2="10" stroke="#d4af37" strokeWidth="1" opacity="0.5"/>
-              </svg>
+              <div style={{ 
+                width: '180px', 
+                height: '24px', 
+                backgroundColor: '#8a2b2b', 
+                maskImage: `url(${alponaImg})`, 
+                WebkitMaskImage: `url(${alponaImg})`, 
+                maskSize: 'contain', 
+                WebkitMaskSize: 'contain', 
+                maskRepeat: 'no-repeat', 
+                WebkitMaskRepeat: 'no-repeat', 
+                maskPosition: 'center', 
+                WebkitMaskPosition: 'center',
+                opacity: 0.9
+              }} />
             </div>
 
             <div className="calendar-dates-container" style={{ display: 'flex', flexDirection: 'column', gap: '10px', width: '100%', overflowY: 'auto', flex: 1, minHeight: 0, paddingRight: '8px' }}>
@@ -371,6 +372,38 @@ export function App() {
                 );
               })}
             </div>
+            
+            <button className="download-btn-professional" data-html2canvas-ignore onClick={handleDownload} style={{ 
+              marginTop: '24px', 
+              width: '100%', 
+              padding: '14px', 
+              background: '#8a2b2b', 
+              color: '#fffdf7', 
+              border: 'none', 
+              borderRadius: '12px', 
+              fontSize: '15px', 
+              fontFamily: "'Inter', sans-serif",
+              fontWeight: 600, 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              gap: '10px', 
+              cursor: 'pointer', 
+              boxShadow: '0 6px 16px rgba(138, 43, 43, 0.25)', 
+              transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)' 
+            }}
+            onMouseOver={(e) => { e.currentTarget.style.filter = 'brightness(1.15)'; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            onMouseOut={(e) => { e.currentTarget.style.filter = 'brightness(1)'; e.currentTarget.style.transform = 'translateY(0)'; }}
+            onMouseDown={(e) => { e.currentTarget.style.transform = 'scale(0.97)'; }}
+            onMouseUp={(e) => { e.currentTarget.style.transform = 'translateY(-2px)'; }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Save Calendar
+            </button>
             
             <div id="calendar-watermark" style={{ display: 'none', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '48px', paddingTop: '24px', borderTop: '1px solid rgba(138,43,43,0.15)', gap: '12px', width: '100%' }}>
               <img src="/favicon.ico" alt="The Radio" style={{ width: '48px', height: '48px', filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))' }} loading="eager" fetchPriority="high" />
