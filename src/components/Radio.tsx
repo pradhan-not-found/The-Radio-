@@ -195,8 +195,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const PLAYLIST_DATA: Record<string, { videoId: string, title: string, artist: string, duration: string, img: string }[]> = {
 
     'MAHALAYA': [
-      { videoId: '8IPKUkGPh4E', title: 'Mahisasuramardini', artist: 'Birendra Krishna Bhadra', duration: '1:28:00', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' },
-      { videoId: '1Yycc3tejNw', title: 'Ya Chandi', artist: 'Chorus', duration: '4:15', img: 'https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=100&q=80' }
+      { videoId: '8IPKUkGPh4E', title: 'Mahisasuramardini', artist: 'Birendra Krishna Bhadra', duration: '1:28:00', img: 'https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=100&q=80' }
     ],
     'MAHALAYA SONGS': [
       { videoId: '8FytVk54-dw', title: 'Ya Chandi with lyrics | Chorus | Pankaj Kumar Mullick | Bani Kumar', artist: 'Saregama Bengali', duration: '2:03', img: 'https://i.ytimg.com/vi_webp/8FytVk54-dw/maxresdefault.webp' },
@@ -401,8 +400,18 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
 
   const togglePower = async (next = !power) => {
-    if (next) playPowerOn();
-    else playPowerOff();
+    if (next) {
+      playPowerOn();
+      // Auto-play Mahalaya on October 10th
+      const today = new Date();
+      if (today.getMonth() === 9 && today.getDate() === 10) {
+        userInteractedRef.current = true;
+        setActiveCat('MAHALAYA');
+        setActiveSong(0);
+      }
+    } else {
+      playPowerOff();
+    }
     setPower(next);
     onPowerChange?.(next);
     await radioAudio.power(next);

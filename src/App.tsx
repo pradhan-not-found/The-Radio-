@@ -53,7 +53,25 @@ export function App() {
   const [activePopup, setActivePopup] = useState<string | null>(null);
   const [radioPower, setRadioPower] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
+  const [coloredAlpona, setColoredAlpona] = useState<string>(alponaImg);
 
+  useEffect(() => {
+    const img = new Image();
+    img.src = alponaImg;
+    img.crossOrigin = "Anonymous";
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.width;
+      canvas.height = img.height;
+      const ctx = canvas.getContext("2d");
+      if (!ctx) return;
+      ctx.drawImage(img, 0, 0);
+      ctx.globalCompositeOperation = "source-in";
+      ctx.fillStyle = "#8a2b2b";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      setColoredAlpona(canvas.toDataURL("image/png"));
+    };
+  }, []);
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
     setCopiedText(text);
@@ -350,11 +368,10 @@ export function App() {
 
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '32px' }}>
               <h3 className="modal-subtitle" style={{ color: '#8a2b2b', fontFamily: "'SeasonMix', serif", fontSize: 'clamp(28px, 8vw, 42px)', border: 'none', letterSpacing: '1px', marginBottom: '8px', textTransform: 'none', textAlign: 'center' }}>Puja Calendar</h3>
-              <img src={alponaImg} alt="" style={{ 
+              <img src={coloredAlpona} alt="" crossOrigin="anonymous" style={{ 
                 height: '24px', 
                 width: 'auto', 
-                opacity: 0.85, 
-                filter: 'invert(19%) sepia(35%) saturate(3015%) hue-rotate(336deg) brightness(85%) contrast(85%)' 
+                opacity: 0.85
               }} />
             </div>
 
