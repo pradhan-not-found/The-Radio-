@@ -673,6 +673,50 @@ body {
   background: rgba(255, 255, 255, 0.15);
 }
 
+.nav-tooltip-container {
+  position: relative;
+}
+
+.custom-tooltip {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%) translateY(5px);
+  background: rgba(20, 18, 16, 0.95);
+  color: #E8E5DD;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  pointer-events: none;
+  z-index: 100;
+}
+
+.custom-tooltip::after {
+  content: '';
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: transparent transparent rgba(20, 18, 16, 0.95) transparent;
+}
+
+.nav-tooltip-container:hover .custom-tooltip {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+}
+
 /* ═══════════════════════════════════════════
    CENTER PILL (Live Status & Countdown)
    ═══════════════════════════════════════════ */
