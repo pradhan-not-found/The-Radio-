@@ -1,6 +1,7 @@
 import { Component, type ReactNode } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./App";
+import { ContentPage } from "./ContentPage";
 import "./index.css";
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | null }> {
@@ -21,6 +22,6 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: Error | 
 
 createRoot(document.getElementById("root")!).render(
   <ErrorBoundary>
-    <App />
+    {window.location.pathname === '/content' ? <ContentPage /> : <App />}
   </ErrorBoundary>,
 );
