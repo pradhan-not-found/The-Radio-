@@ -243,16 +243,16 @@ export function App() {
             <div className="qr-box-large">
               <QRCodeCanvas
                 value="upi://pay?pa=souradeeppradhan7@okicici&pn=The%20Radio&cu=INR"
-                size={200}
-                style={{ width: '100%', height: '100%', maxWidth: '170px', maxHeight: '170px', objectFit: 'contain' }}
+                size={220} // Render large for crispness
+                style={{ width: '100%', height: '100%' }} // Fluidly fill the responsive CSS container
                 bgColor="#E8E5DD"
                 fgColor="#1a1a1a"
                 level="H"
                 imageSettings={{
                   src: logo1Img,
-                  height: 42,
-                  width: 42,
-                  excavate: false,
+                  height: 40,
+                  width: 40,
+                  excavate: true, // Clear dots behind logo for 100% universal scanner compatibility
                 }}
               />
             </div>

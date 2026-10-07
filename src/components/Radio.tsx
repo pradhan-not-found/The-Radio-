@@ -473,46 +473,67 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     <>
     <div className={`radio-shell ${power?"on":"off"}`}>
       
-      {/* Realistic Top-Mounted 3D Physical Button for Background Play */}
-      <button 
+      {/* Ultra-Realistic 3D Pop-up Button for Background Play */}
+      <div 
         onClick={handleAntennaClick}
         style={{
           position: 'absolute',
-          top: bgPlayEnabled ? '-8px' : '-18px', // Physical travel distance
+          top: bgPlayEnabled ? '-10px' : '-24px', 
           left: '60px',
           width: '32px',
-          height: bgPlayEnabled ? '8px' : '18px', // The physical block height changes to simulate sinking into the chassis
-          borderRadius: '4px 4px 0 0',
-          background: bgPlayEnabled 
-            ? 'linear-gradient(to bottom, #732828, #4a1818)' // Deep burgundy when pressed
-            : 'linear-gradient(to bottom, #4a4a4a, #2a2a2a)', // Dark grey plastic when popped out
-          border: '1px solid #111',
-          borderBottom: 'none',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'flex-start',
-          paddingTop: bgPlayEnabled ? '1px' : '4px', // Keep LED near top face
+          height: '34px', // Extends down behind the chassis
+          zIndex: -1, // Slides out from behind the radio body perfectly
           cursor: 'pointer',
-          boxShadow: bgPlayEnabled 
-            ? 'inset 0 1px 3px rgba(0,0,0,0.8), 0 -1px 4px rgba(138,43,43,0.5)' // Pressed down, dark inner shadow
-            : 'inset 0 2px 2px rgba(255,255,255,0.4), inset 1px 0 2px rgba(255,255,255,0.1), inset -1px 0 2px rgba(0,0,0,0.5), 0 -2px 6px rgba(0,0,0,0.3)', // Popped out 3D lighting with top shadow
-          zIndex: 1, // Flush with the top edge
-          transition: 'all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+          transition: 'top 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
         }}
         title="Toggle Background Play"
       >
-        {/* Realistic Drill-hole LED Indicator */}
+        {/* The Stem / Vertical side of the button popping out */}
         <div style={{
-          width: '8px',
-          height: '4px',
-          borderRadius: '2px',
-          background: bgPlayEnabled ? '#ff4d4d' : '#111',
-          boxShadow: bgPlayEnabled 
-            ? '0 0 10px #ff4d4d, inset 0 1px 1px rgba(255,255,255,0.5)' 
-            : 'inset 0 1px 3px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.2)',
-          transition: 'all 0.2s'
+          position: 'absolute',
+          bottom: 0,
+          left: '2px',
+          width: '28px',
+          height: '100%',
+          background: 'linear-gradient(90deg, #1a1a1a, #3a3a3a 30%, #444 70%, #1a1a1a)',
+          borderLeft: '1px solid #000',
+          borderRight: '1px solid #000',
+          boxShadow: 'inset 0 0 6px rgba(0,0,0,0.6)'
         }}/>
-      </button>
+
+        {/* The Top Face / Cap of the button (what your finger presses) */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '32px',
+          height: '14px',
+          background: bgPlayEnabled 
+            ? 'linear-gradient(180deg, #8a2b2b, #591b1b)' 
+            : 'linear-gradient(180deg, #5c5c5c, #3a3a3a)',
+          border: '1px solid #111',
+          borderRadius: '4px',
+          boxShadow: bgPlayEnabled 
+            ? 'inset 0 1px 1px rgba(255,255,255,0.3), 0 1px 3px rgba(0,0,0,0.8)' 
+            : 'inset 0 1px 1px rgba(255,255,255,0.5), 0 3px 5px rgba(0,0,0,0.6)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          transition: 'all 0.2s'
+        }}>
+          {/* LED Indicator Light */}
+          <div style={{
+            width: '6px',
+            height: '6px',
+            borderRadius: '50%',
+            background: bgPlayEnabled ? '#ff4d4d' : '#111',
+            boxShadow: bgPlayEnabled 
+              ? '0 0 8px #ff4d4d, inset 0 1px 1px rgba(255,255,255,0.5)' 
+              : 'inset 0 1px 2px rgba(0,0,0,0.9)',
+            transition: 'all 0.2s'
+          }}/>
+        </div>
+      </div>
 
       {/* Realistic Telescoping Antenna mounted on the back (Right side) */}
       <div className="antenna-wrapper">
