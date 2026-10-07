@@ -1248,12 +1248,6 @@ body {
   .countdown {
     font-size: 12px;
   }
-  .top-nav {
-    top: 16px;
-    right: 16px;
-    padding: 4px 12px;
-    gap: 12px;
-  }
 }
 
 /* ═══════════════════════════════════════════
@@ -1634,12 +1628,14 @@ body {
   }
 
   .top-nav {
-    top: 24px;
-    right: 24px;
-    bottom: auto;
-    transform: none;
-    padding: 8px 12px;
-    gap: 12px;
+    top: auto;
+    bottom: 32px;
+    right: 50%;
+    transform: translateX(50%);
+    padding: 10px 20px;
+    gap: 16px;
+    border-radius: 40px;
+    background: rgba(30, 28, 26, 0.95);
   }
   .nav-svg { width: 16px; height: 16px; }
   .spotify-link img { width: 18px; height: 18px; }
@@ -1781,10 +1777,6 @@ body {
     font-size: 28px;
   }
   
-  .top-nav {
-    top: 84px;
-    right: 16px;
-  }
 }
 
 /* ═══════════════════════════════════════════
