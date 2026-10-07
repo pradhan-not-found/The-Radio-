@@ -777,10 +777,10 @@ body {
 .countdown {
   display: flex;
   align-items: center;
-  font-family: 'Switzer', sans-serif;
-  font-weight: 500;
-  font-size: 14px;
-  letter-spacing: 0;
+  font-family: 'SeasonMix', serif;
+  font-weight: normal;
+  font-size: 18px;
+  letter-spacing: 0.5px;
   transform: translateY(1px); /* Precise font baseline correction */
 }
 
@@ -1300,7 +1300,7 @@ body {
     font-size: 11px;
   }
   .countdown {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
@@ -1830,7 +1830,7 @@ body {
   }
 
   .countdown {
-    font-size: 12px;
+    font-size: 14px;
   }
   
   .occasion-text .greeting {
