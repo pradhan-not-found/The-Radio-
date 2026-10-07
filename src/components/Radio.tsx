@@ -191,7 +191,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [modeIdx,  setModeIdx]  = useState(1); // 0: AFC, 1: FM, 2: Digital
   const [presets,  setPresets]  = useState<PresetSlot[]>(loadPresets);
 
-  const [bgPlayEnabled, setBgPlayEnabled] = useState(false);
+  const [bgPlayEnabled, setBgPlayEnabled] = useState(() => localStorage.getItem('bgPlayEnabled') === 'true');
   const [showBgModal, setShowBgModal] = useState(false);
   const silentAudioRef = useRef<HTMLAudioElement | null>(null);
 
@@ -209,6 +209,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       setShowBgModal(true);
     } else {
       setBgPlayEnabled(false);
+      localStorage.setItem('bgPlayEnabled', 'false');
       if (silentAudioRef.current) silentAudioRef.current.pause();
       if ('mediaSession' in navigator) navigator.mediaSession.metadata = null;
     }
@@ -217,6 +218,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const enableBackgroundPlay = () => {
     playKnobThud();
     setBgPlayEnabled(true);
+    localStorage.setItem('bgPlayEnabled', 'true');
     setShowBgModal(false);
     if (silentAudioRef.current) silentAudioRef.current.play().catch(() => {});
     
@@ -471,7 +473,48 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     <>
     <div className={`radio-shell ${power?"on":"off"}`}>
       
-      {/* Realistic Telescoping Antenna mounted on the back */}
+      {/* Realistic Top-Mounted 3D Physical Button for Background Play */}
+      <button 
+        onClick={handleAntennaClick}
+        style={{
+          position: 'absolute',
+          top: bgPlayEnabled ? '-8px' : '-18px', // Physical travel distance
+          left: '60px',
+          width: '32px',
+          height: bgPlayEnabled ? '8px' : '18px', // The physical block height changes to simulate sinking into the chassis
+          borderRadius: '4px 4px 0 0',
+          background: bgPlayEnabled 
+            ? 'linear-gradient(to bottom, #732828, #4a1818)' // Deep burgundy when pressed
+            : 'linear-gradient(to bottom, #4a4a4a, #2a2a2a)', // Dark grey plastic when popped out
+          border: '1px solid #111',
+          borderBottom: 'none',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'flex-start',
+          paddingTop: bgPlayEnabled ? '1px' : '4px', // Keep LED near top face
+          cursor: 'pointer',
+          boxShadow: bgPlayEnabled 
+            ? 'inset 0 1px 3px rgba(0,0,0,0.8), 0 -1px 4px rgba(138,43,43,0.5)' // Pressed down, dark inner shadow
+            : 'inset 0 2px 2px rgba(255,255,255,0.4), inset 1px 0 2px rgba(255,255,255,0.1), inset -1px 0 2px rgba(0,0,0,0.5), 0 -2px 6px rgba(0,0,0,0.3)', // Popped out 3D lighting with top shadow
+          zIndex: 1, // Flush with the top edge
+          transition: 'all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+        }}
+        title="Toggle Background Play"
+      >
+        {/* Realistic Drill-hole LED Indicator */}
+        <div style={{
+          width: '8px',
+          height: '4px',
+          borderRadius: '2px',
+          background: bgPlayEnabled ? '#ff4d4d' : '#111',
+          boxShadow: bgPlayEnabled 
+            ? '0 0 10px #ff4d4d, inset 0 1px 1px rgba(255,255,255,0.5)' 
+            : 'inset 0 1px 3px rgba(0,0,0,0.9), 0 1px 0 rgba(255,255,255,0.2)',
+          transition: 'all 0.2s'
+        }}/>
+      </button>
+
+      {/* Realistic Telescoping Antenna mounted on the back (Right side) */}
       <div className="antenna-wrapper">
         <div className="antenna-segment seg-4">
           <div className="antenna-tip" />
@@ -496,31 +539,32 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
           borderRadius: '24px'
         }}>
           <div style={{
-            background: 'linear-gradient(to bottom, #eae8e1, #d4d0c8)',
-            padding: '24px',
-            borderRadius: '12px',
-            width: '320px',
-            boxShadow: '0 20px 40px rgba(0,0,0,0.5), inset 0 2px 4px rgba(255,255,255,0.8)',
-            border: '1px solid #b8b3a7',
-            textAlign: 'center'
+            background: '#E8E5DD', // Solid beige to match screenshot exactly
+            padding: '24px 32px',
+            borderRadius: '8px',
+            width: '340px',
+            boxShadow: '0 24px 48px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(255,255,255,0.5)',
+            textAlign: 'center',
+            fontFamily: "'SeasonMix', serif"
           }}>
-            <h3 style={{ margin: '0 0 16px 0', color: '#4a3b34', fontFamily: "'Courier New', Courier, monospace", fontWeight: 'bold' }}>BACKGROUND PLAY</h3>
-            <p style={{ color: '#7a6358', fontSize: '15px', marginBottom: '24px', lineHeight: 1.5, fontFamily: 'sans-serif' }}>
-              Extend the antenna to enable Background Playback? This will keep the radio playing even when you lock your screen or switch apps.
+            <h3 style={{ margin: '0 0 16px 0', color: '#8a2b2b', fontSize: '24px', fontWeight: 'bold' }}>BACKGROUND PLAY</h3>
+            <p style={{ color: '#554d44', fontSize: '17px', marginBottom: '28px', lineHeight: 1.35 }}>
+              If you want to enable background play, do you want to enable it?
             </p>
-            <div style={{ display: 'flex', gap: '12px', justifyContent: 'center' }}>
+            <div style={{ display: 'flex', gap: '16px', justifyContent: 'center' }}>
               <button 
                 onClick={enableBackgroundPlay}
                 style={{
                   flex: 1,
-                  padding: '12px',
-                  background: 'linear-gradient(to bottom, #8a2b2b, #6b2121)',
-                  color: 'white',
-                  border: 'none',
+                  padding: '12px 0',
+                  background: '#732828',
+                  color: '#ffffff',
+                  border: '1px solid #4a1818',
                   borderRadius: '6px',
-                  cursor: 'pointer',
                   fontWeight: 'bold',
-                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                  fontSize: '15px',
+                  cursor: 'pointer',
+                  boxShadow: 'inset 0 1px 1px rgba(255,255,255,0.1), 0 2px 4px rgba(0,0,0,0.15)'
                 }}
               >
                 ENABLE
@@ -529,14 +573,15 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                 onClick={() => { playKnobTick(); setShowBgModal(false); }}
                 style={{
                   flex: 1,
-                  padding: '12px',
-                  background: 'linear-gradient(to bottom, #d4d0c8, #b8b3a7)',
+                  padding: '12px 0',
+                  background: 'linear-gradient(to bottom, #dcd9d0, #b5b0a1)',
                   color: '#4a3b34',
-                  border: '1px solid #a8a397',
+                  border: '1px solid #a39e8e',
                   borderRadius: '6px',
-                  cursor: 'pointer',
                   fontWeight: 'bold',
-                  boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                  fontSize: '15px',
+                  cursor: 'pointer',
+                  boxShadow: 'inset 0 1px 2px rgba(255,255,255,0.7), 0 2px 4px rgba(0,0,0,0.15)'
                 }}
               >
                 CANCEL
@@ -550,35 +595,6 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       <div className="top-panel" style={{ position: 'relative' }}>
         
         <div className="scale-display" style={{ display: 'flex', alignItems: 'stretch', position: 'relative' }}>
-          
-          {/* Small Button for Background Play (styled like screenshot) */}
-          <button 
-            onClick={handleAntennaClick}
-            style={{
-              position: 'absolute',
-              top: '-12px',
-              left: '-12px',
-              width: '24px',
-              height: '24px',
-              borderRadius: '50%',
-              background: bgPlayEnabled ? 'linear-gradient(to bottom, #8a2b2b, #591b1b)' : 'linear-gradient(to bottom, #444, #222)',
-              border: '1.5px solid #E8E5DD',
-              color: bgPlayEnabled ? '#fff' : '#ccc',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              cursor: 'pointer',
-              boxShadow: bgPlayEnabled ? '0 0 10px rgba(138,43,43,0.8), 0 2px 4px rgba(0,0,0,0.5)' : '0 2px 4px rgba(0,0,0,0.5)',
-              zIndex: 10,
-              padding: 0,
-              transition: 'all 0.2s ease'
-            }}
-            title="Background Play"
-          >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ width: '12px', height: '12px', opacity: 0.9 }}>
-              <path d="M12 19V5M5 12l7-7 7 7" />
-            </svg>
-          </button>
 
           {modeIdx !== 2 ? (
             <>
