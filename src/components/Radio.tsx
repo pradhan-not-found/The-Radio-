@@ -193,15 +193,20 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
   const [bgPlayEnabled, setBgPlayEnabled] = useState(() => localStorage.getItem('bgPlayEnabled') === 'true');
   const [showBgModal, setShowBgModal] = useState(false);
-  const silentAudioRef = useRef<HTMLAudioElement | null>(null);
 
+  // Sync media session metadata when background play is toggled
   useEffect(() => {
-    // 1-sample silent WAV to force iOS/Android to keep AudioContext and background threads alive
-    const audio = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
-    audio.loop = true;
-    silentAudioRef.current = audio;
-    return () => { audio.pause(); };
-  }, []);
+    if (bgPlayEnabled && power && 'mediaSession' in navigator) {
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title: 'The Radio',
+        artist: 'Background Mode Active',
+        album: 'the-radio.in',
+        artwork: [{ src: '/logo1.png', sizes: '192x192', type: 'image/png' }]
+      });
+    } else if (!bgPlayEnabled && 'mediaSession' in navigator) {
+      navigator.mediaSession.metadata = null;
+    }
+  }, [bgPlayEnabled, power]);
 
   const handleAntennaClick = () => {
     playKnobTick();
@@ -210,8 +215,6 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     } else {
       setBgPlayEnabled(false);
       localStorage.setItem('bgPlayEnabled', 'false');
-      if (silentAudioRef.current) silentAudioRef.current.pause();
-      if ('mediaSession' in navigator) navigator.mediaSession.metadata = null;
     }
   };
 
@@ -220,17 +223,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     setBgPlayEnabled(true);
     localStorage.setItem('bgPlayEnabled', 'true');
     setShowBgModal(false);
-    if (silentAudioRef.current) silentAudioRef.current.play().catch(() => {});
-    
-    if ('mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: 'The Radio',
-        artist: 'Devi Paksha Edition',
-        album: 'Background Play Active'
-      });
-    }
   };
-
 
   const PLAYLIST_DATA: Record<string, { videoId: string, title: string, artist: string, duration: string, img: string }[]> = {
 
@@ -259,6 +252,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       { videoId: 'VAV6OQMe-to', title: 'Santi Dile Bhari | Mahishasura Mardini | Utpala Sen | Audio', artist: 'Saregama Bengali', duration: '2:18', img: 'https://i.ytimg.com/vi_webp/VAV6OQMe-to/maxresdefault.webp' }
     ],
     'DURGA PUJO': [
+      { videoId: 'XiAO-XjeHdI', title: 'Ashtami Te Tomar Paray', artist: 'Chirkut', duration: '4:24', img: 'https://i.ytimg.com/vi/XiAO-XjeHdI/hqdefault.jpg' },
       { videoId: 'SFJeglBF5cg', title: 'Dugga Elo', artist: 'Monali Thakur', duration: '2:27', img: 'https://i.ytimg.com/vi/SFJeglBF5cg/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLAb5Sk7tUpdGaM9DFnM5n0IcSTHTQ' },
       { videoId: 'FBOt8rMUcio', title: 'Dugga Ma', artist: 'Release - Topic', duration: '4:31', img: 'https://i.ytimg.com/vi/FBOt8rMUcio/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLA1Yr9z6xt40020vS0oyO8-5xHYUw' },
       { videoId: 'ZFBq075jwiE', title: 'Ebar Jeno Onno Rokom Pujo', artist: 'Release - Topic', duration: '3:35', img: 'https://i.ytimg.com/vi/ZFBq075jwiE/hqdefault.jpg?sqp=-oaymwEcCNACELwBSFXyq4qpAw4IARUAAIhCGAFwAcABBg==&rs=AOn4CLCSbZKWEBkwamzVL_2f0GMjRzMHYQ' },
