@@ -67,12 +67,16 @@ body {
   letter-spacing: 0.5px;
 }
 
-.occasion-text .time {
+.footer-time {
+  position: absolute;
+  bottom: 30px;
+  left: 50px;
   color: #7a6358;
-  font-size: 22px;
+  font-family: 'SeasonMix', serif;
+  font-size: 20px;
   letter-spacing: 0.5px;
   opacity: 0.9;
-  margin-top: -2px;
+  z-index: 10;
 }
 
 .occasion-text .greeting {
@@ -1686,7 +1690,11 @@ body {
     max-width: calc(100vw - 180px);
   }
   .occasion-text .date { font-size: 16px; }
-  .occasion-text .time { font-size: 14px; margin-top: -2px; }
+  .footer-time { 
+    left: 24px; 
+    bottom: 24px; 
+    font-size: 14px; 
+  }
   .occasion-text .greeting { 
     font-size: 24px; 
     white-space: normal;

@@ -156,7 +156,6 @@ export function App() {
       
       <div className="occasion-text">
         <div className="date">{formattedDate}</div>
-        <div className="time">{formattedTime}</div>
         <div className="greeting">
           {greetingInfo.text} {greetingInfo.isFestive && <span className="lotus">🪷</span>}
         </div>
@@ -430,6 +429,10 @@ export function App() {
         )}
         <Radio onPowerChange={setRadioPower} />
       </main>
+
+      <div className="footer-time">
+        {formattedTime}
+      </div>
     </>
   );
 }
