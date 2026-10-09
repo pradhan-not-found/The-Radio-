@@ -195,21 +195,13 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const [showBgModal, setShowBgModal] = useState(false);
   const bgAudioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Silent audio to keep the tab awake in the background
-  useEffect(() => {
-    if (bgPlayEnabled && power) {
-      if (!bgAudioRef.current) {
-        // Base64 encoded silent WAV file
-        bgAudioRef.current = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
-        bgAudioRef.current.loop = true;
-      }
-      bgAudioRef.current.play().catch(() => {});
-    } else {
-      if (bgAudioRef.current) {
-        bgAudioRef.current.pause();
-      }
+  const getBgAudio = useCallback(() => {
+    if (!bgAudioRef.current) {
+      bgAudioRef.current = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+      bgAudioRef.current.loop = true;
     }
-  }, [bgPlayEnabled, power]);
+    return bgAudioRef.current;
+  }, []);
 
   // Sync media session metadata when background play is toggled
   useEffect(() => {
@@ -232,6 +224,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     } else {
       setBgPlayEnabled(false);
       localStorage.setItem('bgPlayEnabled', 'false');
+      if (bgAudioRef.current) bgAudioRef.current.pause();
     }
   };
 
@@ -240,6 +233,9 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     setBgPlayEnabled(true);
     localStorage.setItem('bgPlayEnabled', 'true');
     setShowBgModal(false);
+    if (power) {
+      getBgAudio().play().catch(() => {});
+    }
   };
 
   const PLAYLIST_DATA: Record<string, { videoId: string, title: string, artist: string, duration: string, img: string }[]> = {
@@ -462,8 +458,12 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         setActiveCat('MAHALAYA');
         setActiveSong(0);
       }
+      if (bgPlayEnabled) {
+        getBgAudio().play().catch(() => {});
+      }
     } else {
       playPowerOff();
+      if (bgAudioRef.current) bgAudioRef.current.pause();
     }
     setPower(next);
     onPowerChange?.(next);
