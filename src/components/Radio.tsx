@@ -178,12 +178,23 @@ function Knob({ value, min, max, size=64, className="", soundType="tick", contin
 
 /* ══ RADIO ══ */
 export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void }) {
-  const [stations] = useState<PublicStation[]>([
+  const [stations, setStations] = useState<PublicStation[]>([
     { id: "mahalaya", name: "Mahalaya - Birendra Krishna Bhadra", frequency: 88.1, band: "FM", callsign: "MHL", city: "Kolkata", genre: "Devotional" },
     { id: "mahalaya2", name: "Mahalaya (Arijit Singh)", frequency: 93.5, band: "FM", callsign: "PJO", city: "Kolkata", genre: "Modern" },
     { id: "mahalaya3", name: "Devi Paksha Special", frequency: 98.3, band: "FM", callsign: "DVP", city: "Kolkata", genre: "Special" },
     { id: "mahalaya4", name: "Pujo Mix", frequency: 104.0, band: "FM", callsign: "MIX", city: "Kolkata", genre: "Mix" }
   ]);
+
+  useEffect(() => {
+    fetch('/api/stations')
+      .then(res => res.json())
+      .then(data => {
+        if (Array.isArray(data) && data.length > 0) {
+          setStations(data);
+        }
+      })
+      .catch(err => console.error('Failed to fetch real stations:', err));
+  }, []);
   const [power,    setPower]    = useState(false); // Always starts OFF
   const [band,     setBand]     = useState<Band>("FM");
   const [freq,     setFreq]     = useState(88.1);
@@ -579,8 +590,16 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
   const applyAudio = useCallback(async () => {
     radioAudio.setMix(power ? signal : 0, volume / 100, muted || !power);
-    // Removed radioAudio.tuneTo() so WebAudio doesn't play the MP3s
   }, [muted, power, signal, volume]);
+
+  const stationId = station?.id;
+  useEffect(() => {
+    if (power && lock && stationId && modeIdx !== 2 && !isLiveBroadcast) {
+      void radioAudio.tuneTo(stationId);
+    } else {
+      void radioAudio.tuneTo(null);
+    }
+  }, [power, lock, stationId, modeIdx, isLiveBroadcast]);
 
   useEffect(() => { 
     void applyAudio(); 
