@@ -472,7 +472,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     };
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
-  }, [power, lock, ytPlayer]);
+  }, [power, lock, ytPlayer, activeSong, activeCat]);
 
   // Resume YouTube when user returns to the app (visibilitychange)
   useEffect(() => {
