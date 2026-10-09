@@ -2,11 +2,11 @@ import { useState, useEffect } from 'react';
 import { QRCodeCanvas } from 'qrcode.react';
 import html2canvas from 'html2canvas';
 import JSZip from 'jszip';
-import flowerImg from "./assets/flower.png";
-import flower1Img from "./assets/flower1.png";
-import radioImg from "./assets/radio.png";
-import alponaImg from "./assets/alpona.png";
-import logo1Img from "./assets/logo1.png";
+import flowerImg from "./assets/flower.webp";
+import flower1Img from "./assets/flower1.webp";
+import radioImg from "./assets/radio.webp";
+import alponaImg from "./assets/alpona.webp";
+import logo1Img from "./assets/logo1.webp";
 
 export function ContentPage() {
   const [coloredAlpona, setColoredAlpona] = useState<string>(alponaImg);
