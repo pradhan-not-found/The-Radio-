@@ -476,15 +476,30 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     return () => cancelAnimationFrame(raf);
   }, [power, lock, ytPlayer, activeSong, activeCat]);
 
-  // Resume YouTube when user returns to the app (visibilitychange)
+  // Handle Background Play explicitly on visibilitychange
   useEffect(() => {
     const handleVisibility = () => {
-      if (!document.hidden && power && !intentionalPauseRef.current && localStorage.getItem('bgPlayEnabled') === 'true') {
-        if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState() !== 1) {
-          ytPlayer.playVideo();
+      const isBgEnabled = localStorage.getItem('bgPlayEnabled') === 'true';
+      
+      if (document.hidden) {
+        if (!isBgEnabled && power && !intentionalPauseRef.current) {
+          // Explicitly pause everything when they background if they DID NOT click enable
+          if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState() === 1) {
+            ytPlayer.pauseVideo();
+          }
+          if (modeIdx !== 2) {
+            radioAudio.pauseStream();
+          }
         }
-        if (modeIdx !== 2) {
-          radioAudio.forceResumeStream();
+      } else {
+        // We are returning to the foreground
+        if (power && !intentionalPauseRef.current) {
+          if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState() !== 1) {
+            ytPlayer.playVideo();
+          }
+          if (modeIdx !== 2) {
+            radioAudio.forceResumeStream();
+          }
         }
       }
     };

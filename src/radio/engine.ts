@@ -154,6 +154,12 @@ export class RadioAudio {
       this.element.play().catch(() => {});
     }
   }
+
+  pauseStream() {
+    if (this.element && !this.element.paused) {
+      this.element.pause();
+    }
+  }
 }
 
 export const radioAudio = new RadioAudio();
