@@ -1,7 +1,8 @@
 export class RadioAudio {
   private ctx: AudioContext | null = null;
   private element: HTMLAudioElement | null = null;
-  private media: MediaElementAudioSourceNode | null = null; // retained so the graph is not GC'd
+  // @ts-ignore - retained so the graph is not GC'd
+  private media: MediaElementAudioSourceNode | null = null;
   private master: GainNode | null = null;
   private streamGain: GainNode | null = null;
   private noiseGain: GainNode | null = null;
@@ -9,6 +10,7 @@ export class RadioAudio {
   private treble: BiquadFilterNode | null = null;
   private loudness: BiquadFilterNode | null = null;
   private panner: StereoPannerNode | null = null;
+  // @ts-ignore - retained so the graph is not GC'd
   private noise: AudioBufferSourceNode | null = null;
   private analyser: AnalyserNode | null = null;
   private currentStreamId: string | null = null;

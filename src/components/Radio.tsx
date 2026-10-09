@@ -218,7 +218,8 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     localStorage.setItem('bgPlayEnabled', 'true');
     setShowBgModal(false);
     if (power) {
-      getBgAudio().play().catch(() => {});
+      const audio = getBgAudio();
+      if (audio) audio.play().catch(() => {});
     }
   };
 
@@ -582,7 +583,8 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         setActiveSong(0);
       }
       if (bgPlayEnabled) {
-        getBgAudio().play().catch(() => {});
+        const audio = getBgAudio();
+        if (audio) audio.play().catch(() => {});
       }
     } else {
       playPowerOff();
