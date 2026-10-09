@@ -921,8 +921,8 @@ body {
 }
 
 .qr-box-large {
-  width: 220px;
-  height: 220px;
+  width: min(220px, 50vw);
+  height: min(220px, 50vw);
   background: #E8E5DD;
   border-radius: 16px;
   display: flex;
@@ -932,9 +932,10 @@ body {
   font-family: 'SeasonMix', sans-serif;
   font-weight: 700;
   font-size: 18px;
-  margin-bottom: 8px;
-  border: 6px solid #181715;
+  margin-bottom: 16px;
+  border: 4px solid #181715;
   box-shadow: 0 12px 24px rgba(0,0,0,0.6);
+  padding: min(16px, 4vw);
 }
 
 .mt-4 { margin-top: 16px; }
@@ -1828,8 +1829,7 @@ body {
   }
 
   .qr-box-large {
-    width: 180px;
-    height: 180px;
+    border-width: 3px;
   }
   
   .modal-bg-flower {
@@ -2076,9 +2076,7 @@ body {
   }
   
   .qr-box-large {
-    width: 170px;
-    height: 170px;
-    border-width: 4px;
+    border-width: 3px;
   }
 
   .chai-description {
