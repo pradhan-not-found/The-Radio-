@@ -440,7 +440,7 @@ export function App() {
                     <span style={{ fontFamily: "'Switzer', sans-serif", fontWeight: 600, fontSize: 'clamp(14px, 4vw, 16px)', color: '#8a2b2b', letterSpacing: '0.5px', flexShrink: 0 }}>{formatted.toUpperCase()}</span>
                     <span style={{ display: 'flex', alignItems: 'center', gap: '12px', justifyContent: 'flex-end' }}>
                       <span style={{ fontFamily: "'SeasonMix', serif", fontSize: 'clamp(18px, 5.5vw, 26px)', color: '#1a1a1a', textAlign: 'right', lineHeight: 1.2 }}>
-                        {eventWords.map((word, i) => <span key={i} style={{ display: 'block' }}>{word}</span>)}
+                        {eventName}
                       </span>
                       <img src={flower1Img} alt="" style={{ height: 'clamp(14px, 4vw, 18px)', width: 'auto', opacity: 0.85 }} />
                     </span>

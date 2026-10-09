@@ -46,7 +46,13 @@ export class RadioAudio {
     streamGain.gain.value = 0;
     master.gain.value = 0.7;
 
-    media.connect(streamGain);
+    // Detect iOS to bypass WebAudio background restrictions
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    
+    if (!isIOS) {
+      media.connect(streamGain);
+    }
+    
     streamGain.connect(bass);
     bass.connect(treble);
     treble.connect(loudness);
@@ -103,9 +109,16 @@ export class RadioAudio {
     if (!this.streamGain || !this.noiseGain || !this.master) return;
     const aud = muted || !this.powered ? 0 : volume;
     const locked = Math.max(0, Math.min(1, (signal - 0.15) / 0.7));
+    
     this.streamGain.gain.value = locked;
     this.noiseGain.gain.value = 0; // Disabled static noise as requested
     this.master.gain.value = aud;
+    
+    // Also manage the raw element volume directly for iOS (which bypasses WebAudio)
+    if (this.element) {
+      this.element.volume = aud;
+      this.element.muted = muted || !this.powered;
+    }
   }
 
   setTone(bassDb: number, trebleDb: number, loudnessOn: boolean, balance: number) {
