@@ -50,7 +50,14 @@ function getGreeting(date: Date) {
 
 export function App() {
   const [now, setNow] = useState(new Date());
-  const [onlineCount, setOnlineCount] = useState(() => 100 + Math.floor(Math.random() * 80));
+  const [onlineCount, setOnlineCount] = useState(() => {
+    const today = new Date();
+    const isMahalaya = today.getMonth() === 9 && today.getDate() === 10;
+    if (isMahalaya) {
+      return 890 + Math.floor(Math.random() * (2345 - 890 + 1));
+    }
+    return 123 + Math.floor(Math.random() * (345 - 123 + 1));
+  });
   const [activePopup, setActivePopup] = useState<string | null>(null);
   const [radioPower, setRadioPower] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
@@ -147,7 +154,26 @@ export function App() {
   useEffect(() => {
     const timer = setInterval(() => setNow(new Date()), 1000);
     const onlineTimer = setInterval(() => {
-      setOnlineCount(prev => Math.max(100, prev + Math.floor(Math.random() * 7) - 3));
+      setOnlineCount(prev => {
+        const today = new Date();
+        const isMahalaya = today.getMonth() === 9 && today.getDate() === 10;
+        
+        // Fluctuate by -5 to +5
+        let change = Math.floor(Math.random() * 11) - 5;
+        // On Mahalaya, fluctuate a bit more wildly since numbers are bigger
+        if (isMahalaya) change = Math.floor(Math.random() * 41) - 20; 
+        
+        let next = prev + change;
+        
+        if (isMahalaya) {
+           if (next < 890) next = 890 + Math.floor(Math.random() * 20);
+           if (next > 2345) next = 2345 - Math.floor(Math.random() * 20);
+        } else {
+           if (next < 123) next = 123 + Math.floor(Math.random() * 5);
+           if (next > 345) next = 345 - Math.floor(Math.random() * 5);
+        }
+        return next;
+      });
     }, 4500);
     return () => {
       clearInterval(timer);
