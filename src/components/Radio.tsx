@@ -483,11 +483,14 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState() !== 1) {
           ytPlayer.playVideo();
         }
+        if (modeIdx !== 2) {
+          radioAudio.forceResumeStream();
+        }
       }
     };
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);
-  }, [power, ytPlayer]);
+  }, [power, ytPlayer, modeIdx]);
 
   // Aggressive Background Polling to force YouTube to keep playing
   useEffect(() => {
@@ -508,11 +511,15 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
           if (radioAudio.isContextSuspended()) {
              radioAudio.resumeContext();
           }
+          // Also ensure FM/AM stream is kept alive if we're not on Digital
+          if (modeIdx !== 2) {
+             radioAudio.forceResumeStream();
+          }
         }
       }, 1000); // Check every second
     }
     return () => clearInterval(interval);
-  }, [bgPlayEnabled, power, ytPlayer]);
+  }, [bgPlayEnabled, power, ytPlayer, modeIdx]);
 
   const applyAudio = useCallback(async () => {
     radioAudio.setMix(power ? signal : 0, volume / 100, muted || !power);

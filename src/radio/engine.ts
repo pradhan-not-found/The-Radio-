@@ -148,6 +148,12 @@ export class RadioAudio {
     }
     return Promise.resolve();
   }
+
+  forceResumeStream() {
+    if (this.element && this.element.paused && this.currentStreamId && this.powered) {
+      this.element.play().catch(() => {});
+    }
+  }
 }
 
 export const radioAudio = new RadioAudio();
