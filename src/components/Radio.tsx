@@ -413,7 +413,14 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
   useEffect(() => {
     let raf = 0;
-    const loop = () => {
+    let lastTime = performance.now();
+    let virtualTime = 0;
+    let lastActualTime = -1;
+
+    const loop = (now: number) => {
+      const dt = (now - lastTime) / 1000;
+      lastTime = now;
+
       // If we are locked and playing youtube, simulate VU meter. Otherwise use static level.
       if (power && lock && ytPlayer && ytPlayer.getPlayerState) {
         const state = ytPlayer.getPlayerState();
@@ -422,16 +429,30 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
           setLevel(0.3 + Math.random() * 0.4); // Simulated VU for YouTube
           
           if (ytPlayer.getCurrentTime && ytPlayer.getDuration) {
-            const current = ytPlayer.getCurrentTime() || 0;
+            const actualTime = ytPlayer.getCurrentTime() || 0;
             const dur = ytPlayer.getDuration() || 0;
+            
+            // Interpolate the time for a buttery smooth 60fps progress bar
+            if (actualTime !== lastActualTime) {
+               // When YouTube updates its time (every ~250ms), sync our virtual time.
+               if (Math.abs(actualTime - virtualTime) > 0.5) {
+                  virtualTime = actualTime; // User skipped/seeked
+               } else {
+                  virtualTime = (virtualTime + actualTime) / 2; // Soft correct drift
+               }
+               lastActualTime = actualTime;
+            } else {
+               virtualTime += dt; // Predict next time
+            }
+
             if (dur > 0) {
-              setProgress((current / dur) * 100);
+              setProgress(Math.min((virtualTime / dur) * 100, 100));
               const formatTime = (secs: number) => {
                 const m = Math.floor(secs / 60);
                 const s = Math.floor(secs % 60).toString().padStart(2, '0');
                 return `${m}:${s}`;
               };
-              setCurrentStr(formatTime(current));
+              setCurrentStr(formatTime(virtualTime));
               setDurationStr(formatTime(dur));
             }
           }
@@ -756,7 +777,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                         userInteractedRef.current = true;
                       }}
                     >
-                      <div style={{ width: `${progress}%`, height: '100%', background: '#fff', borderRadius: '2px', transition: 'width 0.3s linear' }} />
+                      <div style={{ width: `${progress}%`, height: '100%', background: '#fff', borderRadius: '2px', transition: 'none' }} />
                     </div>
                     <span>{durationStr !== '0:00' ? durationStr : (PLAYLIST_DATA[activeCat]?.[activeSong]?.duration || '0:00')}</span>
                   </div>
