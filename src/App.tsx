@@ -50,7 +50,7 @@ function getGreeting(date: Date) {
 
 export function App() {
   const [now, setNow] = useState(new Date());
-  const [onlineCount, setOnlineCount] = useState(127);
+  const [onlineCount, setOnlineCount] = useState(() => 100 + Math.floor(Math.random() * 80));
   const [activePopup, setActivePopup] = useState<string | null>(null);
   const [radioPower, setRadioPower] = useState(false);
   const [copiedText, setCopiedText] = useState<string | null>(null);
@@ -145,7 +145,7 @@ export function App() {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => setNow(new Date()), 60000);
+    const timer = setInterval(() => setNow(new Date()), 1000);
     const onlineTimer = setInterval(() => {
       setOnlineCount(prev => Math.max(100, prev + Math.floor(Math.random() * 7) - 3));
     }, 4500);

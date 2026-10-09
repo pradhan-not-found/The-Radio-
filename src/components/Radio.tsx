@@ -208,6 +208,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const handleAntennaClick = () => {
     playKnobTick();
     if (!bgPlayEnabled) {
+      if (!power) return; // Don't show modal when radio is off
       setShowBgModal(true);
     } else {
       setBgPlayEnabled(false);
@@ -472,6 +473,19 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     raf = requestAnimationFrame(loop);
     return () => cancelAnimationFrame(raf);
   }, [power, lock, ytPlayer]);
+
+  // Resume YouTube when user returns to the app (visibilitychange)
+  useEffect(() => {
+    const handleVisibility = () => {
+      if (!document.hidden && power && !intentionalPauseRef.current && localStorage.getItem('bgPlayEnabled') === 'true') {
+        if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState() === 2) {
+          ytPlayer.playVideo();
+        }
+      }
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
+  }, [power, ytPlayer]);
 
   const applyAudio = useCallback(async () => {
     radioAudio.setMix(power ? signal : 0, volume / 100, muted || !power);
