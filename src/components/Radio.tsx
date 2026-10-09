@@ -1048,7 +1048,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     {/* ── YouTube Player (Hidden visually but needs to be rendered for API to work) ── */}
     <div style={{ position: 'absolute', opacity: 0.01, pointerEvents: 'none', width: '200px', height: '200px', top: '-9999px', left: '-9999px', zIndex: -1 }}>
       <YouTube 
-        opts={{ playerVars: { autoplay: 1, controls: 0 } }} 
+        opts={{ playerVars: { autoplay: 1, controls: 0, playsinline: 1 } }} 
         onReady={(e) => setYtPlayer(e.target)} 
         onStateChange={(e) => {
           if (e.data === 1) { // PLAYING
