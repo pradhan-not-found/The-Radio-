@@ -355,10 +355,12 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       navigator.mediaSession.setActionHandler('play', () => {
         intentionalPauseRef.current = false;
         if (ytPlayer && modeIdx === 2) ytPlayer.playVideo();
+        if (bgPlayEnabled && bgAudioRef.current) bgAudioRef.current.play().catch(()=>{});
       });
       navigator.mediaSession.setActionHandler('pause', () => {
         intentionalPauseRef.current = true;
         if (ytPlayer && modeIdx === 2) ytPlayer.pauseVideo();
+        if (bgAudioRef.current) bgAudioRef.current.pause();
       });
       navigator.mediaSession.setActionHandler('stop', () => {
         // "remove it" handler: completely stop the radio if swiped away
@@ -478,7 +480,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   useEffect(() => {
     const handleVisibility = () => {
       if (!document.hidden && power && !intentionalPauseRef.current && localStorage.getItem('bgPlayEnabled') === 'true') {
-        if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState() === 2) {
+        if (ytPlayer && ytPlayer.getPlayerState && ytPlayer.getPlayerState() !== 1) {
           ytPlayer.playVideo();
         }
       }
@@ -486,6 +488,31 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     document.addEventListener('visibilitychange', handleVisibility);
     return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, [power, ytPlayer]);
+
+  // Aggressive Background Polling to force YouTube to keep playing
+  useEffect(() => {
+    let interval: any;
+    if (bgPlayEnabled && power && ytPlayer) {
+      interval = setInterval(() => {
+        if (!intentionalPauseRef.current && ytPlayer.getPlayerState) {
+          const state = ytPlayer.getPlayerState();
+          // If the player is paused (2) or ended (0) but we didn't pause it, force it back on
+          if (state === 2) {
+            ytPlayer.playVideo();
+          }
+          // Also ensure our keep-awake silent audio wasn't suspended
+          if (bgAudioRef.current && bgAudioRef.current.paused) {
+             bgAudioRef.current.play().catch(()=>{});
+          }
+          // And ensure WebAudio context is kept alive
+          if (radioAudio.ctx.state === 'suspended') {
+             radioAudio.ctx.resume().catch(()=>{});
+          }
+        }
+      }, 1000); // Check every second
+    }
+    return () => clearInterval(interval);
+  }, [bgPlayEnabled, power, ytPlayer]);
 
   const applyAudio = useCallback(async () => {
     radioAudio.setMix(power ? signal : 0, volume / 100, muted || !power);
@@ -812,9 +839,11 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                       if (isPlaying) { 
                         intentionalPauseRef.current = true;
                         ytPlayer?.pauseVideo(); 
+                        if (bgAudioRef.current) bgAudioRef.current.pause();
                       } else { 
                         intentionalPauseRef.current = false;
                         ytPlayer?.playVideo(); 
+                        if (bgPlayEnabled && bgAudioRef.current) bgAudioRef.current.play().catch(()=>{});
                       }
                     }}
                   >
@@ -1026,10 +1055,14 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
              intentionalPauseRef.current = false;
           }
           if (e.data === 2) { // PAUSED
-             if (document.hidden && !intentionalPauseRef.current && localStorage.getItem('bgPlayEnabled') === 'true') {
+             if (!intentionalPauseRef.current && localStorage.getItem('bgPlayEnabled') === 'true') {
                  // The browser forcefully suspended the iframe because the app was backgrounded.
                  // We fight back and resume it instantly!
-                 e.target.playVideo();
+                 setTimeout(() => {
+                   if (e.target.getPlayerState() === 2) {
+                     e.target.playVideo();
+                   }
+                 }, 150);
              }
           }
           if (e.data === 0) { // ENDED
