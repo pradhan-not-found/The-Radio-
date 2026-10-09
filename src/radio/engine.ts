@@ -137,6 +137,17 @@ export class RadioAudio {
   playing() {
     return Boolean(this.element && !this.element.paused && this.powered);
   }
+
+  isContextSuspended() {
+    return this.ctx?.state === 'suspended';
+  }
+
+  resumeContext() {
+    if (this.ctx?.state === 'suspended') {
+      return this.ctx.resume().catch(() => {});
+    }
+    return Promise.resolve();
+  }
 }
 
 export const radioAudio = new RadioAudio();

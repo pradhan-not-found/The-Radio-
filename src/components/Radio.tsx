@@ -505,8 +505,8 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
              bgAudioRef.current.play().catch(()=>{});
           }
           // And ensure WebAudio context is kept alive
-          if (radioAudio.ctx.state === 'suspended') {
-             radioAudio.ctx.resume().catch(()=>{});
+          if (radioAudio.isContextSuspended()) {
+             radioAudio.resumeContext();
           }
         }
       }, 1000); // Check every second
