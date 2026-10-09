@@ -1079,12 +1079,10 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
           if (e.data === 2) { // PAUSED
              if (!intentionalPauseRef.current && localStorage.getItem('bgPlayEnabled') === 'true') {
                  // The browser forcefully suspended the iframe because the app was backgrounded.
-                 // We fight back and resume it instantly!
-                 setTimeout(() => {
-                   if (e.target.getPlayerState() === 2) {
-                     e.target.playVideo();
-                   }
-                 }, 150);
+                 // We fight back and resume it instantly to prevent stutter!
+                 if (e.target.getPlayerState() === 2) {
+                   e.target.playVideo();
+                 }
              }
           }
           if (e.data === 0) { // ENDED
