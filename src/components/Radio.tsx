@@ -203,19 +203,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
     return bgAudioRef.current;
   }, []);
 
-  // Sync media session metadata when background play is toggled
-  useEffect(() => {
-    if (bgPlayEnabled && power && 'mediaSession' in navigator) {
-      navigator.mediaSession.metadata = new MediaMetadata({
-        title: 'The Radio',
-        artist: 'Background Mode Active',
-        album: 'the-radio.in',
-        artwork: [{ src: '/logo1.png', sizes: '192x192', type: 'image/png' }]
-      });
-    } else if (!bgPlayEnabled && 'mediaSession' in navigator) {
-      navigator.mediaSession.metadata = null;
-    }
-  }, [bgPlayEnabled, power]);
+
 
   const handleAntennaClick = () => {
     playKnobTick();
@@ -346,6 +334,59 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const holdRef = useRef(false);
   const stateRef = useRef({ activeCat, activeSong });
   const userInteractedRef = useRef(false);
+
+  // Full Media Session API integration for lock screen and notification tray controls
+  useEffect(() => {
+    if (bgPlayEnabled && power && 'mediaSession' in navigator) {
+      const currentTrack = PLAYLIST_DATA[activeCat]?.[activeSong];
+      const title = modeIdx === 2 && currentTrack ? currentTrack.title : 'The Radio';
+      const artist = modeIdx === 2 && currentTrack ? currentTrack.artist : 'Background Mode Active';
+      const img = modeIdx === 2 && currentTrack && currentTrack.img ? currentTrack.img : 'https://the-radio.in/logo1.png';
+
+      navigator.mediaSession.metadata = new MediaMetadata({
+        title,
+        artist,
+        album: 'the-radio.in',
+        artwork: [{ src: img, sizes: '512x512', type: 'image/jpeg' }]
+      });
+
+      navigator.mediaSession.setActionHandler('play', () => {
+        if (ytPlayer && modeIdx === 2) ytPlayer.playVideo();
+      });
+      navigator.mediaSession.setActionHandler('pause', () => {
+        if (ytPlayer && modeIdx === 2) ytPlayer.pauseVideo();
+      });
+      navigator.mediaSession.setActionHandler('stop', () => {
+        // "remove it" handler: completely stop the radio if swiped away
+        setPower(false);
+        onPowerChange?.(false);
+        playPowerOff();
+        radioAudio.power(false);
+        if (bgAudioRef.current) bgAudioRef.current.pause();
+      });
+      navigator.mediaSession.setActionHandler('nexttrack', () => {
+        if (modeIdx === 2) {
+          const nextSong = (activeSong + 1) % (PLAYLIST_DATA[activeCat]?.length || 1);
+          userInteractedRef.current = true;
+          setActiveSong(nextSong);
+        }
+      });
+      navigator.mediaSession.setActionHandler('previoustrack', () => {
+        if (modeIdx === 2) {
+          const prevSong = (activeSong - 1 + (PLAYLIST_DATA[activeCat]?.length || 1)) % (PLAYLIST_DATA[activeCat]?.length || 1);
+          userInteractedRef.current = true;
+          setActiveSong(prevSong);
+        }
+      });
+    } else if ('mediaSession' in navigator) {
+      navigator.mediaSession.metadata = null;
+      navigator.mediaSession.setActionHandler('play', null);
+      navigator.mediaSession.setActionHandler('pause', null);
+      navigator.mediaSession.setActionHandler('stop', null);
+      navigator.mediaSession.setActionHandler('nexttrack', null);
+      navigator.mediaSession.setActionHandler('previoustrack', null);
+    }
+  }, [bgPlayEnabled, power, ytPlayer, modeIdx, activeCat, activeSong, onPowerChange]);
 
   useEffect(() => {
     stateRef.current = { activeCat, activeSong };
