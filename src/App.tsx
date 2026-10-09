@@ -95,16 +95,36 @@ export function App() {
     clone.style.overflow = 'visible';
     clone.style.zIndex = '-1';
     
+    // Professional Poster Formatting
+    clone.style.width = '900px';
+    clone.style.padding = '60px 80px';
+    clone.style.borderRadius = '0'; // Flat professional image look
+    
     calendarRef.current.parentElement?.appendChild(clone);
 
     const watermark = clone.querySelector('#calendar-watermark') as HTMLElement;
-    if (watermark) watermark.style.display = 'flex';
+    if (watermark) {
+      watermark.style.display = 'flex';
+      watermark.style.marginTop = '60px';
+    }
 
     const innerContainer = clone.querySelector('.calendar-dates-container') as HTMLElement;
     if (innerContainer) {
       innerContainer.style.overflowY = 'visible';
       innerContainer.style.maxHeight = 'none';
+      innerContainer.style.display = 'grid';
+      innerContainer.style.gridTemplateColumns = '1fr 1fr'; // Split into 2 columns for a balanced aspect ratio
+      innerContainer.style.gap = '20px 40px';
+      innerContainer.style.paddingRight = '0';
+      innerContainer.style.marginTop = '30px';
     }
+
+    // Enhance the decorative flowers for the larger poster size
+    const flowers = clone.querySelectorAll('.modal-bg-flower');
+    flowers.forEach(f => {
+      (f as HTMLElement).style.width = '350px';
+      (f as HTMLElement).style.opacity = '0.12';
+    });
 
     try {
       // Small delay to ensure DOM updates applied

@@ -193,6 +193,23 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
   const [bgPlayEnabled, setBgPlayEnabled] = useState(() => localStorage.getItem('bgPlayEnabled') === 'true');
   const [showBgModal, setShowBgModal] = useState(false);
+  const bgAudioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Silent audio to keep the tab awake in the background
+  useEffect(() => {
+    if (bgPlayEnabled && power) {
+      if (!bgAudioRef.current) {
+        // Base64 encoded silent WAV file
+        bgAudioRef.current = new Audio("data:audio/wav;base64,UklGRigAAABXQVZFZm10IBIAAAABAAEARKwAAIhYAQACABAAAABkYXRhAgAAAAEA");
+        bgAudioRef.current.loop = true;
+      }
+      bgAudioRef.current.play().catch(() => {});
+    } else {
+      if (bgAudioRef.current) {
+        bgAudioRef.current.pause();
+      }
+    }
+  }, [bgPlayEnabled, power]);
 
   // Sync media session metadata when background play is toggled
   useEffect(() => {
