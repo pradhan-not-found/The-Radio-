@@ -334,6 +334,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const holdRef = useRef(false);
   const stateRef = useRef({ activeCat, activeSong });
   const userInteractedRef = useRef(false);
+  const intentionalPauseRef = useRef(false);
 
   // Full Media Session API integration for lock screen and notification tray controls
   useEffect(() => {
@@ -351,9 +352,11 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       });
 
       navigator.mediaSession.setActionHandler('play', () => {
+        intentionalPauseRef.current = false;
         if (ytPlayer && modeIdx === 2) ytPlayer.playVideo();
       });
       navigator.mediaSession.setActionHandler('pause', () => {
+        intentionalPauseRef.current = true;
         if (ytPlayer && modeIdx === 2) ytPlayer.pauseVideo();
       });
       navigator.mediaSession.setActionHandler('stop', () => {
@@ -792,8 +795,13 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                     disabled={!power} 
                     onClick={() => { 
                       userInteractedRef.current = true;
-                      if (isPlaying) { ytPlayer?.pauseVideo(); } 
-                      else { ytPlayer?.playVideo(); }
+                      if (isPlaying) { 
+                        intentionalPauseRef.current = true;
+                        ytPlayer?.pauseVideo(); 
+                      } else { 
+                        intentionalPauseRef.current = false;
+                        ytPlayer?.playVideo(); 
+                      }
                     }}
                   >
                     {!isPlaying ? (
@@ -1000,6 +1008,16 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         opts={{ playerVars: { autoplay: 1, controls: 0 } }} 
         onReady={(e) => setYtPlayer(e.target)} 
         onStateChange={(e) => {
+          if (e.data === 1) { // PLAYING
+             intentionalPauseRef.current = false;
+          }
+          if (e.data === 2) { // PAUSED
+             if (document.hidden && !intentionalPauseRef.current && localStorage.getItem('bgPlayEnabled') === 'true') {
+                 // The browser forcefully suspended the iframe because the app was backgrounded.
+                 // We fight back and resume it instantly!
+                 e.target.playVideo();
+             }
+          }
           if (e.data === 0) { // ENDED
              const current = stateRef.current;
              const nextSong = (current.activeSong + 1) % (PLAYLIST_DATA[current.activeCat]?.length || 1);
