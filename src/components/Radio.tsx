@@ -337,10 +337,10 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
 
   // Full Media Session API integration for lock screen and notification tray controls
   useEffect(() => {
-    if (bgPlayEnabled && power && 'mediaSession' in navigator) {
+    if (power && 'mediaSession' in navigator) {
       const currentTrack = PLAYLIST_DATA[activeCat]?.[activeSong];
       const title = modeIdx === 2 && currentTrack ? currentTrack.title : 'The Radio';
-      const artist = modeIdx === 2 && currentTrack ? currentTrack.artist : 'Background Mode Active';
+      const artist = modeIdx === 2 && currentTrack ? currentTrack.artist : (modeIdx === 1 ? 'FM Radio' : 'AM Radio');
       const img = modeIdx === 2 && currentTrack && currentTrack.img ? currentTrack.img : 'https://the-radio.in/logo1.png';
 
       navigator.mediaSession.metadata = new MediaMetadata({
@@ -386,7 +386,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('previoustrack', null);
     }
-  }, [bgPlayEnabled, power, ytPlayer, modeIdx, activeCat, activeSong, onPowerChange]);
+  }, [power, ytPlayer, modeIdx, activeCat, activeSong, onPowerChange]);
 
   useEffect(() => {
     stateRef.current = { activeCat, activeSong };
