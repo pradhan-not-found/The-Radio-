@@ -333,6 +333,47 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
   const userInteractedRef = useRef(false);
   const intentionalPauseRef = useRef(false);
 
+  const [isLiveBroadcast, setIsLiveBroadcast] = useState(false);
+
+  useEffect(() => {
+    const checkLive = () => {
+      const nowTime = new Date();
+      const bStart = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate(), 4, 0, 0);
+      const eSec = (nowTime.getTime() - bStart.getTime()) / 1000;
+      setIsLiveBroadcast(nowTime.getMonth() === 9 && nowTime.getDate() === 10 && eSec >= 0 && eSec < 5300);
+    };
+    checkLive();
+    const interval = setInterval(checkLive, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Enforce Live Broadcast rules
+  useEffect(() => {
+    if (!power || !isLiveBroadcast) return;
+    const interval = setInterval(() => {
+      setModeIdx(2);
+      setActiveCat('MAHALAYA');
+      setActiveSong(0);
+      
+      if (ytPlayer && ytPlayer.getPlayerState) {
+        const state = ytPlayer.getPlayerState();
+        if (state !== 1 && state !== 3) {
+          intentionalPauseRef.current = false;
+          ytPlayer.playVideo();
+        }
+        
+        const nowTime = new Date();
+        const bStart = new Date(nowTime.getFullYear(), nowTime.getMonth(), nowTime.getDate(), 4, 0, 0);
+        const eSec = (nowTime.getTime() - bStart.getTime()) / 1000;
+        const currentYtTime = ytPlayer.getCurrentTime() || 0;
+        if (Math.abs(currentYtTime - eSec) > 5) {
+           ytPlayer.seekTo(eSec, true);
+        }
+      }
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [power, isLiveBroadcast, ytPlayer]);
+
   // Full Media Session API integration for lock screen and notification tray controls
   useEffect(() => {
     if (power && 'mediaSession' in navigator) {
@@ -349,11 +390,13 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       });
 
       navigator.mediaSession.setActionHandler('play', () => {
+        if (isLiveBroadcast) return;
         intentionalPauseRef.current = false;
         if (ytPlayer && modeIdx === 2) ytPlayer.playVideo();
         if (bgPlayEnabled && bgAudioRef.current) bgAudioRef.current.play().catch(()=>{});
       });
       navigator.mediaSession.setActionHandler('pause', () => {
+        if (isLiveBroadcast) return;
         intentionalPauseRef.current = true;
         if (ytPlayer && modeIdx === 2) ytPlayer.pauseVideo();
         if (bgAudioRef.current) bgAudioRef.current.pause();
@@ -367,6 +410,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         if (bgAudioRef.current) bgAudioRef.current.pause();
       });
       navigator.mediaSession.setActionHandler('nexttrack', () => {
+        if (isLiveBroadcast) return;
         if (modeIdx === 2) {
           const nextSong = (activeSong + 1) % (PLAYLIST_DATA[activeCat]?.length || 1);
           userInteractedRef.current = true;
@@ -374,6 +418,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
         }
       });
       navigator.mediaSession.setActionHandler('previoustrack', () => {
+        if (isLiveBroadcast) return;
         if (modeIdx === 2) {
           const prevSong = (activeSong - 1 + (PLAYLIST_DATA[activeCat]?.length || 1)) % (PLAYLIST_DATA[activeCat]?.length || 1);
           userInteractedRef.current = true;
@@ -388,7 +433,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       navigator.mediaSession.setActionHandler('nexttrack', null);
       navigator.mediaSession.setActionHandler('previoustrack', null);
     }
-  }, [power, ytPlayer, modeIdx, activeCat, activeSong, onPowerChange]);
+  }, [power, ytPlayer, modeIdx, activeCat, activeSong, onPowerChange, isLiveBroadcast]);
 
   useEffect(() => {
     stateRef.current = { activeCat, activeSong };
@@ -577,10 +622,15 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
       playPowerOn();
       // Auto-play Mahalaya on October 10th
       const today = new Date();
+      const bStart = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 4, 0, 0);
+      const eSec = (today.getTime() - bStart.getTime()) / 1000;
+      const live = today.getMonth() === 9 && today.getDate() === 10 && eSec >= 0 && eSec < 5300;
+
       if (today.getMonth() === 9 && today.getDate() === 10) {
         userInteractedRef.current = true;
         setActiveCat('MAHALAYA');
         setActiveSong(0);
+        if (live) setModeIdx(2);
       }
       if (bgPlayEnabled) {
         const audio = getBgAudio();
@@ -829,8 +879,9 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                   <div style={{ width: '100%', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '11px', color: '#888' }}>
                     <span>{currentStr}</span>
                     <div 
-                      style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px', cursor: 'pointer', position: 'relative' }}
+                      style={{ flex: 1, height: '4px', background: 'rgba(255,255,255,0.2)', borderRadius: '2px', cursor: isLiveBroadcast ? 'not-allowed' : 'pointer', position: 'relative' }}
                       onClick={(e) => {
+                        if (isLiveBroadcast) return;
                         if (!ytPlayer || !ytPlayer.getDuration) return;
                         const rect = e.currentTarget.getBoundingClientRect();
                         const clickX = e.clientX - rect.left;
@@ -852,7 +903,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                   {/* Play/Pause Toggle */}
                   <button 
                     className={`digital-ctrl-btn toggle-btn ${isPlaying ? 'playing' : ''}`} 
-                    disabled={!power} 
+                    disabled={!power || isLiveBroadcast} 
                     onClick={() => { 
                       userInteractedRef.current = true;
                       if (isPlaying) { 
@@ -874,7 +925,7 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                   </button>
 
                   {/* Next Song */}
-                  <button className="digital-ctrl-btn" disabled={!power} onClick={() => { 
+                  <button className="digital-ctrl-btn" disabled={!power || isLiveBroadcast} onClick={() => { 
                     const nextSong = (activeSong + 1) % (PLAYLIST_DATA[activeCat]?.length || 1);
                     userInteractedRef.current = true;
                     setActiveSong(nextSong);
@@ -886,10 +937,10 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
                   <button 
                     className="browse-playlist-btn" 
                     onClick={() => { setBrowseCat(activeCat); setShowPlaylist(true); }}
-                    disabled={!power}
-                    style={{ marginLeft: 'auto', padding: '6px 12px', background: 'rgba(255,255,255,0.08)', color: '#E8E5DD', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 'bold', cursor: 'pointer', transition: 'all 0.2s' }}
-                    onMouseOver={(e) => { if (power) e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
-                    onMouseOut={(e) => { if (power) e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
+                    disabled={!power || isLiveBroadcast}
+                    style={{ marginLeft: 'auto', padding: '6px 12px', background: 'rgba(255,255,255,0.08)', color: '#E8E5DD', borderRadius: '16px', border: '1px solid rgba(255,255,255,0.1)', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', fontWeight: 'bold', cursor: isLiveBroadcast ? 'not-allowed' : 'pointer', transition: 'all 0.2s', opacity: isLiveBroadcast ? 0.5 : 1 }}
+                    onMouseOver={(e) => { if (power && !isLiveBroadcast) e.currentTarget.style.background = 'rgba(255,255,255,0.15)'; }}
+                    onMouseOut={(e) => { if (power && !isLiveBroadcast) e.currentTarget.style.background = 'rgba(255,255,255,0.08)'; }}
                   >
                     <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M3 15h18v-2H3v2zm0 4h18v-2H3v2zm0-8h18V9H3v2zm0-6v2h18V5H3z"/></svg>
                     Browse
@@ -936,8 +987,9 @@ export function Radio({ onPowerChange }: { onPowerChange?: (p: boolean) => void 
             {/* Clickable mode knob */}
             <div 
               className="knob knob-small" 
-              style={{ width: 64, height: 64, cursor: 'pointer' }}
+              style={{ width: 64, height: 64, cursor: isLiveBroadcast ? 'not-allowed' : 'pointer', opacity: isLiveBroadcast ? 0.8 : 1 }}
               onClick={() => {
+                if (isLiveBroadcast) return;
                 playBandSwitch();
                 setModeIdx(modeIdx === 1 ? 2 : 1);
               }}
