@@ -17,9 +17,10 @@ const PUJA_DATES: Record<string, string> = {
   "10-15": "Subho Panchami",
   "10-16": "Subho Maha Shashthi",
   "10-17": "Subho Maha Saptami",
-  "10-18": "Subho Maha Ashtami",
-  "10-19": "Subho Maha Navami",
-  "10-20": "Subho Bijoya Dashami",
+  "10-18": "Subho Maha Saptami",
+  "10-19": "Subho Maha Ashtami",
+  "10-20": "Subho Maha Navami",
+  "10-21": "Subho Bijoya Dashami",
 };
 
 const VerifiedTick = () => (
