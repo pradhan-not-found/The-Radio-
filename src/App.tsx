@@ -1,13 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import html2canvas from 'html2canvas';
 import { Radio } from "./components/Radio";
-import flowerImg from "./assets/flower.png";
-import souradeep from "./assets/souradeep.png";
-import spotify from "./assets/spotify.png";
+import flowerImg from "./assets/flower.webp";
+import souradeep from "./assets/souradeep.webp";
+import spotify from "./assets/spotify.webp";
 import { QRCodeCanvas } from 'qrcode.react';
-import flower1Img from "./assets/flower1.png";
-import alponaImg from "./assets/alpona.png";
-import logo1Img from "./assets/logo1.png";
+import flower1Img from "./assets/flower1.webp";
+import alponaImg from "./assets/alpona.webp";
+import logo1Img from "./assets/logo1.webp";
 const PUJA_DATES: Record<string, string> = {
   "10-10": "Subho Mahalaya",
   "10-11": "Subho Prothoma",

@@ -19,7 +19,7 @@ import {
 const PRESET_KEY = "the-radio-presets";
 const EMPTY: PresetSlot[] = Array.from({ length: 6 }, () => ({ band: "FM" as Band, frequency: 88.1 }));
 
-import bannerImg from '../assets/banner.png';
+import bannerImg from '../assets/banner.webp';
 
 function loadPresets(): PresetSlot[] {
   try {
